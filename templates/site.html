@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% set folder_name = pwd.split('/')[-1] if pwd.split('/')[-1] else 'Home' %}
+
+{% block title %}{{ site }} - More Points {% endblock %}
+
+{% block dialogs %}
+
+{% if request.args.get('error_msg') %}
+<dialog open id="error_message" class="error">
+    <div>
+        <p>Error: <br> {{ request.args.get('error_msg') }}</p>
+        <button onclick="error_message.close()" class="primary">Ok</button>
+    </div>
+</dialog>
+{% endif %}
+
+
+<dialog id="text_editor">
+    <div>
+        <div class="height0" style="position: relative;">
+            <button style="position: absolute; right: 0;" onclick="text_editor.close()">X</button><br>
+        </div>
+        <iframe src="" frameborder="0"></iframe>
+    </div>
+</dialog>
+
+<dialog id="upload_file">
+    <form action="/upload/{{ site }}" method="post" enctype="multipart/form-data">
+        Upload:
+        <input type="hidden" name="d" value="{{ pwd }}">
+        <input type="file" name="file" multiple>
+        <div>
+            <input type="submit" class="primary" value="Upload">
+            <button type="button" onclick="upload_file.close()">Cancel</button>
+        </div>
+    </form>
+</dialog>
+
+{% endblock %}
+
+{% block content %}
+<header class="main-header">
+    <img src="/static/icons/site_icons/{{ site_icon }}.svg" alt="{{ site }}" width="64px" height="64px">
+    <h1 style="flex: 1;">{{ display_name }}</h1>
+    <a href="/exit/{{ site }}" class="button">Exit</a>
+</header>
+<div class="toolbar">
+    <select class="primary" name="toolbar-new" id="toolbar-new"
+        onchange="
+            switch(this.value){
+                case 'folder':
+                    showPromptDialog(['{{ pwd }}', ''], '/create_folder/{{ site }}', 'Enter folder name')
+                    break;
+                case 'file':
+                    showPromptDialog(['{{ pwd }}', ''], '/create_file/{{ site }}', 'Enter file name')
+                    break;
+                case 'upload':
+                    upload_file.showModal()
+                    break;
+            }
+            this.value = 0;
+        "
+    >
+        <option value="0">+ New</option>
+        <option value="folder">New folder</option>
+        <option value="file">New empty file</option>
+        <option value="upload">Upload file</option>
+    </select>
+    <input id="searchBox" type="text" placeholder="Search in {{ folder_name }}" value="{{ search }}">
+    <button onclick="window.location.href = `/site/{{ site }}?d={{pwd}}&search=${searchBox.value}`">Search</button>
+</div>
+
+<div class="path">
+    <a href="/site/{{ site }}">Home</a>
+    {% for dir in pwd.split("/")[1:] %}
+        <span class="black-05">></span>
+        {% if loop.index == pwd.split("/")|length - 1 %}
+            <b>{{ dir }}</b>
+        {% else %}
+            <a href="/site/{{site}}?d={{ pwd.split('/')[0:loop.index + 1]|join('/') }}">{{ dir }}</a>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<div class="list-view">
+    <table cellspacing="0">
+        <tr>
+            <th style="width: 2%;"></th>
+            <th style="width: 68%;">Name</th>
+            <th style="width: 20%;">Last modified</th>
+            <th style="width: 10%;">Size</th>
+        </tr>
+        {% for file in files %}
+            <tr>
+                <td>
+                    {% if file[1]["type"] == "dir" %}
+                        <img class="folder" alt="folder">
+                    {% else %}
+                        <img class="img-{{ file[1]['ext'] }}" alt="file">
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="file">
+                        {% if file[1]["type"] == "dir" %}
+                            <a href="/site/{{ site }}?d={{ pwd }}/{{ file[0] }}">{{ file[0] }}</a>
+                        {% else %}
+                            {% if file[1]["ext"] in ["txt", "msg", "siteconf", "ini", "sh"]  %}
+                                <a href="#" onclick="openWithTextEditor('{{ pwd }}', '{{ file[0] }}')">{{ file[0] }}</a>
+                            {% elif file[1]["ext"] == "lll" or file[1]["ext"] == "lnk" %}
+                                <a onclick="openLink('{{ pwd }}/{{ file[0] }}')">{{ file[0] }}</a>
+                            {% else %}
+                                <a href="/open/{{ site }}?path={{ pwd }}/{{ file[0] }}&open=1" target="_blank">{{ file[0] }}</a>
+                            {% endif %}
+                        {% endif %}
+
+                        <select path="{{ pwd }}/{{ file[0] }}"
+                            onchange="
+                                let path = this.getAttribute('path')
+                                switch(this.value){
+                                    case 'open':
+                                        window.open(`/open/{{ site }}?path=${path}&open=1`, '_blank')
+                                        break;
+                                    case 'edit':
+                                        openWithTextEditor('{{ pwd }}', '{{ file[0] }}')
+                                        break;
+                                    case 'download':
+                                        window.open(`/open/{{ site }}?path=${path}&download=1`, '_blank')
+                                        break;
+                                    case 'rename':
+                                        showPromptDialog(['{{ pwd }}', '{{ file[0]  }}'], '/rename/{{ site }}', 'Enter new name', '{{ file[0]  }}')
+                                        break;
+                                    case 'delete':
+                                        if (confirm(`Are you sure you want to delete '{{ file[0] }}'?`))
+                                            window.location.href=(`/delete_f/{{ site }}?d={{ pwd }}&f={{ file[0] }}`)
+                                        break;
+                                }
+                                this.value = 0;
+                            "
+                        >
+                            
+                        
+                        <option value="0"> - Actions - </option>
+
+                            {% if file[1]["type"] == "dir" %}
+
+                            {% else %}
+
+                                <optgroup label="{{ '-'*50 }}">
+                                    <option value="open">Open</option>
+                                    <option value="edit">Edit</option>
+                                    <option value="download">Download</option>
+                                </optgroup>
+
+                            {% endif %}
+
+                            <optgroup label="{{ '-'*50 }}">
+                                <option value="rename">Rename</option>
+                                <option value="delete">Delete</option>
+                            </optgroup>
+
+
+                        </select>
+
+                    </div>
+                </td>
+                <td>
+                    {{ file[1]["modtime"] }}
+                </td>
+                <td>
+                    {{ file[1]["h_size"] }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% if files|length == 0 %}
+        <h1 class="center unselectable">This folder is empty</h1>
+    {% endif %}
+</div>
+<script src="/static/js/global.js"></script>
+<script src="/static/js/utils.js"></script>
+{% for addon in addons["site"] %}
+<script src="{{ addon }}"></script>
+{% endfor %}
+<script>
+    async function openLink(link){
+        window.open(`${await readFile("{{ site }}", link)}`, "_blank");
+    }
+
+    function openWithTextEditor(folder, filename){
+        text_editor = document.getElementById("text_editor")
+        text_editor.querySelector('iframe').src = `/edit/{{ site }}?d=${folder}&fname=${filename}`
+        text_editor.showModal()
+    }
+</script>
+{% endblock %}

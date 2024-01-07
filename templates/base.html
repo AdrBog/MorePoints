@@ -1,0 +1,18 @@
+{% set site_icon = config.get('appareance', {}).get('site_icon', 'no_icon') %}
+{% set display_name = config.get('site', {}).get('display_name', site) %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body class="light" site="{{ site }}">
+    {% block dialogs %}{% endblock %}
+    {% block content %}{% endblock %}
+</body>
+</html>

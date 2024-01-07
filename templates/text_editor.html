@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit {{ filename }} - More Points{% endblock %}
+
+
+{% block dialogs %}
+<dialog id="save_dialog">
+    <h2>{{ filename }} saved!</h2>
+    <button class="primary" onclick="save_dialog.close()">Ok</button>
+</dialog>
+{% endblock %}
+
+
+{% block content %}
+<form class="text-editor" action="/create_file/{{ site }}" method="get" onsubmit="save_dialog.showModal()">
+    <div class="toolbar">
+        <input type="submit" class="primary" value="Save">
+        <button type="button" onclick="window.open(`/open/{{ site }}?path={{ path }}&download=1`, '_blank')">Download</button>
+        <span>{{ filename }}</span>
+    </div>
+    <input type="hidden" name="d" value="{{ folder }}">
+    <input type="hidden" name="fname" value="{{ filename }}">
+    <input type="hidden" name="edit" value="1">
+    <textarea autofocus name="content">{{ text }}</textarea>
+</form>
+{% for addon in addons["edit"] %}
+<script src="{{ addon }}"></script>
+{% endfor %}
+{% endblock %}
+
+

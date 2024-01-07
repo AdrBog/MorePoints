@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="31.800001mm"
+   height="32.000004mm"
+   viewBox="0 0 31.800001 32.000004"
+   version="1.1"
+   id="svg5"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs2" /><g
+     id="layer1"
+     transform="translate(-0.19999999)"><g
+       id="layer1-6"
+       transform="translate(-39.85453,-13.047843)"
+       style="fill:#536c53;fill-opacity:1"><rect
+         style="fill:#536c53;fill-opacity:1;stroke-width:0.755202"
+         id="rect1748-2"
+         width="31.999577"
+         height="31.999996"
+         x="39.85453"
+         y="13.047843"
+         ry="0" /><path
+         id="rect1748"
+         style="opacity:1;fill:#536c53;fill-opacity:1;stroke-width:0.755202"
+         d="m 48.468888,22.881395 -8.614563,9.27577 v 12.890678 h 32 v -11.56536 l -2.643155,-3.033101 -7.007895,6.614051 z" /><ellipse
+         style="opacity:1;fill:#536c53;fill-opacity:1;stroke-width:0.755202"
+         id="path2150"
+         cx="63.973206"
+         cy="22.881397"
+         rx="3.5900388"
+         ry="3.598201" /></g><g
+       id="SVGRepo_iconCarrier-8"
+       transform="matrix(1.0054167,0,0,1.0054167,4.1274993,4.0745826)"
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-opacity:1"><path
+         d="M 3,19 H 21 M 6,17 h 12 c 1.1046,0 2,-0.8954 2,-2 V 8 C 20,6.89543 19.1046,6 18,6 H 6 C 4.89543,6 4,6.89543 4,8 v 7 c 0,1.1046 0.89543,2 2,2 z"
+         stroke="#000000"
+         stroke-width="2"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         id="path1090"
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-opacity:1" /></g></g></svg>

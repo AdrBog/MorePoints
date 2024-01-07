@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to More Points{% endblock %}
+
+
+{% block content %}
+<center>
+    <h1>Welcome to</h1>
+    <img src="/static/logo.svg" alt="logo">
+    <p>If you see this page, you have (probably) successfully setup More Points</p>
+    <hr>
+    <noscript><div class="error">You should start thinking in activate javascript</div></noscript>
+</center>
+
+<details>
+    <summary>How to access a site</summary>
+    <p>To access a site, enter the address /site/SITE_NAME in the URL bar</p>
+    <p>If you have not configured any site yet, you can access the site that comes by default with the More Points installation:</p>
+    <ul>
+        <li>URL: <b><a href="/site/sample" target="_blank">/site/sample</a></b></li>
+        <li>Password: 1234</li>
+    </ul>
+</details>
+
+<details>
+    <summary>How to create a site</summary>
+    <p>First you need a place on the server to save the files.<br>
+    To keep your sites organized I recommend using the <b>sites</b> folder that comes with the installation.</p>
+    <p>Create the folder SITE_NAME in the <b>sites</b> folder, once you have created the route, you will have to configure the site <br></p>
+    <p>Sites are configured in <b>config/sites.ini</b></p>
+    <p>To create a site, add a section in the file, here is an example of a configured site:</p>
+    <pre>
+    [SITE_NAME]
+    password=SUPER_SECURE_PASSWORD
+    perm=elradfmwMT
+    root=sites/SITE_NAME
+    </pre>
+    <ul>
+        <li><b>password:</b> Do i need to explain?</li>
+        <li>
+            <b>perm:</b> Site permissions, 
+            <b>
+                <a href="https://pyftpdlib.readthedocs.io/en/latest/api.html#users" target="_blank">
+                click here to get info about permissions
+                </a>
+            </b> <br>
+            If you have no idea, just set <b>elradfmwMT</b> for read and write permissions or <b>elr</b> for read permissions only.
+        </li>
+        <li><b>root:</b> The location on the server where the files will be stored, as mentioned above, I recommend using the <b>sites</b> directory</li>
+    </ul>
+    <p>Remember that the changes will not be applied until you restart the FTP server (server.py).</p>
+    <p>Once you're ready go to <b><a href="/site/SITE_NAME">/site/SITE_NAME</a></b> and enter the password</p>
+</details>
+
+<details>
+    <summary>About</summary>
+    <p>
+        <b>More Points Version: {{ ver }} </b> <br>
+        Copyright (C) 2024 Adrian Bogdan <br>
+        This software is released under the GNU General Public License v3.0 <br>
+        Read LICENSE for more information
+    </p>
+</details>
+
+{% endblock %}

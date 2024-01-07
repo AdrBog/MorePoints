@@ -1,0 +1,4 @@
+CHANGELOG
+
+v 0.1.0
+	More Points is born

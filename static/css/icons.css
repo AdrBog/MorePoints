@@ -1,0 +1,62 @@
+img.folder {
+    content: url("/static/icons/files/folder.svg");
+    width: 20px;
+}
+
+img[class^="img-"] {
+    content: url("/static/icons/files/unknown.svg");
+    width: 20px;
+}
+
+img.img-msg, img.img-txt, img.img-tex, img.img-rtf, img.img-ini{
+    content: url("/static/icons/files/text.svg");
+}
+
+img.img-jpg, img.img-jpeg, img.img-png, img.img-apng, img.img-gif, img.img-svg, img.img-avif, img.img-ico{
+    content: url("/static/icons/files/image.svg");
+}
+
+img.img-flv, img.img-mp4, img.img-m3u8, img.img-ts, img.img-3gp, img.img-mov, img.img-avi, img.img-wmv,
+img.img-mkv, img.img-webm{
+    content: url("/static/icons/files/video.svg");
+}
+
+img.img-html, img.img-xml, img.img-mml, img.img-xsd, img.img-rss, img.img-php{
+    content: url("/static/icons/files/xml.svg");
+}
+
+img.img-sh, img.img-cmd, img.img-bat, img.img-ps1{
+    content: url("/static/icons/files/shell.svg");
+}
+
+img.img-js, img.img-json{
+    content: url("/static/icons/files/code_yellow.svg");
+}
+
+img.img-css{
+    content: url("/static/icons/files/code_blue.svg");
+}
+
+img.img-wav, img.img-aifc, img.img-aiff, img.img-mp3, img.img-m4a, img.img-mp2, img.img-ogg, img.img-mid{
+    content: url("/static/icons/files/audio.svg");
+}
+
+img.img-zip, img.img-7z, img.img-bz2, img.img-docx, img.img-gz, img.img-jar, img.img-tar{
+    content: url("/static/icons/files/zip.svg");
+}
+
+img.img-lll{
+    content: url("/static/icons/files/librelists.svg");
+}
+
+img.img-lnk{
+    content: url("/static/icons/files/link.svg");
+}
+
+img.img-siteconf{
+    content: url("/static/icons/files/settings.svg");
+}
+
+img.img-pdf{
+    content: url("/static/icons/files/pdf.svg");
+}

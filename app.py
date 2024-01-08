@@ -10,7 +10,6 @@ import socket
 import configparser
 
 app = Flask(__name__)
-sites_config = configparser.ConfigParser()
 
 #app.secret_key = secrets.token_hex()
 app.secret_key = b'SECRET'  # FOR DEV ONLY
@@ -19,15 +18,15 @@ CONFIG_DIR = "config"
 ADDONS_FILE = "addons.json"
 VERSION = "0.1.0"
 
-sites_config.read(f"{CONFIG_DIR}/sites.ini")
-
 def updateAddons():
     with open(f"{CONFIG_DIR}/{ADDONS_FILE}") as f:
         return json.load(f)
 
 def connect(id):
     ftp = ftplib.FTP('127.0.0.1')
-    ftp.login(id, sites_config.get(id, "password"))
+    with open(f"{CONFIG_DIR}/sites.json", "r") as readfile:
+        sites = json.load(readfile)
+        ftp.login(id, sites[id]['password'])
     return ftp
 
 def read_file(id, path):
@@ -50,7 +49,7 @@ def remove_dir(ftp, path):
 def read_site_config(id):
     parser = configparser.ConfigParser()
     try:
-        parser.read_file(StringIO(read_file(id, ".siteconf").decode()))
+        parser.read_file(StringIO(read_file(id, "siteconf").decode()))
     except:
         parser.read_file(StringIO(""))
     return dict(parser)
@@ -73,11 +72,12 @@ def enterSite():
         hostname = request.form.get('hostname')
         site = request.form.get('site')
         password = request.form.get('password')
-        print(hostname, site, password)
-        if site not in sites_config.sections():
-            return render_template('enter_site.html', site=site, hostname=socket.gethostname(), errormsg='Site not found')
-        elif password != sites_config.get(site, "password"):
-            return render_template('enter_site.html', site=site, hostname=socket.gethostname(), errormsg='Wrong password')
+        with open(f"{CONFIG_DIR}/sites.json", "r") as readfile:
+            sites = json.load(readfile)
+            if site not in sites:
+                return render_template('enter_site.html', site=site, hostname=socket.gethostname(), errormsg='Site not found')
+            elif password != sites[site]['password']:
+                return render_template('enter_site.html', site=site, hostname=socket.gethostname(), errormsg='Wrong password')
         session[site] = site
         return redirect(f"/site/{site}")
     return render_template('enter_site.html', site=site, hostname=socket.gethostname())

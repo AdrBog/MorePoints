@@ -1,0 +1,15 @@
+{
+    "sample": {
+        "password": "1234",
+        "perm": "elradfmwMT",
+        "root": "sites/sample"
+    },
+    "sample_read_only": {
+        "password": "1234",
+        "perm": "elr",
+        "root": "sites/sample",
+        "extra_perm": {
+            "/test": "elradfmwMT"
+        }
+    }
+}

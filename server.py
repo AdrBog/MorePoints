@@ -15,7 +15,7 @@ with open(f"{CONFIG_DIR}/sites.json", "r") as sites:
         if 'extra_perm' in site:
             for folder, perm in site['extra_perm'].items():
                 try:
-                    authorizer.override_perm(key, site['root'] + folder, perm)
+                    authorizer.override_perm(key, site['root'] + folder, perm, recursive=True)
                 except:
                     pass
 

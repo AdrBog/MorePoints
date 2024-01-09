@@ -2,7 +2,7 @@
 
 {% set folder_name = pwd.split('/')[-1] if pwd.split('/')[-1] else 'Home' %}
 
-{% block title %}{{ site }} - More Points {% endblock %}
+{% block title %}{{ display_name }} - More Points {% endblock %}
 
 {% block dialogs %}
 
@@ -14,7 +14,6 @@
     </div>
 </dialog>
 {% endif %}
-
 
 <dialog id="text_editor">
     <div>
@@ -50,10 +49,14 @@
         onchange="
             switch(this.value){
                 case 'folder':
-                    showPromptDialog(['{{ pwd }}', ''], '/create_folder/{{ site }}', 'Enter folder name')
+                    let foldername = filenamePrompt('Enter folder name')
+                    if (foldername)
+                        createFolder('{{ site }}', '{{ pwd }}', foldername)
                     break;
                 case 'file':
-                    showPromptDialog(['{{ pwd }}', ''], '/create_file/{{ site }}', 'Enter file name')
+                    let filename = filenamePrompt('Enter file name')
+                    if (filename)
+                        createFile('{{ site }}', '{{ pwd }}', filename)
                     break;
                 case 'upload':
                     upload_file.showModal()
@@ -128,11 +131,13 @@
                                         window.open(`/open/{{ site }}?path=${path}&download=1`, '_blank')
                                         break;
                                     case 'rename':
-                                        showPromptDialog(['{{ pwd }}', '{{ file[0]  }}'], '/rename/{{ site }}', 'Enter new name', '{{ file[0]  }}')
+                                        let filename = filenamePrompt('Enter new name:', '{{ file[0] }}')
+                                        if (filename)
+                                            renameFile('{{ site }}', '{{ pwd }}', '{{ file[0] }}', filename)
                                         break;
                                     case 'delete':
                                         if (confirm(`Are you sure you want to delete '{{ file[0] }}'?`))
-                                            window.location.href=(`/delete_f/{{ site }}?d={{ pwd }}&f={{ file[0] }}`)
+                                            deleteFile('{{ site }}', '{{ pwd }}/{{ file[0] }}')
                                         break;
                                 }
                                 this.value = 0;
@@ -177,8 +182,6 @@
         <h1 class="center unselectable">This folder is empty</h1>
     {% endif %}
 </div>
-<script src="/static/js/global.js"></script>
-<script src="/static/js/utils.js"></script>
 {% for addon in addons["site"] %}
 <script src="{{ addon }}"></script>
 {% endfor %}

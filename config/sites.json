@@ -9,7 +9,7 @@
         "perm": "elr",
         "root": "sites/sample",
         "extra_perm": {
-            "/test": "elradfmwMT"
+            "/test/": "elradfmwMT"
         }
     }
 }

@@ -18,6 +18,12 @@ CONFIG_DIR = "config"
 ADDONS_FILE = "addons.json"
 VERSION = "0.1.0"
 
+# Messages
+
+MSG_ERROR_LOGIN = "You have to login"
+MSG_ERROR_FILE_EXISTS = "File already exists"
+MSG_INFO_FILE_SAVED = "File saved"
+
 def updateAddons():
     with open(f"{CONFIG_DIR}/{ADDONS_FILE}") as f:
         return json.load(f)
@@ -150,72 +156,80 @@ def edit(id):
     except:
         return "Can't edit binary file"
 
-@app.route('/create_folder/<id>', methods=['GET'])
+@app.route('/create_folder/<id>', methods=['POST'])
 def createFolder(id):
     if not id in session:
-        return redirect(f'/enter_site?site={id}')
-    new_folder = request.args.get('fname', default="")
-    folder = request.args.get('d', default="")
+        return jsonify(status="Error", output=MSG_ERROR_LOGIN)
+    path = request.json.get('path')
+    filename = request.json.get('filename')
     ftp = connect(id)
-    error_msg = ""
     try:
-        ftp.mkd(f"{folder}/{new_folder}")
-    except ftplib.error_perm as resp:
-        error_msg = str(resp)
-    ftp.close()
-    return redirect(f"/site/{id}?d={folder}&error_msg={error_msg}", code=302)
+        output = ftp.mkd(f"{path}/{filename}")
+        ftp.close()
+        return jsonify(status="Ok", output=output)
+    except ftplib.all_errors as error:
+        ftp.close()
+        return jsonify(status="Error", output=str(error))
 
-@app.route('/create_file/<id>', methods=['GET'])
+@app.route('/create_file/<id>', methods=['POST'])
 def createFile(id):
     if not id in session:
-        return redirect(f'/enter_site?site={id}')
-    filename = request.args.get('fname', default="")
-    folder = request.args.get('d', default="")
-    content = request.args.get('content', default="")
-    edit = request.args.get('edit', default=0)
-    ftp = connect(id)
-    if edit == 0:
-        error_msg = ""
-        try:
-            ftp.storbinary(f'STOR {folder}/{filename}', BytesIO(content.encode()))
-        except ftplib.error_perm as resp:
-            error_msg = str(resp) 
-        ftp.close()
-        return redirect(f"/site/{id}?d={folder}&error_msg={error_msg}", code=302)
-    else:
-        ftp.storbinary(f'STOR {folder}/{filename}', BytesIO(content.encode()))
-        ftp.close()
-        return ('', 204)
-
-@app.route('/delete_f/<id>', methods=['GET'])
-def deletef(id):
-    if not id in session:
-        return redirect(f'/enter_site?site={id}')
-    d = request.args.get('d', default="")
-    f = request.args.get('f', default="")
+        return jsonify(status="Error", output=MSG_ERROR_LOGIN)
+    path = request.json.get('path')
+    filename = request.json.get('filename')
+    content = request.json.get('content', "")
+    edit = request.json.get('edit', "0")
     ftp = connect(id)
     try:
-        ftp.delete(f"{d}/{f}")
-    except Exception:
-        remove_dir(ftp, f"{d}/{f}")
-    ftp.close()
-    return redirect(f"/site/{id}?d={d}", code=302)
+        for file in ftp.nlst(path):
+            if file == filename and edit != "1":
+                ftp.close()
+                return jsonify(status="Error", output=MSG_ERROR_FILE_EXISTS)
+        output = ftp.storbinary(f'STOR {path}/{filename}', BytesIO(content.encode()))
+        ftp.close()
+        return jsonify(status="Info", output=MSG_INFO_FILE_SAVED)
+    except ftplib.all_errors as error:
+        ftp.close()
+        return jsonify(status="Error", output=str(error))
 
-@app.route('/rename/<id>', methods=['GET'])
+
+@app.route('/delete/<id>', methods=['POST'])
+def deletef(id):
+    if not id in session:
+        return jsonify(status="Error", output=MSG_ERROR_LOGIN)
+    path = request.json.get('path', [])
+    ftp = connect(id)
+    try:
+        try:
+            output = ftp.delete(path)
+        except Exception:
+            output = remove_dir(ftp, path)
+        ftp.close()
+        return jsonify(status="Ok", output=output)
+    except ftplib.all_errors as error:
+        ftp.close()
+        return jsonify(status="Error", output=str(error))
+
+@app.route('/rename/<id>', methods=['POST'])
 def rename(id):
     if not id in session:
-        return redirect(f'/enter_site?site={id}')
-    f = request.args.get('f', default="")
-    folder = request.args.get('d', default="")
-    new_name = request.args.get('fname', default="")
+        return jsonify(status="Error", output=MSG_ERROR_LOGIN)
+    path = request.json.get('path')
+    filename = request.json.get('filename')
+    new_name = request.json.get('new_name')
     ftp = connect(id)
-    for file in ftp.nlst(folder):
+    for file in ftp.nlst(path):
         if file == new_name:
             ftp.close()
-            return redirect(f"/site/{id}?d={folder}", code=302) 
-    ftp.rename(f"{folder}/{f}", f"{folder}/{new_name}")
-    ftp.close()
-    return redirect(f"/site/{id}?d={folder}", code=302)
+            return jsonify(status="Error", output=MSG_ERROR_FILE_EXISTS)
+    try:
+        output = ftp.rename(f"{path}/{filename}", f"{path}/{new_name}")
+        ftp.close()
+        return jsonify(status="Ok", output=output)
+    except ftplib.all_errors as error:
+        ftp.close()
+        return jsonify(status="Error", output=str(error)) 
+    
 
 @app.route('/upload/<id>', methods=['POST'])
 def upload(id):
@@ -229,3 +243,18 @@ def upload(id):
         ftp.storbinary('STOR ' + f.filename, f)
     ftp.close()
     return redirect(f"/site/{id}?d={folder}", code=302)
+
+@app.route('/exec/<id>', methods=['POST'])
+def execute(id):
+    if not id in session:
+        return jsonify(status="Error", output=MSG_ERROR_LOGIN)
+    commands = request.json.get('commands', [])
+    ftp = connect(id)
+    try:
+        for command in commands:
+            output = ftp.sendcmd(command)
+        ftp.close()
+        return jsonify(status="Ok", output=output)
+    except ftplib.all_errors as error:
+        ftp.close()
+        return jsonify(status="Error", output=str(error))

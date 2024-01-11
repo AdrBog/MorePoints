@@ -1,62 +1,96 @@
-img.folder {
-    content: url("/static/icons/files/folder.svg");
-    width: 20px;
+/* ICON FONTS */
+
+span[class^="icon-"], span.folder {
+    width: 100%;
+    display: block;
+    text-align: center;
+    font-size: 20px;
 }
 
-img[class^="img-"] {
-    content: url("/static/icons/files/unknown.svg");
-    width: 20px;
+span[class^="icon-"]::after {
+    font-family: 'symbols-mono';
+    color: #999;
+    content: "";
 }
 
-img.img-msg, img.img-txt, img.img-tex, img.img-rtf, img.img-ini{
-    content: url("/static/icons/files/text.svg");
+span.folder::after {
+    font-family: 'symbols-mono';
+    color: #999;
+    content: "";
 }
 
-img.img-jpg, img.img-jpeg, img.img-png, img.img-apng, img.img-gif, img.img-svg, img.img-avif, img.img-ico{
-    content: url("/static/icons/files/image.svg");
+span.icon-msg::after, span.icon-txt::after, span.icon-tex::after, span.icon-rtf::after, span.icon-ini::after{
+    color: #1f78dd;
+    content: "";
 }
 
-img.img-flv, img.img-mp4, img.img-m3u8, img.img-ts, img.img-3gp, img.img-mov, img.img-avi, img.img-wmv,
-img.img-mkv, img.img-webm{
-    content: url("/static/icons/files/video.svg");
+span.icon-jpg::after, span.icon-jpeg::after, span.icon-png::after, span.icon-apng::after, 
+span.icon-gif::after, span.icon-svg::after, span.icon-avif::after, span.icon-ico::after{
+    color: #c83737;
+    content: "󰋩";
 }
 
-img.img-html, img.img-xml, img.img-mml, img.img-xsd, img.img-rss, img.img-php{
-    content: url("/static/icons/files/xml.svg");
+span.icon-flv::after, span.icon-mp4::after, span.icon-m3u8::after, span.icon-ts::after, 
+span.icon-3gp::after, span.icon-mov::after, span.icon-avi::after, span.icon-wmv::after,
+span.icon-mkv::after, span.icon-webm::after{
+    color: #0a8;
+    content: "";
 }
 
-img.img-sh, img.img-cmd, img.img-bat, img.img-ps1{
-    content: url("/static/icons/files/shell.svg");
+span.icon-html::after, span.icon-xml::after, span.icon-mml::after, span.icon-xsd::after, 
+span.icon-rss::after, span.icon-php::after{
+    color: #6f7c91;
+    content: "";
 }
 
-img.img-js, img.img-json{
-    content: url("/static/icons/files/code_yellow.svg");
+span.icon-sh::after, span.icon-cmd::after, span.icon-bat::after, span.icon-ps1::after{
+    color: #6f7c91;
+    content: "";
 }
 
-img.img-css{
-    content: url("/static/icons/files/code_blue.svg");
+span.icon-wav::after, span.icon-aifc::after, span.icon-aiff::after, span.icon-mp3::after, 
+span.icon-m4a::after, span.icon-mp2::after, span.icon-ogg::after, span.icon-mid::after{
+    color: #7137c8;
+    content: "󰝚";
 }
 
-img.img-wav, img.img-aifc, img.img-aiff, img.img-mp3, img.img-m4a, img.img-mp2, img.img-ogg, img.img-mid{
-    content: url("/static/icons/files/audio.svg");
+span.icon-zip::after, span.icon-7z::after, span.icon-bz2::after, span.icon-docx::after, 
+span.icon-gz::after, span.icon-jar::after, span.icon-tar::after{
+    color: #a0892c;
+    content: "󰗄";
 }
 
-img.img-zip, img.img-7z, img.img-bz2, img.img-docx, img.img-gz, img.img-jar, img.img-tar{
-    content: url("/static/icons/files/zip.svg");
-}
-
-img.img-lll{
+span.icon-lll{
     content: url("/static/icons/files/librelists.svg");
 }
 
-img.img-lnk{
-    content: url("/static/icons/files/link.svg");
+span.icon-lnk::after{
+    color: #0a8;
+    content: ""
 }
 
-img.img-siteconf{
-    content: url("/static/icons/files/settings.svg");
+span.icon-siteconf::after{
+    color: #1f78dd;
+    content: "";
 }
 
-img.img-pdf{
-    content: url("/static/icons/files/pdf.svg");
+span.icon-pdf::after{
+    color: #d40000;
+    content: ""
+}
+
+span.icon-js::after{
+    color: #d4aa00;
+    content: "";
+}
+
+span.icon-json::after{
+    color: #d4aa00;
+    content: "";
+}
+
+
+span.icon-css::after{
+    color: #1f78dd;
+    content: "";
 }

@@ -1,6 +1,13 @@
 @import url(themes.css);
 @import url(icons.css);
 
+@font-face {
+    font-family: 'symbols-mono';
+    src: url('/static/fonts/SymbolsNerdFontMono-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
 *,
 ::before,
 ::after {
@@ -21,12 +28,6 @@
     }
     .login form{
         width: 100% !important;
-    }
-    img.folder {
-        width: 32px !important;
-    }
-    img[class^="img-"] {
-        width: 32px !important;
     }
 }
 
@@ -51,6 +52,21 @@ summary{
 a{
     color: var(--fg);
     text-decoration: none;
+}
+
+.icon{
+    font-family: 'symbols-mono';
+}
+
+.clickable:hover{
+    cursor: pointer;
+}
+
+.hidden{
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    visibility: hidden;
 }
 
 .list-view{

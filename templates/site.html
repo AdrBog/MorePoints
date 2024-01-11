@@ -39,12 +39,12 @@
 {% endblock %}
 
 {% block content %}
-<header class="main-header">
+<header id="main_header" class="main-header">
     <img src="/static/icons/site_icons/{{ site_icon }}.svg" alt="{{ site }}" width="64px" height="64px">
     <h1 style="flex: 1;">{{ display_name }}</h1>
     <a href="/exit/{{ site }}" class="button">Exit</a>
 </header>
-<div class="toolbar">
+<div id="toolbar" class="toolbar">
     <select class="primary" name="toolbar-new" id="toolbar-new"
         onchange="
             switch(this.value){
@@ -96,11 +96,11 @@
         </tr>
         {% for file in files %}
             <tr>
-                <td>
+                <td class="flex-center">
                     {% if file[1]["type"] == "dir" %}
-                        <img class="folder" alt="folder">
+                        <span class="folder">
                     {% else %}
-                        <img class="img-{{ file[1]['ext'] }}" alt="file">
+                        <span class="icon-{{ file[1]['ext'] }}">
                     {% endif %}
                 </td>
                 <td>

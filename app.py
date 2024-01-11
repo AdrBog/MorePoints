@@ -187,7 +187,10 @@ def createFile(id):
                 return jsonify(status="Error", output=MSG_ERROR_FILE_EXISTS)
         output = ftp.storbinary(f'STOR {path}/{filename}', BytesIO(content.encode()))
         ftp.close()
-        return jsonify(status="Info", output=MSG_INFO_FILE_SAVED)
+        if edit == "1":
+            return jsonify(status="Info", output=MSG_INFO_FILE_SAVED)
+        else:
+            return jsonify(status="Ok", output=output)
     except ftplib.all_errors as error:
         ftp.close()
         return jsonify(status="Error", output=str(error))

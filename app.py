@@ -1,5 +1,6 @@
-from flask import Flask, request, render_template, make_response, redirect, send_file, jsonify, session
-from sites import *
+from flask import Flask, Blueprint, request, render_template, make_response, redirect, send_file, jsonify, session
+from admin import *
+from utils import *
 from io import BytesIO, StringIO
 from datetime import datetime
 import ftplib
@@ -7,65 +8,15 @@ import re
 import json
 import secrets
 import socket
-import configparser
 
 app = Flask(__name__)
 
-#app.secret_key = secrets.token_hex()
-app.secret_key = b'SECRET'  # FOR DEV ONLY
-SITES_DIR = "sites"
-CONFIG_DIR = "config"
-ADDONS_FILE = "addons.json"
+app.secret_key = secrets.token_hex()
+#app.secret_key = b'SECRET'  # FOR DEV ONLY
+app.register_blueprint(admin)
+
+
 VERSION = "0.1.0"
-
-# Messages
-
-MSG_ERROR_LOGIN = "You have to login"
-MSG_ERROR_FILE_EXISTS = "File already exists"
-MSG_INFO_FILE_SAVED = "File saved"
-
-def updateAddons():
-    with open(f"{CONFIG_DIR}/{ADDONS_FILE}") as f:
-        return json.load(f)
-
-def connect(id):
-    ftp = ftplib.FTP('127.0.0.1')
-    with open(f"{CONFIG_DIR}/sites.json", "r") as readfile:
-        sites = json.load(readfile)
-        ftp.login(id, sites[id]['password'])
-    return ftp
-
-def read_file(id, path):
-    ftp = connect(id)
-    r = BytesIO()
-    ftp.retrbinary(f'RETR /{path}', r.write)
-    ftp.quit()
-    return r.getvalue()
-
-def remove_dir(ftp, path):
-    for (name, properties) in ftp.mlsd(path=path):
-        if name in ['.', '..']:
-            continue
-        elif properties['type'] == 'file':
-            ftp.delete(f"{path}/{name}")
-        elif properties['type'] == 'dir':
-            remove_dir(ftp, f"{path}/{name}")
-    ftp.rmd(path)
-
-def read_site_config(id):
-    parser = configparser.ConfigParser()
-    try:
-        parser.read_file(StringIO(read_file(id, "siteconf").decode()))
-    except:
-        parser.read_file(StringIO(""))
-    return dict(parser)
-
-def human_readable_size(num, suffix="B"):
-    for unit in ("", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"):
-        if abs(num) < 1024.0:
-            return f"{num:3.1f}{unit}{suffix}"
-        num /= 1024.0
-    return f"{num:.1f}Yi{suffix}"
 
 @app.route('/', methods=['GET'])
 def index():
@@ -78,12 +29,15 @@ def enterSite():
         hostname = request.form.get('hostname')
         site = request.form.get('site')
         password = request.form.get('password')
-        with open(f"{CONFIG_DIR}/sites.json", "r") as readfile:
-            sites = json.load(readfile)
-            if site not in sites:
-                return render_template('enter_site.html', site=site, hostname=socket.gethostname(), errormsg='Site not found')
-            elif password != sites[site]['password']:
-                return render_template('enter_site.html', site=site, hostname=socket.gethostname(), errormsg='Wrong password')
+        
+        if not os.path.exists(f"{SITES_CONFIG_DIR}/{site}.site"):
+            return render_template('enter_site.html', site=site, hostname=socket.gethostname(), errormsg=MSG_ERROR_SITE_NOT_FOUND)
+        
+        readfile = readJSON(f"{SITES_CONFIG_DIR}/{site}.site")
+        
+        if password != readfile["FTP"]['Password']:
+            return render_template('enter_site.html', site=site, hostname=socket.gethostname(), errormsg=MSG_ERROR_WRONG_PASSWORD)
+        
         session[site] = site
         return redirect(f"/site/{site}")
     return render_template('enter_site.html', site=site, hostname=socket.gethostname())
@@ -95,7 +49,7 @@ def exitSite(id):
 
 @app.route('/site/<id>', methods=['GET'])
 def site(id):
-    if not id in session:
+    if id not in session:
         return redirect(f'/enter_site?site={id}')
 
     d = request.args.get('d', default="")
@@ -125,11 +79,11 @@ def site(id):
         files = filter_search
     
     ftp.quit()
-    return render_template('site.html', pwd=f'{d}', site=id, files=files, search=search, ver=VERSION, addons=updateAddons(), config=read_site_config(id))
+    return render_template('site.html', pwd=f'{d}', site=id, files=files, search=search, ver=VERSION, addons=updateAddons(), config=read_site_config(id)["Site"])
 
 @app.route('/open/<id>', methods=['GET'])
 def openF(id):
-    if not id in session:
+    if id not in session:
         return redirect(f'/enter_site?site={id}')
     path = request.args.get('path', default="")
     filename = path.split("/")[-1]
@@ -146,19 +100,19 @@ def openF(id):
 
 @app.route('/edit/<id>', methods=['GET'])
 def edit(id):
-    if not id in session:
+    if id not in session:
         return redirect(f'/enter_site?site={id}')
     filename = request.args.get('fname', default="")
     folder = request.args.get('d', default="")
     path = f"{folder}/{filename}"
     try: 
-        return render_template("text_editor.html", site=id, path=path, folder=folder, filename=filename, text=read_file(id, path).decode(), ver=VERSION, addons=updateAddons())
+        return render_template("text_editor.html", site=id, path=path, folder=folder, filename=filename, text=read_file(id, path).decode(), ver=VERSION, addons=updateAddons(), config=read_site_config(id)["Site"])
     except:
         return "Can't edit binary file"
 
 @app.route('/create_folder/<id>', methods=['POST'])
 def createFolder(id):
-    if not id in session:
+    if id not in session:
         return jsonify(status="Error", output=MSG_ERROR_LOGIN)
     path = request.json.get('path')
     filename = request.json.get('filename')
@@ -173,7 +127,7 @@ def createFolder(id):
 
 @app.route('/create_file/<id>', methods=['POST'])
 def createFile(id):
-    if not id in session:
+    if id not in session:
         return jsonify(status="Error", output=MSG_ERROR_LOGIN)
     path = request.json.get('path')
     filename = request.json.get('filename')
@@ -198,7 +152,7 @@ def createFile(id):
 
 @app.route('/delete/<id>', methods=['POST'])
 def deletef(id):
-    if not id in session:
+    if id not in session:
         return jsonify(status="Error", output=MSG_ERROR_LOGIN)
     path = request.json.get('path', [])
     ftp = connect(id)
@@ -215,7 +169,7 @@ def deletef(id):
 
 @app.route('/rename/<id>', methods=['POST'])
 def rename(id):
-    if not id in session:
+    if id not in session:
         return jsonify(status="Error", output=MSG_ERROR_LOGIN)
     path = request.json.get('path')
     filename = request.json.get('filename')
@@ -236,7 +190,7 @@ def rename(id):
 
 @app.route('/upload/<id>', methods=['POST'])
 def upload(id):
-    if not id in session:
+    if id not in session:
         return redirect(f'/enter_site?site={id}')
     folder = request.form['d']
     files = request.files.getlist("file")
@@ -249,7 +203,7 @@ def upload(id):
 
 @app.route('/exec/<id>', methods=['POST'])
 def execute(id):
-    if not id in session:
+    if id not in session:
         return jsonify(status="Error", output=MSG_ERROR_LOGIN)
     commands = request.json.get('commands', [])
     ftp = connect(id)

@@ -1,0 +1,15 @@
+{
+    "Permissions": {
+        "/": "elradfmwMT"
+    },
+    "Site": {
+        "DisplayName": "Sample Site",
+        "Description": "This is a description for the site",
+        "Icon": "computer",
+        "Theme": "light"
+    },
+    "FTP": {
+        "Root": "sites/sample",
+        "Password": "1234"
+    }
+}

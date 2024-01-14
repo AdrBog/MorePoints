@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/admin.css">
+{% endblock %}
+
+{% block title %} Edit {{ site }} - More Points {% endblock %}
+
+
+{% block content %}
+<header>
+    <a class="title primary" href="/admin">More Points</a>
+</header>
+<div class="toolbar">
+    <img src="/static/icons/site_icons/{{ site_icon }}.svg" alt="{{ site }}" width="64px" height="64px">
+    <p><span class="title">{{ display_name }}</span> ({{ site }})</p>
+    <a href="/site/{{ site }}" class="clickable icon-cont" target="_blank"><span class="icon"></span></a>
+</div>
+{% for section_key, section in settings_info.items() %}
+
+<form section="{{ section_key }}">
+    <fieldset>
+        <legend>{{section_key}}</legend>
+        <table>
+            {% for key, setting in section.items() %}
+                <tr>
+                    <td>
+                        <label for="setting_{{ key }}"> {{ setting["display"] }} </label>
+                    </td>
+                    <td>
+                        {% if 'options' is in(setting) %}
+                                <select name="{{ key }}" id="setting_{{ key }}" title="{{ setting['comment'] }}">
+                                    {% for option in setting['options'] %}
+                                        <option value="{{option[0]}}" {{ "selected" if option[0] == site_details[section_key][key] else "" }}>{{option[1]}}</option>
+                                    {% endfor %}
+                                </select>
+                        {% elif setting['type'] == 'textarea' %}
+                            <textarea name="{{ key }}" id="setting_{{ key }}" cols="30" rows="10">{{ site_details[section_key][key] }}</textarea>
+                        {% else %}
+                            <input name="{{ key }}" id="setting_{{ key }}" type="{{ setting['type'] }}" title="{{ setting['comment'] }}" value="{{ site_details[section_key][key] }}">
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </fieldset>
+</form>
+
+{% endfor %}
+
+<template id="perm_row">
+    <div>
+        <input type="text">
+        <select>
+            {% for option in ["", "elr", "elra", "elrafmw", "elradfmwMT"] %}
+                <option value="{{option}}">{{option}}</option>
+            {% endfor %}
+        </select>
+        <button onclick="this.parentElement.remove()">X</button>
+    </div>
+</template>
+
+<section id="permissions">
+    <fieldset>
+        <legend>Permissions (Need restart)</legend>
+        <p><a href="https://pyftpdlib.readthedocs.io/en/latest/api.html#pyftpdlib.authorizers.DummyAuthorizer.add_user" target="_blank"><i>Help about permissions</i></a></p>
+        <div id="perm_list">
+            {% for path, perm in site_details["Permissions"].items() %}
+                <div>
+                    <input type="text" id="value" value="{{ path }}">
+                    <select>
+                        {% for option in ["", "elr", "elra", "elrafmw", "elradfmwMT"] %}
+                            <option value="{{option}}" {{ "selected" if option == perm else "" }}>{{option}}</option>
+                        {% endfor %}
+                    </select>
+                    <button onclick="this.parentElement.remove()">X</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button onclick="addPermission()">+</button>
+    </fieldset>
+</section>
+
+<section>
+    <button onclick="saveConfig()" class="primary">Save</button>
+    <button onclick="deleteSite()" class="error">Delete site</button>
+</section>
+
+<script>
+    function addPermission(){
+        const perm_list = document.querySelector("#perm_list")
+        const template = document.querySelector("#perm_row")
+        const clone = template.content.cloneNode("true")
+        perm_list.append(clone)
+    }
+
+    async function saveConfig(){
+        const forms = document.querySelectorAll("form")
+        const permissions = document.querySelector("#perm_list")
+        const config = {}
+        config["Permissions"] = {}
+
+        for (const form of forms) {
+            const formData = new FormData(form)
+            const section = form.getAttribute("section")
+            config[section] = {}
+            for (const data of formData) {
+                config[section][data[0]] = data[1]
+            }
+        }
+
+        for (const permission of permissions.querySelectorAll("div")) {
+            const path = permission.querySelector("input").value
+            const perm = permission.querySelector("select").value
+            config["Permissions"][path] = perm
+        }
+
+        const data = await fetch(`/admin/save_site/{{ site }}`, {
+            method: 'POST',
+            body: JSON.stringify({
+                "content": config,
+            }),
+            headers: {"Content-type": "application/json; charset=UTF-8"}
+        })
+        reviewResponse(await data.json())
+    }
+
+    async function deleteSite(){
+        if (confirm("Are you sure you want to delete {{ site }}?")){
+            await fetch(`/admin/delete_site`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    "sitename": "{{ site }}",
+                }),
+                headers: {"Content-type": "application/json; charset=UTF-8"}
+            })
+            window.location.href = "/admin"
+        }
+    }
+</script>
+{% endblock %}

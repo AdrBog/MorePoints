@@ -1,0 +1,57 @@
+{
+    "Site": {
+        "DisplayName":{
+            "default": "",
+            "type": "text",
+            "comment": "Display name of the site",
+            "display": "Display Name"
+        },
+        "Description":{
+            "default": "",
+            "type": "textarea",
+            "comment": "A brief description about this site",
+            "display": "Description"
+        },
+        "Icon":{
+            "default": "no_icon",
+            "type": "text",
+            "comment": "Icon for your site",
+            "display": "Site icon",
+            "options": [
+                ["no_icon", "No Icon"],
+                ["analytics", "Analytics"],
+                ["chat", "Chat"],
+                ["clock", "Clock"],
+                ["computer", "Computer"],
+                ["document", "Document"],
+                ["filebox", "Filebox"],
+                ["flag", "Flag"]
+            ]
+        },
+        "Theme":{
+            "default": "light",
+            "type": "text",
+            "comment": "Color theme for your site",
+            "display": "Site theme",
+            "options": [
+                ["light", "Light"],
+                ["dark", "Dark"],
+                ["gruvbox", "Gruvbox"]
+            ]
+        }
+    },
+    "FTP": {
+        "Root":{
+            "default": "",
+            "type": "text",
+            "comment": "Path of server folder where files are stores",
+            "display": "Root (Need restart)"
+        },
+        "Password":{
+            "default": "1234",
+            "type": "password",
+            "comment": "Site's password",
+            "display": "Password (Need restart)"
+        }
+    }
+}

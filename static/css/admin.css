@@ -1,0 +1,36 @@
+html,
+body{
+    padding: 0;
+    background-color: var(--bg-2);
+    color: var(--fg-2);
+}
+
+@media (max-width: 800px) {
+    input, table, textarea{
+        width: 100% !important;
+    }
+}
+
+a.title, .toolbar, section, form, div{
+    padding: 12px;
+}
+
+header{
+    background-color: var(--toolbar-bg);
+    color: var(--toolbar-fg);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.title{
+    font-size: 25px;
+    font-weight: 300;
+}
+
+label{
+    margin-right: 16px;
+}
+
+form input, form select{
+    width: 100%;
+}

@@ -1,8 +1,0 @@
-# This file contains configuration about the site
-
-# You can find more icons in static/icons/site_icons/
-[appareance]
-site_icon=document
-
-[site]
-display_name=Sample Site

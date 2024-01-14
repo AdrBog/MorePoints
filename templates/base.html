@@ -1,5 +1,7 @@
-{% set site_icon = config.get('appareance', {}).get('site_icon', 'no_icon') %}
-{% set display_name = config.get('site', {}).get('display_name', site) %}
+{% set site_icon = config.get('Icon', 'no_icon') %}
+{% set site_desc = config.get('Description') %}
+{% set display_name = config.get('DisplayName', site) %}
+{% set theme = config.get('Theme', 'light') %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,9 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+    {% block styles %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
-<body class="light" site="{{ site }}">
+<body class="{{ theme }}" site="{{ site }}">
     <script src="/static/js/global.js"></script>
     <script src="/static/js/utils.js"></script>
     {% block dialogs %}{% endblock %}

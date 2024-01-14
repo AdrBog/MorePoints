@@ -19,7 +19,7 @@
     .toolbar {
         flex-direction: column;
     }
-    .toolbar *{
+    .toolbar *:not(.icon) {
         width: 100%;
     }
     .height0 {
@@ -56,6 +56,11 @@ a{
 
 .icon{
     font-family: 'symbols-mono';
+}
+
+.icon-cont{
+    display: flex;
+    gap: 8px;
 }
 
 .clickable:hover{
@@ -233,7 +238,7 @@ input, select, textarea{
     gap: 8px;
 }
 
-div.error{
+div.error, button.error{
     background-color: var(--red-02);
     border: 1px solid var(--red-02);
 }

@@ -45,12 +45,8 @@ In your web browser, go to <a href="localhost:5002">localhost:5002</a> and the a
 <p align="center">
 <img src="res/1.png">
 <br>
+<img src="res/3.png">
+<br>
 <img src="res/2.png">
 </p>
 </details>
-
-## Goals
-
-- <s>Share files</s>
-- Share pages
-- Share Tasks

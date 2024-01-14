@@ -1,23 +1,24 @@
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
-from sites import *
-from app import CONFIG_DIR
+from utils import *
 import json
+import os
 
 SITES_DIR = "sites"
 
 authorizer = DummyAuthorizer()
 
-with open(f"{CONFIG_DIR}/sites.json", "r") as sites:
-    for key, site in json.load(sites).items():
-        authorizer.add_user(key, site['password'], site['root'], perm=site['perm'])
-        if 'extra_perm' in site:
-            for folder, perm in site['extra_perm'].items():
-                try:
-                    authorizer.override_perm(key, site['root'] + folder, perm, recursive=True)
-                except:
-                    pass
+sites = ["".join(file.split('.')[0:-1]) for file in os.listdir(SITES_CONFIG_DIR) if file.endswith(".site")]
+
+for site in sites:
+    site_config = readJSON(f"{SITES_CONFIG_DIR}/{site}.site")
+    authorizer.add_user(site, site_config['FTP']['Password'], site_config['FTP']['Root'], site_config['Permissions']['/'])
+    for path, perm in site_config['Permissions'].items():
+        try:
+            authorizer.override_perm(site, site_config['FTP']['Root'] + path, perm, recursive=True)
+        except:
+            pass
 
 
 handler = FTPHandler

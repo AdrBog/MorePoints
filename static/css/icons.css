@@ -9,54 +9,54 @@ span[class^="icon-"], span.folder {
 
 span[class^="icon-"]::after {
     font-family: 'symbols-mono';
-    color: #999;
+    color: var(--bin-file);
     content: "";
 }
 
 span.folder::after {
     font-family: 'symbols-mono';
-    color: #999;
+    color: var(--folder);
     content: "";
 }
 
 span.icon-msg::after, span.icon-txt::after, span.icon-tex::after, span.icon-rtf::after, span.icon-ini::after{
-    color: #1f78dd;
+    color: var(--text-file);
     content: "";
 }
 
 span.icon-jpg::after, span.icon-jpeg::after, span.icon-png::after, span.icon-apng::after, 
 span.icon-gif::after, span.icon-svg::after, span.icon-avif::after, span.icon-ico::after{
-    color: #c83737;
+    color: var(--img-file);
     content: "󰋩";
 }
 
 span.icon-flv::after, span.icon-mp4::after, span.icon-m3u8::after, span.icon-ts::after, 
 span.icon-3gp::after, span.icon-mov::after, span.icon-avi::after, span.icon-wmv::after,
 span.icon-mkv::after, span.icon-webm::after{
-    color: #0a8;
+    color: var(--video-file);
     content: "";
 }
 
 span.icon-html::after, span.icon-xml::after, span.icon-mml::after, span.icon-xsd::after, 
 span.icon-rss::after, span.icon-php::after{
-    color: #6f7c91;
+    color: var(--xml-file);
     content: "";
 }
 
 span.icon-sh::after, span.icon-cmd::after, span.icon-bat::after, span.icon-ps1::after{
-    color: #6f7c91;
+    color: var(--shell-file);
     content: "";
 }
 
 span.icon-wav::after, span.icon-aifc::after, span.icon-aiff::after, span.icon-mp3::after, 
 span.icon-m4a::after, span.icon-mp2::after, span.icon-ogg::after, span.icon-mid::after{
-    color: #7137c8;
+    color: var(--audio-file);
     content: "󰝚";
 }
 
 span.icon-zip::after, span.icon-7z::after, span.icon-bz2::after, span.icon-docx::after, 
 span.icon-gz::after, span.icon-jar::after, span.icon-tar::after{
-    color: #a0892c;
+    color: var(--zip-file);
     content: "󰗄";
 }
 
@@ -65,7 +65,7 @@ span.icon-lll{
 }
 
 span.icon-lnk::after{
-    color: #0a8;
+    color: var(--lnk-file);
     content: ""
 }
 
@@ -75,22 +75,22 @@ span.icon-siteconf::after{
 }
 
 span.icon-pdf::after{
-    color: #d40000;
+    color: var(--pdf-file);
     content: ""
 }
 
 span.icon-js::after{
-    color: #d4aa00;
+    color: var(--js-file);
     content: "";
 }
 
 span.icon-json::after{
-    color: #d4aa00;
+    color: var(--json-file);
     content: "";
 }
 
 
 span.icon-css::after{
-    color: #1f78dd;
+    color: var(--css-file);
     content: "";
 }

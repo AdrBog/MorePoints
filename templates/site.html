@@ -41,7 +41,11 @@
 {% block content %}
 <header id="main_header" class="main-header">
     <img src="/static/icons/site_icons/{{ site_icon }}.svg" alt="{{ site }}" width="64px" height="64px">
-    <h1 style="flex: 1;">{{ display_name }}</h1>
+    <h1 >{{ display_name }}</h1>
+    {% if site_desc %}
+        <a class="clickable icon-cont" onclick="alert(`{{ site_desc }}`)"><span class="icon">󰋽</span></a>
+    {% endif %}
+    <div style="flex: 1;"></div>
     <a href="/exit/{{ site }}" class="button">Exit</a>
 </header>
 <div id="toolbar" class="toolbar">

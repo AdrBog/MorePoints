@@ -14,9 +14,6 @@ The purpose of this project is to offer a free alternative for households or sma
 
 Needless to say, this application should not be accessible from the Internet, only from within the local network.
 
-## Disclaimer
-USE AT YOUR OWN RISK. CURRENTLY IN ALPHA. MAKE SURE YOU KEEP A BACKUP OF ALL DATA ELSE WHERE
-
 ## Installation
 
 ```bash
@@ -50,6 +47,16 @@ In your web browser, go to <a href="localhost:5002">localhost:5002</a> and the a
 <img src="res/2.png">
 </p>
 </details>
+
+## Features
+### FTP server
+**server.py** is your own FTP server in case you don't have any created
+
+### FTP client
+More Points can also connect to external FTP servers. (STILL UNDER DEVELOPMENT)
+
+### Legacy mode
+Configure a site in legacy mode to have Palemoon support. (STILL UNDER DEVELOPMENT)
 
 ## License
 

@@ -56,7 +56,7 @@ In your web browser, go to <a href="localhost:5002">localhost:5002</a> and the a
 More Points can also connect to external FTP servers. (STILL UNDER DEVELOPMENT)
 
 ### Legacy mode
-Configure a site in legacy mode to have Palemoon support. (STILL UNDER DEVELOPMENT)
+Configure a site in legacy mode too support "old" browsers, like Pale Moon. (STILL UNDER DEVELOPMENT)
 
 ## License
 

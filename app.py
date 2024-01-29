@@ -68,6 +68,8 @@ def site(id):
         else:
             raise
 
+    files = [f for f in files if not f[0] in [".", ".."]]
+
     for file in files:
         file[1]["ext"] = file[0].split(".")[-1].lower()
         file[1]["modtime"] = datetime.strptime(file[1]["modify"], '%Y%m%d%H%M%S')

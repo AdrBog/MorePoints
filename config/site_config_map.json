@@ -54,7 +54,7 @@
         "Host":{
             "default": "127.0.0.1",
             "type": "text",
-            "comment": "Host where FTP server is stored",
+            "comment": "Host where FTP server is stored (Leave empty for localhost)",
             "display": "Host"
         },
         "Root":{

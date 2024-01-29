@@ -6,6 +6,7 @@ import json
 import os
 
 SITES_DIR = "sites"
+HOST = "127.0.0.1"
 
 authorizer = DummyAuthorizer()
 
@@ -13,6 +14,8 @@ sites = ["".join(file.split('.')[0:-1]) for file in os.listdir(SITES_CONFIG_DIR)
 
 for site in sites:
     site_config = readJSON(f"{SITES_CONFIG_DIR}/{site}.site")
+    if site_config['FTP'].get('Host', HOST) != HOST:
+        continue
     authorizer.add_user(site, site_config['FTP']['Password'], site_config['FTP']['Root'], site_config['Permissions']['/'])
     for path, perm in site_config['Permissions'].items():
         try:
@@ -24,6 +27,6 @@ for site in sites:
 handler = FTPHandler
 handler.authorizer = authorizer
 
-server = FTPServer(("127.0.0.1", 21), handler)
+server = FTPServer((HOST, 21), handler)
 
 server.serve_forever()

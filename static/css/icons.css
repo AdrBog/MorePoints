@@ -94,3 +94,28 @@ span.icon-css::after{
     color: var(--css-file);
     content: "";
 }
+
+span.icon-py::after{
+    color: var(--py-file);
+    content: "";
+}
+
+span.icon-md::after{
+    color: var(--md-file);
+    content: "";
+}
+
+span.icon-db::after{
+    color: var(--db-file);
+    content: "";
+}
+
+span.icon-license::after, span.icon-copying::after{
+    color: var(--text-file);
+    content: "󰿃";
+}
+
+span.icon-gitignore::after{
+    color: var(--git-file);
+    content: "";
+}

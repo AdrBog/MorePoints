@@ -32,6 +32,10 @@
     --js-file: #d4aa00;
     --json-file: #d4aa00;
     --css-file: #1f78dd;
+    --py-file: #1f78dd;
+    --md-file: #1f78dd;
+    --git-file: #f05133;
+    --db-file: #6f7c91;
 }
 
 .dark{
@@ -68,6 +72,10 @@
     --js-file: #d4aa00;
     --json-file: #d4aa00;
     --css-file: #1f78dd;
+    --py-file: #1f78dd;
+    --md-file: #1f78dd;
+    --git-file: #f05133;
+    --db-file: #6f7c91;
 }
 
 .gruvbox{
@@ -104,4 +112,8 @@
     --js-file: #a9b665;
     --json-file: #a9b665;
     --css-file: #a9b665;
+    --py-file: #a9b665;
+    --md-file: #a9b665;
+    --git-file: #a9b665;
+    --db-file: #a9b665;
 }

@@ -108,7 +108,7 @@
             <th style="width: 20%;">Last modified</th>
             <th style="width: 10%;">Size</th>
         </tr>
-        {% for file in files if not file[0] in [".", ".."] %}
+        {% for file in files %}
             <tr>
                 <td class="flex-center">
                     {% if file[1]["type"] == "dir" %}

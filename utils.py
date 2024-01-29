@@ -19,8 +19,8 @@ MSG_ERROR_WRONG_PASSWORD = "Wrong password"
 MSG_INFO_FILE_SAVED = "File saved"
 
 def connect(id):
-    ftp = ftplib.FTP('127.0.0.1')
     ftp_data = read_site_config(id)
+    ftp = ftplib.FTP(ftp_data["FTP"].get("Host", '127.0.0.1'))
     ftp.login(id, ftp_data["FTP"]["Password"])
     return ftp
 

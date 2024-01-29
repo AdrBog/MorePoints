@@ -23,27 +23,6 @@ function reviewResponse(json){
 }
 
 /**
- * Displays a pop-up dialog on the page.
- * @param {string} title 
- * @param {string} message 
- * @param {string} _class 
- */
-function popMessage(title, message, _class){
-    const dialog = document.createElement("dialog")
-    dialog.classList.add(_class)
-    dialog.style.width = "400px"
-    dialog.innerHTML = `
-    <p>
-        <h1>${title}</h1>
-        ${message}
-    </p>
-    <button onclick="this.parentElement.remove()">Ok</button>
-    `
-    document.body.append(dialog)
-    dialog.showModal()
-}
-
-/**
  * Checks if a string matches a regular expression
  * @param {regexp} regex 
  * @param {string} string 

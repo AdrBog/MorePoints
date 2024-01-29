@@ -2,6 +2,7 @@
 {% set site_desc = config.get('Description') %}
 {% set display_name = config.get('DisplayName', site) %}
 {% set theme = config.get('Theme', 'light') %}
+{% set legacy_mode = config.get('Legacy', 'disabled') %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,5 +20,35 @@
     <script src="/static/js/utils.js"></script>
     {% block dialogs %}{% endblock %}
     {% block content %}{% endblock %}
+    {% if legacy_mode == 'active' %}
+        <script>
+            function popMessage(title, message, _class){
+                alert(`${title}\n${message}`)
+            }
+        </script>
+    {% else %}
+        <script>
+            /**
+             * Displays a pop-up dialog on the page.
+             * @param {string} title 
+             * @param {string} message 
+             * @param {string} _class 
+             */
+            function popMessage(title, message, _class){
+                const dialog = document.createElement("dialog")
+                dialog.classList.add(_class)
+                dialog.style.width = "400px"
+                dialog.innerHTML = `
+                <p>
+                    <h1>${title}</h1>
+                    ${message}
+                </p>
+                <button onclick="this.parentElement.remove()">Ok</button>
+                `
+                document.body.append(dialog)
+                dialog.showModal()
+            }
+        </script>
+    {% endif %}
 </body>
 </html>

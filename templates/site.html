@@ -31,7 +31,12 @@
         <input type="file" name="file" multiple>
         <div>
             <input type="submit" class="primary" value="Upload">
-            <button type="button" onclick="upload_file.close()">Cancel</button>
+            {% if legacy_mode == 'active' %}
+                <button type="button" onclick="upload_file.removeAttribute('open')">Cancel</button>
+            {% else %}
+                <button type="button" onclick="upload_file.close()">Cancel</button>
+            {% endif %}
+            
         </div>
     </form>
 </dialog>
@@ -63,7 +68,12 @@
                         createFile('{{ site }}', '{{ pwd }}', filename)
                     break;
                 case 'upload':
-                    upload_file.showModal()
+                    if ('{{ legacy_mode }}' == 'active'){
+                        upload_file.setAttribute('open', '')
+                    } else {
+                        upload_file.showModal()
+                    }
+                    
                     break;
             }
             this.value = 0;
@@ -98,7 +108,7 @@
             <th style="width: 20%;">Last modified</th>
             <th style="width: 10%;">Size</th>
         </tr>
-        {% for file in files %}
+        {% for file in files if not file[0] in [".", ".."] %}
             <tr>
                 <td class="flex-center">
                     {% if file[1]["type"] == "dir" %}
@@ -193,11 +203,20 @@
     async function openLink(link){
         window.open(`${await readFile("{{ site }}", link)}`, "_blank");
     }
-
+</script>
+{% if legacy_mode == 'active' %}
+    <script>
+    function openWithTextEditor(folder, filename){
+        window.open(`/edit/{{ site }}?d=${folder}&fname=${filename}`, "_blank")
+    }  
+    </script>
+{% else %}
+    <script>
     function openWithTextEditor(folder, filename){
         text_editor = document.getElementById("text_editor")
         text_editor.querySelector('iframe').src = `/edit/{{ site }}?d=${folder}&fname=${filename}`
         text_editor.showModal()
-    }
-</script>
+    }  
+    </script>
+{% endif %}
 {% endblock %}

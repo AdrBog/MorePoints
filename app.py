@@ -11,12 +11,12 @@ import socket
 
 app = Flask(__name__)
 
-app.secret_key = secrets.token_hex()
-#app.secret_key = b'SECRET'  # FOR DEV ONLY
+#app.secret_key = secrets.token_hex()
+app.secret_key = b'SECRET'  # FOR DEV ONLY
 app.register_blueprint(admin)
 
 
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 
 @app.route('/', methods=['GET'])
 def index():
@@ -71,7 +71,10 @@ def site(id):
     for file in files:
         file[1]["ext"] = file[0].split(".")[-1].lower()
         file[1]["modtime"] = datetime.strptime(file[1]["modify"], '%Y%m%d%H%M%S')
-        file[1]["h_size"] = human_readable_size(int(file[1]["size"]))
+        try:
+            file[1]["h_size"] = human_readable_size(int(file[1]["size"]))
+        except:
+            pass
 
     if search:
         regex = re.compile(r".*" + re.escape(search) + r".*")

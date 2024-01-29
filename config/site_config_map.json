@@ -38,9 +38,25 @@
                 ["dark", "Dark"],
                 ["gruvbox", "Gruvbox"]
             ]
+        },
+        "Legacy":{
+            "default": "",
+            "type": "text",
+            "comment": "Support for old browsers (Works in Pale Moon)",
+            "display": "Legacy mode",
+            "options": [
+                ["disabled", "Disabled"],
+                ["active", "Active"]
+            ]
         }
     },
     "FTP": {
+        "Host":{
+            "default": "127.0.0.1",
+            "type": "text",
+            "comment": "Host where FTP server is stored",
+            "display": "Host"
+        },
         "Root":{
             "default": "",
             "type": "text",

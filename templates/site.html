@@ -197,7 +197,7 @@
     {% endif %}
 </div>
 {% for addon in addons["site"] %}
-<script src="{{ addon }}"></script>
+<script src="{{ addon }}" type="module"></script>
 {% endfor %}
 <script>
     async function openLink(link){

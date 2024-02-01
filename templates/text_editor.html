@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Edit {{ filename }} - More Points{% endblock %}
+{% block title %}{{ filename }} - More Points{% endblock %}
 
 {% block content %}
 <form class="text-editor" action="javascript:save()" method="post">
     <div class="toolbar">
         <input type="submit" class="primary" value="Save">
         <button type="button" onclick="window.open(`/open/{{ site }}?path={{ path }}&download=1`, '_blank')">Download</button>
+        <button type="button" onclick="window.open(`/open/{{ site }}?path={{ path }}&open=1`, '_blank')">Open</button>
         <span>{{ filename }}</span>
     </div>
     <input type="hidden" name="path" value="{{ folder }}">
@@ -15,9 +16,18 @@
     <textarea autofocus name="content">{{ text }}</textarea>
 </form>
 {% for addon in addons["edit"] %}
-<script src="{{ addon }}"></script>
+<script src="{{ addon }}" type="module"></script>
 {% endfor %}
 <script>
+    document.addEventListener("keydown", (e) => {
+        if (e.ctrlKey && e.key === "s"){
+            e.preventDefault()
+            save()
+        } else if (e.key === "F5"){
+            e.preventDefault()
+            window.open(`/open/{{ site }}?path={{ path }}&open=1`, '_blank')
+        }
+    })
     function save(){
         const form = new FormData(document.querySelector("form"))
         editFile('{{ site }}', form.get('path'), form.get('filename'), form.get('content'))

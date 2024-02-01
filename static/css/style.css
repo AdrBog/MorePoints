@@ -19,7 +19,7 @@
     .toolbar {
         flex-direction: column;
     }
-    .toolbar *:not(.icon) {
+    .toolbar *:not(.icon):not(input[type="checkbox"]) {
         width: 100%;
     }
     .height0 {
@@ -245,4 +245,20 @@ div.error, button.error{
 
 dialog.error{
     box-shadow: inset 0 0 1000px 1000px var(--red-02);
+}
+
+.mini-code-editor, #text-editor{
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.mini-code-editor-text, .mini-code-editor-text *{
+    font-family: monospace;
+    color: black;
+}
+
+#text-editor-toolbar{
+    border-bottom: 0;
+    margin: 0;
+    padding: 10px;
 }

@@ -44,6 +44,8 @@ In your web browser, go to <a href="localhost:5002">localhost:5002</a> and the a
 <br>
 <img src="res/3.png">
 <br>
+<img src="res/4.png">
+<br>
 <img src="res/2.png">
 </p>
 </details>
@@ -53,10 +55,13 @@ In your web browser, go to <a href="localhost:5002">localhost:5002</a> and the a
 **server.py** is your own FTP server in case you don't have any created
 
 ### FTP client
-More Points can also connect to external FTP servers. (STILL UNDER DEVELOPMENT)
+More Points can also connect to external FTP servers.
+
+### Built-in code editor
+More Points comes integrated with my own [code editor](https://github.com/AdrBog/MiniCodeEditor). (UNDER DEVELOPMENT)
 
 ### Legacy mode
-Configure a site in legacy mode too support "old" browsers, like Pale Moon. (STILL UNDER DEVELOPMENT)
+Configure a site in legacy mode too support "old" browsers, like Pale Moon. (UNDER DEVELOPMENT)
 
 ## License
 

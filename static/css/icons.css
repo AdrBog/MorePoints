@@ -69,7 +69,7 @@ span.icon-lnk::after{
     content: ""
 }
 
-span.icon-siteconf::after{
+span.icon-pointconf::after{
     color: #1f78dd;
     content: "";
 }

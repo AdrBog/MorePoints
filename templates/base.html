@@ -1,6 +1,6 @@
-{% set site_icon = config.get('Icon', 'no_icon') %}
-{% set site_desc = config.get('Description') %}
-{% set display_name = config.get('DisplayName', site) %}
+{% set point_icon = config.get('Icon', 'no_icon') %}
+{% set point_desc = config.get('Description') %}
+{% set display_name = config.get('DisplayName', point) %}
 {% set theme = config.get('Theme', 'light') %}
 {% set legacy_mode = config.get('Legacy', 'disabled') %}
 
@@ -15,7 +15,7 @@
     {% block styles %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
-<body class="{{ theme }}" site="{{ site }}">
+<body class="{{ theme }}" point="{{ point }}">
     <script src="/static/js/global.js"></script>
     <script src="/static/js/utils.js"></script>
     {% block dialogs %}{% endblock %}

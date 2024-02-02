@@ -4,25 +4,25 @@
  */
 
 /**
- * Returns the contents of a site file
- * @param {string} site 
+ * Returns the contents of a point file
+ * @param {string} point 
  * @param {string} path 
  * @param {string} filename 
  * @returns 
  */
-async function readFile(site, path){
-    const data = await fetch(`/open/${site}?path=${path}&filename=${filename}`)
+async function readFile(point, path){
+    const data = await fetch(`/open/${point}?path=${path}&filename=${filename}`)
     return await data.text() 
 }
 
 /**
- * Creates an empty file on the site
- * @param {string} site 
+ * Creates an empty file on the point
+ * @param {string} point 
  * @param {string} path 
  * @param {string} filename 
  */
-async function createFile(site, path, filename){
-    const data = await fetch(`/create_file/${site}`, {
+async function createFile(point, path, filename){
+    const data = await fetch(`/create_file/${point}`, {
         method: 'POST',
         body: JSON.stringify({
             "path": path,
@@ -35,13 +35,13 @@ async function createFile(site, path, filename){
 
 /**
  * Edits an existing file, creates it in case it does not exist
- * @param {string} site 
+ * @param {string} point 
  * @param {string} path 
  * @param {string} filename 
  * @param {string} content 
  */
-async function editFile(site, path, filename, content){
-    const data = await fetch(`/create_file/${site}`, {
+async function editFile(point, path, filename, content){
+    const data = await fetch(`/create_file/${point}`, {
         method: 'POST',
         body: JSON.stringify({
             "path": path,
@@ -55,13 +55,13 @@ async function editFile(site, path, filename, content){
 }
 
 /**
- * Create a directory on the site
- * @param {string} site 
+ * Create a directory on the point
+ * @param {string} point 
  * @param {string} path 
  * @param {string} foldername 
  */
-async function createFolder(site, path, foldername){
-    const data = await fetch(`/create_folder/${site}`, {
+async function createFolder(point, path, foldername){
+    const data = await fetch(`/create_folder/${point}`, {
         method: 'POST',
         body: JSON.stringify({
             "path": path,
@@ -73,12 +73,12 @@ async function createFolder(site, path, foldername){
 }
 
 /**
- * Removes a file or directory from the site
- * @param {string} site 
+ * Removes a file or directory from the point
+ * @param {string} point 
  * @param {string} path 
  */
-async function deleteFile(site, path){
-    const data = await fetch(`/delete/${site}`, {
+async function deleteFile(point, path){
+    const data = await fetch(`/delete/${point}`, {
         method: 'POST',
         body: JSON.stringify({
             "path": path
@@ -89,14 +89,14 @@ async function deleteFile(site, path){
 }
 
 /**
- * Rename a file or directory from the site
- * @param {string} site 
+ * Rename a file or directory from the point
+ * @param {string} point 
  * @param {string} path 
  * @param {string} filename 
  * @param {string} newName 
  */
-async function renameFile(site, path, filename, newName){
-    const data = await fetch(`/rename/${site}`, {
+async function renameFile(point, path, filename, newName){
+    const data = await fetch(`/rename/${point}`, {
         method: 'POST',
         body: JSON.stringify({
             "path": path,

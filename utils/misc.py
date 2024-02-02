@@ -6,9 +6,9 @@ VERSION = "0.1.1"
 # Paths
 CONFIG_DIR = "config"
 CONFIG_FILE = "config.json"
-SITES_CONFIG_DIR = CONFIG_DIR + "/sites"
-SITE_CONFIG_MAP = CONFIG_DIR + "/site_config_map.json"
-SITES_DIR = "sites"
+POINTS_CONFIG_DIR = CONFIG_DIR + "/points"
+POINT_CONFIG_MAP = CONFIG_DIR + "/point_config_map.json"
+POINTS_DIR = "points"
 ADDONS_FILE = "addons.json"
 SERVER_FILE = "server.py"
 CACHE_DIR = os.path.expanduser('~') + "/.cache/MorePoints"
@@ -16,9 +16,13 @@ CACHE_DIR = os.path.expanduser('~') + "/.cache/MorePoints"
 # Messages
 MSG_ERROR_LOGIN = "You have to login"
 MSG_ERROR_FILE_EXISTS = "File already exists"
-MSG_ERROR_SITE_NOT_FOUND = "Site not found"
+MSG_ERROR_POINT_NOT_FOUND = "Point not found"
 MSG_ERROR_WRONG_PASSWORD = "Wrong password"
 MSG_INFO_FILE_SAVED = "File saved"
+
+def setup_MorePoints():
+    if not os.path.exists(POINTS_DIR):
+        os.makedirs(POINTS_DIR)
 
 def updateAddons():
     return readJSON(f"{CONFIG_DIR}/{ADDONS_FILE}")

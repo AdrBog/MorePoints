@@ -1,5 +1,5 @@
 venv/
 __pycache__/
-sites/*
-!sites/sample
-config/sites
+points/*
+!points/sample
+config/points

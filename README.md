@@ -1,16 +1,18 @@
 <div align="center">
   <img src="./static/logo.svg">
   <h1>More Points</h1>
-  <p>Lightweight Free and Open Source alternative to Microsoft's SharePoint written in Python and Flask.</p>
+  <p>Free and Open Source FTP client and self-hosted FTP server written in Python and Flask.</p>
 </div>
 <hr>
 
 [![GPL v3](https://img.shields.io/badge/License-GNU%20v3-blue)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/adrbog)
 
-This application works as a FTP server, where instead of a user, you configure **sites**, which can be accessed by people in your company/home for secure document sharing within the company intranet.
+The initial idea was to create a free alternative to Microsoft's Sharepoint. But I think this project can be more than just a Sharepoint clone.
 
-The purpose of this project is to offer a free alternative for households or small businesses.
+This application works as a self-hosted FTP server/client, Where you create **point** to connect to the FTP server, from there you can quickly create/edit/upload/delete files.
+
+My goal is to offer a free alternative for households or small businesses to share files.
 
 Needless to say, this application should not be accessible from the Internet, only from within the local network.
 
@@ -26,7 +28,7 @@ pip install flask flask-cors pyftpdlib
 
 ## Setup
 
-First run **server.py** to start the FTP server containing the sites.
+If you don't have any FTP server configured, don't worry, More Points comes bundled with an FTP server, run **server.py**:
 ```bash
 sudo python server.py
 ```
@@ -61,13 +63,13 @@ More Points can also connect to external FTP servers.
 More Points comes integrated with my own [code editor](https://github.com/AdrBog/MiniCodeEditor). (UNDER DEVELOPMENT)
 
 ### Legacy mode
-Configure a site in legacy mode too support "old" browsers, like Pale Moon. (UNDER DEVELOPMENT)
+Configure a point in legacy mode too support "old" browsers, like Pale Moon. (UNDER DEVELOPMENT)
 
 ## License
 
 More Points
 
-Lightweight Free and Open Source alternative to Microsoft's SharePoint written in Python and Flask.
+Free and Open Source FTP client and self-hosted FTP server written in Python and Flask.
 
 Copyright (C) 2024 Adrian Bogdan
 

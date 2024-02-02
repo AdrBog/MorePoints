@@ -1,22 +1,22 @@
 {
-    "Site": {
+    "Point": {
         "DisplayName":{
             "default": "",
             "type": "text",
-            "comment": "Display name of the site",
+            "comment": "Display name of the point",
             "display": "Display Name"
         },
         "Description":{
             "default": "",
             "type": "textarea",
-            "comment": "A brief description about this site",
+            "comment": "A brief description about this point",
             "display": "Description"
         },
         "Icon":{
             "default": "no_icon",
             "type": "text",
-            "comment": "Icon for your site",
-            "display": "Site icon",
+            "comment": "Icon for your point",
+            "display": "Point icon",
             "options": [
                 ["no_icon", "No Icon"],
                 ["analytics", "Analytics"],
@@ -31,8 +31,8 @@
         "Theme":{
             "default": "light",
             "type": "text",
-            "comment": "Color theme for your site",
-            "display": "Site theme",
+            "comment": "Color theme for your point",
+            "display": "Point theme",
             "options": [
                 ["light", "Light"],
                 ["dark", "Dark"],
@@ -66,7 +66,7 @@
         "Password":{
             "default": "1234",
             "type": "password",
-            "comment": "Site's password",
+            "comment": "Point's password",
             "display": "Password (Need restart)"
         },
         "Root":{

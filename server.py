@@ -9,16 +9,16 @@ HOST = "127.0.0.1"
 
 authorizer = DummyAuthorizer()
 
-sites = ["".join(file.split('.')[0:-1]) for file in os.listdir(SITES_CONFIG_DIR) if file.endswith(".site")]
+points = ["".join(file.split('.')[0:-1]) for file in os.listdir(POINTS_CONFIG_DIR) if file.endswith(".point")]
 
-for site in sites:
-    site_config = readJSON(f"{SITES_CONFIG_DIR}/{site}.site")
-    if site_config['FTP'].get('Host', HOST) != HOST:
+for point in points:
+    point_config = readJSON(f"{POINTS_CONFIG_DIR}/{point}.point")
+    if point_config['FTP'].get('Host', HOST) != HOST:
         continue
-    authorizer.add_user(site, site_config['FTP']['Password'], site_config['FTP']['Root'], site_config['Permissions']['/'])
-    for path, perm in site_config['Permissions'].items():
+    authorizer.add_user(point, point_config['FTP']['Password'], point_config['FTP']['Root'], point_config['Permissions']['/'])
+    for path, perm in point_config['Permissions'].items():
         try:
-            authorizer.override_perm(site, site_config['FTP']['Root'] + path, perm, recursive=True)
+            authorizer.override_perm(point, point_config['FTP']['Root'] + path, perm, recursive=True)
         except:
             pass
 

@@ -6,8 +6,8 @@
 <form class="text-editor" action="javascript:save()" method="post">
     <div class="toolbar">
         <input type="submit" class="primary" value="Save">
-        <button type="button" onclick="window.open(`/download/{{ site }}?path={{ path }}&filename={{ filename }}`, '_blank')">Download</button>
-        <button type="button" onclick="window.open(`/open/{{ site }}?path={{ path }}&filename={{ filename }}&open=1`, '_blank')">Open</button>
+        <button type="button" onclick="window.open(`/download/{{ point }}?path={{ path }}&filename={{ filename }}`, '_blank')">Download</button>
+        <button type="button" onclick="window.open(`/open/{{ point }}?path={{ path }}&filename={{ filename }}&open=1`, '_blank')">Open</button>
         <span>{{ filename }}</span>
     </div>
     <input type="hidden" name="path" value="{{ path }}">
@@ -25,12 +25,12 @@
             save()
         } else if (e.key === "F5"){
             e.preventDefault()
-            window.open(`/open/{{ site }}?path={{ path }}&open=1`, '_blank')
+            window.open(`/open/{{ point }}?path={{ path }}&open=1`, '_blank')
         }
     })
     function save(){
         const form = new FormData(document.querySelector("form"))
-        editFile('{{ site }}', form.get('path'), form.get('filename'), form.get('content'))
+        editFile('{{ point }}', form.get('path'), form.get('filename'), form.get('content'))
     }
 </script>
 {% endblock %}

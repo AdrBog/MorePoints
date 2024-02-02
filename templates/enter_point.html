@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="login">
+    <form action="/enter_point" method="post">
+        <h1>Access point</h1>
+        <p>Enter point name and password to access the point</p>
+
+        {% if errormsg %}
+                <div class="error">{{ errormsg }}</div>
+        {% endif %}
+        
+        <input type="hidden" name="hostname" value="{{ hostname }}">
+        <input type="text" name="point" placeholder="Point name" value="{{ point }}" {{ "autofocus" if not point }}>
+        <input type="password" placeholder="Point password" name="password" {{ "autofocus" if point }}>
+        <input type="submit" class="primary" value="Enter">
+    </form>
+</div>
+{% endblock %}

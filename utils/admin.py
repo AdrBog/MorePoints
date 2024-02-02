@@ -32,69 +32,69 @@ def admin_logout():
 def admin_index():
     if not request.cookies.get('admin_logged'):
         return redirect('/admin/login')
-    sites = []
+    points = []
     search = request.args.get('search', default="")
 
-    for file in os.listdir(SITES_CONFIG_DIR):
-        if file.endswith(".site"):
-            sites.append(file[0:-5])
+    for file in os.listdir(POINTS_CONFIG_DIR):
+        if file.endswith(".point"):
+            points.append(file[0:-6])
 
     if search:
         regex = re.compile(r".*" + re.escape(search) + r".*")
-        filter_search = [f for f in sites if regex.match(f)]
-        sites = filter_search
+        filter_search = [f for f in points if regex.match(f)]
+        points = filter_search
 
-    return render_template('admin/admin.html', sites=sites)
+    return render_template('admin/admin.html', points=points)
 
-@admin.route('/admin/create_site', methods=['POST'])
-def create_site():
+@admin.route('/admin/create_point', methods=['POST'])
+def create_point():
     if not request.cookies.get('admin_logged'):
         return redirect('/admin/login')
 
-    sitename = request.json.get('sitename')
+    pointname = request.json.get('pointname')
     try:
-        config = generate_site_config()
-        config["FTP"]["Root"] = f"{SITES_DIR}/{sitename}"
+        config = generate_point_config()
+        config["FTP"]["Root"] = f"{POINTS_DIR}/{pointname}"
         config["Permissions"] = {"/": "elradfmwMT"}
-        output = writeJSON(f"{SITES_CONFIG_DIR}/{sitename}.site", config)
-        if not os.path.exists(f"{SITES_DIR}/{sitename}"):
-            os.makedirs(f"{SITES_DIR}/{sitename}")
+        output = writeJSON(f"{POINTS_CONFIG_DIR}/{pointname}.point", config)
+        if not os.path.exists(f"{POINTS_DIR}/{pointname}"):
+            os.makedirs(f"{POINTS_DIR}/{pointname}")
         return jsonify(status="Ok", output=output)
     except Exception as error:
         return jsonify(status="Error", output=str(error))
 
-@admin.route('/admin/delete_site', methods=['POST'])
-def delete_site():
+@admin.route('/admin/delete_point', methods=['POST'])
+def delete_point():
     if not request.cookies.get('admin_logged'):
         return redirect('/admin/login')
 
-    sitename = request.json.get('sitename')
+    pointname = request.json.get('pointname')
     try:
-        output = os.remove(f"{SITES_CONFIG_DIR}/{sitename}.site")
+        output = os.remove(f"{POINTS_CONFIG_DIR}/{pointname}.point")
         return jsonify(status="Ok", output=output)
     except Exception as error:
         return jsonify(status="Error", output=str(error))
 
-@admin.route('/admin/edit_site/<id>')
-def edit_site(id):
+@admin.route('/admin/edit_point/<id>')
+def edit_point(id):
     if not request.cookies.get('admin_logged'):
         return redirect('/admin/login')
 
-    return render_template('admin/edit_site.html', 
-        site=id, 
-        site_details=readJSON(f"{SITES_CONFIG_DIR}/{id}.site"), 
-        settings_info=readJSON(f"{SITE_CONFIG_MAP}"),
-        config=read_site_config(id)["Site"]
+    return render_template('admin/edit_point.html', 
+        point=id, 
+        point_details=readJSON(f"{POINTS_CONFIG_DIR}/{id}.point"), 
+        settings_info=readJSON(f"{POINT_CONFIG_MAP}"),
+        config=read_point_config(id)["Point"]
         )
 
-@admin.route('/admin/save_site/<id>', methods=['POST'])
-def save_site(id):
+@admin.route('/admin/save_point/<id>', methods=['POST'])
+def save_point(id):
     if not request.cookies.get('admin_logged'):
         return redirect('/admin/login')
 
     json = request.json.get('content')
     try:
-        output = writeJSON(f"{SITES_CONFIG_DIR}/{id}.site", json)
+        output = writeJSON(f"{POINTS_CONFIG_DIR}/{id}.point", json)
         return jsonify(status="Ok", output=output)
     except Exception as error:
         return jsonify(status="Error", output=str(error))

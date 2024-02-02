@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="/static/css/admin.css">
 {% endblock %}
 
-{% block title %} Edit {{ site }} - More Points {% endblock %}
+{% block title %} Edit {{ point }} - More Points {% endblock %}
 
 
 {% block content %}
@@ -12,9 +12,9 @@
     <a class="title primary" href="/admin">More Points</a>
 </header>
 <div class="toolbar">
-    <img src="/static/icons/site_icons/{{ site_icon }}.svg" alt="{{ site }}" width="64px" height="64px">
-    <p><span class="title">{{ display_name }}</span> ({{ site }})</p>
-    <a href="/site/{{ site }}" class="clickable icon-cont" target="_blank"><span class="icon"></span></a>
+    <img src="/static/icons/point_icons/{{ point_icon }}.svg" alt="{{ point }}" width="64px" height="64px">
+    <p><span class="title">{{ display_name }}</span> ({{ point }})</p>
+    <a href="/point/{{ point }}" class="clickable icon-cont" target="_blank"><span class="icon"></span></a>
 </div>
 {% for section_key, section in settings_info.items() %}
 
@@ -31,13 +31,13 @@
                         {% if 'options' is in(setting) %}
                                 <select name="{{ key }}" id="setting_{{ key }}" title="{{ setting['comment'] }}">
                                     {% for option in setting['options'] %}
-                                        <option value="{{option[0]}}" {{ "selected" if option[0] == site_details[section_key][key] else "" }}>{{option[1]}}</option>
+                                        <option value="{{option[0]}}" {{ "selected" if option[0] == point_details[section_key][key] else "" }}>{{option[1]}}</option>
                                     {% endfor %}
                                 </select>
                         {% elif setting['type'] == 'textarea' %}
-                            <textarea name="{{ key }}" id="setting_{{ key }}" cols="30" rows="10">{{ site_details[section_key][key] }}</textarea>
+                            <textarea name="{{ key }}" id="setting_{{ key }}" cols="30" rows="10">{{ point_details[section_key][key] }}</textarea>
                         {% else %}
-                            <input name="{{ key }}" id="setting_{{ key }}" type="{{ setting['type'] }}" title="{{ setting['comment'] }}" value="{{ site_details[section_key][key] }}">
+                            <input name="{{ key }}" id="setting_{{ key }}" type="{{ setting['type'] }}" title="{{ setting['comment'] }}" value="{{ point_details[section_key][key] }}">
                         {% endif %}
                     </td>
                 </tr>
@@ -65,7 +65,7 @@
         <legend>Permissions (Need restart)</legend>
         <p><a href="https://pyftpdlib.readthedocs.io/en/latest/api.html#pyftpdlib.authorizers.DummyAuthorizer.add_user" target="_blank"><i>Help about permissions</i></a></p>
         <div id="perm_list">
-            {% for path, perm in site_details["Permissions"].items() %}
+            {% for path, perm in point_details["Permissions"].items() %}
                 <div>
                     <input type="text" id="value" value="{{ path }}">
                     <select>
@@ -83,7 +83,7 @@
 
 <section>
     <button onclick="saveConfig()" class="primary">Save</button>
-    <button onclick="deleteSite()" class="error">Delete site</button>
+    <button onclick="deletePoint()" class="error">Delete point</button>
 </section>
 
 <script>
@@ -115,7 +115,7 @@
             config["Permissions"][path] = perm
         }
 
-        const data = await fetch(`/admin/save_site/{{ site }}`, {
+        const data = await fetch(`/admin/save_point/{{ point }}`, {
             method: 'POST',
             body: JSON.stringify({
                 "content": config,
@@ -125,12 +125,12 @@
         reviewResponse(await data.json())
     }
 
-    async function deleteSite(){
-        if (confirm("Are you sure you want to delete {{ site }}?")){
-            await fetch(`/admin/delete_site`, {
+    async function deletePoint(){
+        if (confirm("Are you sure you want to delete {{ point }}?")){
+            await fetch(`/admin/delete_point`, {
                 method: 'POST',
                 body: JSON.stringify({
-                    "sitename": "{{ site }}",
+                    "pointname": "{{ point }}",
                 }),
                 headers: {"Content-type": "application/json; charset=UTF-8"}
             })

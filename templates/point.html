@@ -25,7 +25,7 @@
 </dialog>
 
 <dialog id="upload_file">
-    <form action="/upload/{{ site }}" method="post" enctype="multipart/form-data">
+    <form action="/upload/{{ point }}" method="post" enctype="multipart/form-data">
         Upload:
         <input type="hidden" name="d" value="{{ pwd }}">
         <input type="file" name="file" multiple>
@@ -45,13 +45,13 @@
 
 {% block content %}
 <header id="main_header" class="main-header">
-    <img src="/static/icons/site_icons/{{ site_icon }}.svg" alt="{{ site }}" width="64px" height="64px">
+    <img src="/static/icons/point_icons/{{ point_icon }}.svg" alt="{{ point }}" width="64px" height="64px">
     <h1 >{{ display_name }}</h1>
-    {% if site_desc %}
-        <a class="clickable icon-cont" onclick="alert(`{{ site_desc }}`)"><span class="icon">󰋽</span></a>
+    {% if point_desc %}
+        <a class="clickable icon-cont" onclick="alert(`{{ point_desc }}`)"><span class="icon">󰋽</span></a>
     {% endif %}
     <div style="flex: 1;"></div>
-    <a href="/exit/{{ site }}" class="button">Exit</a>
+    <a href="/exit/{{ point }}" class="button">Exit</a>
 </header>
 <div id="toolbar" class="toolbar">
     <select class="primary" name="toolbar-new" id="toolbar-new"
@@ -60,12 +60,12 @@
                 case 'folder':
                     let foldername = filenamePrompt('Enter folder name')
                     if (foldername)
-                        createFolder('{{ site }}', '{{ pwd }}', foldername)
+                        createFolder('{{ point }}', '{{ pwd }}', foldername)
                     break;
                 case 'file':
                     let filename = filenamePrompt('Enter file name')
                     if (filename)
-                        createFile('{{ site }}', '{{ pwd }}', filename)
+                        createFile('{{ point }}', '{{ pwd }}', filename)
                     break;
                 case 'upload':
                     if ('{{ legacy_mode }}' == 'active'){
@@ -85,17 +85,17 @@
         <option value="upload">Upload file</option>
     </select>
     <input id="searchBox" type="text" placeholder="Search in {{ folder_name }}" value="{{ search }}">
-    <button onclick="window.location.href = `/site/{{ site }}?d={{pwd}}&search=${searchBox.value}`">Search</button>
+    <button onclick="window.location.href = `/point/{{ point }}?d={{pwd}}&search=${searchBox.value}`">Search</button>
 </div>
 
 <div class="path">
-    <a href="/site/{{ site }}">Home</a>
+    <a href="/point/{{ point }}">Home</a>
     {% for dir in pwd.split("/")[1:] %}
         <span class="black-05">></span>
         {% if loop.index == pwd.split("/")|length - 1 %}
             <b>{{ dir }}</b>
         {% else %}
-            <a href="/site/{{site}}?d={{ pwd.split('/')[0:loop.index + 1]|join('/') }}">{{ dir }}</a>
+            <a href="/point/{{point}}?d={{ pwd.split('/')[0:loop.index + 1]|join('/') }}">{{ dir }}</a>
         {% endif %}
     {% endfor %}
 </div>
@@ -120,9 +120,9 @@
                 <td>
                     <div class="file">
                         {% if file[1]["type"] == "dir" %}
-                            <a href="/site/{{ site }}?d={{ pwd }}/{{ file[0] }}">{{ file[0] }}</a>
+                            <a href="/point/{{ point }}?d={{ pwd }}/{{ file[0] }}">{{ file[0] }}</a>
                         {% else %}
-                            <a href="/open/{{ site }}?path={{ pwd }}&filename={{ file[0] }}" target="_blank">{{ file[0] }}</a>
+                            <a href="/open/{{ point }}?path={{ pwd }}&filename={{ file[0] }}" target="_blank">{{ file[0] }}</a>
                         {% endif %}
 
                         <select path="{{ pwd }}/{{ file[0] }}"
@@ -130,22 +130,22 @@
                                 let path = this.getAttribute('path')
                                 switch(this.value){
                                     case 'open':
-                                        window.open(`/open/{{ site }}?path={{ pwd }}&filename={{ file[0] }}`, '_blank')
+                                        window.open(`/open/{{ point }}?path={{ pwd }}&filename={{ file[0] }}`, '_blank')
                                         break;
                                     case 'edit':
-                                        window.open(`/edit/{{ site }}?path={{ pwd }}&filename={{ file[0] }}`, '_blank')
+                                        window.open(`/edit/{{ point }}?path={{ pwd }}&filename={{ file[0] }}`, '_blank')
                                         break;
                                     case 'download':
-                                        window.open(`/download/{{ site }}?path={{ pwd }}&filename={{ file[0] }}`, '_blank')
+                                        window.open(`/download/{{ point }}?path={{ pwd }}&filename={{ file[0] }}`, '_blank')
                                         break;
                                     case 'rename':
                                         let filename = filenamePrompt('Enter new name:', '{{ file[0] }}')
                                         if (filename)
-                                            renameFile('{{ site }}', '{{ pwd }}', '{{ file[0] }}', filename)
+                                            renameFile('{{ point }}', '{{ pwd }}', '{{ file[0] }}', filename)
                                         break;
                                     case 'delete':
                                         if (confirm(`Are you sure you want to delete '{{ file[0] }}'?`))
-                                            deleteFile('{{ site }}', '{{ pwd }}/{{ file[0] }}')
+                                            deleteFile('{{ point }}', '{{ pwd }}/{{ file[0] }}')
                                         break;
                                 }
                                 this.value = 0;
@@ -190,7 +190,7 @@
         <h1 class="center unselectable">This folder is empty</h1>
     {% endif %}
 </div>
-{% for addon in addons["site"] %}
+{% for addon in addons["point"] %}
 <script src="{{ addon }}" type="module"></script>
 {% endfor %}
 {% endblock %}

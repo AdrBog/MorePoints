@@ -4,7 +4,7 @@ from .misc import *
 from .config import *
 
 def connect(id):
-    ftp_data = read_site_config(id)
+    ftp_data = read_point_config(id)
     ftp = ftplib.FTP(ftp_data["FTP"].get("Host", '127.0.0.1'))
     ftp.login(ftp_data["FTP"].get("User", id), ftp_data["FTP"]["Password"])
     return ftp

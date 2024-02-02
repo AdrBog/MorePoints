@@ -16,46 +16,47 @@ from utils.admin import admin
 
 app = Flask(__name__)
 # TODO: Avoid overwrite files when creating or renaming files
-# TODO: Change "sites" to "connections" because this is no longer a SharePoint clone
 
 #app.secret_key = secrets.token_hex()
 app.secret_key = b'SECRET'  # FOR DEV ONLY
 app.register_blueprint(admin)
 app.register_blueprint(tools)
 
+setup_MorePoints()
+
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html', ver=VERSION)
 
-@app.route('/enter_site', methods=['GET', 'POST'])
-def enterSite():
-    site = request.args.get('site', default="")
+@app.route('/enter_point', methods=['GET', 'POST'])
+def enterPoint():
+    point = request.args.get('point', default="")
     if request.method == 'POST':
         hostname = request.form.get('hostname')
-        site = request.form.get('site')
+        point = request.form.get('point')
         password = request.form.get('password')
         
-        if not os.path.exists(f"{SITES_CONFIG_DIR}/{site}.site"):
-            return render_template('enter_site.html', site=site, hostname=socket.gethostname(), errormsg=MSG_ERROR_SITE_NOT_FOUND)
+        if not os.path.exists(f"{POINTS_CONFIG_DIR}/{point}.point"):
+            return render_template('enter_point.html', point=point, hostname=socket.gethostname(), errormsg=MSG_ERROR_POINT_NOT_FOUND)
         
-        readfile = readJSON(f"{SITES_CONFIG_DIR}/{site}.site")
+        readfile = readJSON(f"{POINTS_CONFIG_DIR}/{point}.point")
         
         if password != readfile["FTP"]['Password']:
-            return render_template('enter_site.html', site=site, hostname=socket.gethostname(), errormsg=MSG_ERROR_WRONG_PASSWORD)
+            return render_template('enter_point.html', point=point, hostname=socket.gethostname(), errormsg=MSG_ERROR_WRONG_PASSWORD)
         
-        session[site] = site
-        return redirect(f"/site/{site}")
-    return render_template('enter_site.html', site=site, hostname=socket.gethostname())
+        session[point] = point
+        return redirect(f"/point/{point}")
+    return render_template('enter_point.html', point=point, hostname=socket.gethostname())
 
 @app.route('/exit/<id>')
-def exitSite(id):
+def exitPoint(id):
     session.pop(id, None)
-    return redirect(f'/enter_site?site={id}')
+    return redirect(f'/enter_point?point={id}')
 
-@app.route('/site/<id>', methods=['GET'])
-def site(id):
+@app.route('/point/<id>', methods=['GET'])
+def point(id):
     if id not in session:
-        return redirect(f'/enter_site?site={id}')
+        return redirect(f'/enter_point?point={id}')
 
     d = request.args.get('d', default="")
     search = request.args.get('search', default="")
@@ -91,12 +92,12 @@ def site(id):
         filter_search = [f for f in files if regex.match(f[0])]
         files = filter_search
     
-    return render_template('site.html', pwd=f'{d}', site=id, files=files, search=search, ver=VERSION, addons=updateAddons(), config=read_site_config(id)["Site"])
+    return render_template('point.html', pwd=f'{d}', point=id, files=files, search=search, ver=VERSION, addons=updateAddons(), config=read_point_config(id)["Point"])
 
 @app.route('/open/<id>', methods=['GET'])
 def openF(id):
     if id not in session:
-        return redirect(f'/enter_site?site={id}')
+        return redirect(f'/enter_point?point={id}')
     path = request.args.get('path', default="")
     filename = request.args.get('filename', default="")
     extension = filename.split(".")[-1]
@@ -117,7 +118,7 @@ def readF(id):
 @app.route('/edit/<id>', methods=['GET'])
 def editF(id):
     if id not in session:
-        return redirect(f'/enter_site?site={id}')
+        return redirect(f'/enter_point?point={id}')
     path = request.args.get('path', default="")
     filename = request.args.get('filename', default="")
     extension = filename.split(".")[-1]
@@ -130,7 +131,7 @@ def editF(id):
 @app.route('/download/<id>', methods=['GET'])
 def downloadF(id):
     if id not in session:
-        return redirect(f'/enter_site?site={id}')
+        return redirect(f'/enter_point?point={id}')
     path = request.args.get('path', default="")
     filename = request.args.get('filename', default="")
     return send_file(BytesIO(read_file(id, f"{path}/{filename}")), download_name=filename, as_attachment=True)
@@ -217,7 +218,7 @@ def rename(id):
 @app.route('/upload/<id>', methods=['POST'])
 def upload(id):
     if id not in session:
-        return redirect(f'/enter_site?site={id}')
+        return redirect(f'/enter_point?point={id}')
     folder = request.form['d']
     files = request.files.getlist("file")
     ftp = connect(id)
@@ -225,7 +226,7 @@ def upload(id):
     for f in files:
         ftp.storbinary('STOR ' + f.filename, f)
     ftp.close()
-    return redirect(f"/site/{id}?d={folder}", code=302)
+    return redirect(f"/point/{id}?d={folder}", code=302)
 
 @app.route('/exec/<id>', methods=['POST'])
 def execute(id):

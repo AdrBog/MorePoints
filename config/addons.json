@@ -1,5 +1,5 @@
 {
-    "site": [],
+    "point": [],
     "edit": [
         "/static/addons/keyboard.js",
         "/static/addons/code-editor/init.js"

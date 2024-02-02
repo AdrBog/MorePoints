@@ -1,11 +1,10 @@
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
-from utils import *
+from utils.misc import *
 import json
 import os
 
-SITES_DIR = "sites"
 HOST = "127.0.0.1"
 
 authorizer = DummyAuthorizer()

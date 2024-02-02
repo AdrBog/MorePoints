@@ -1,6 +1,6 @@
 CHANGELOG
 v 0.1.1
 	Added Legacy Mode, basically support for Pale Moon browser
-	Now you can configure a FTP Host for a site
+	Added cache management to improve the application speed
 v 0.1.0
 	More Points is born

@@ -1,9 +1,11 @@
 from flask import Flask, Blueprint, request, render_template, make_response, redirect, send_file, jsonify, session
-from utils import *
 import os
 import json
 import re
 import subprocess
+
+from .misc import *
+from .config import *
 
 admin = Blueprint('admin', __name__)
 
@@ -11,7 +13,7 @@ admin = Blueprint('admin', __name__)
 def admin_login():
     if request.method == 'POST':
         password = request.form.get('password')
-        admin_password = readJSON(f'{CONFIG_DIR}/{CONFIG_FILE}')['Admin']['Password']
+        admin_password = readJSON(f'{CONFIG_DIR}/{CONFIG_FILE}')['Admin'].get('Password', 'admin')
         if password == admin_password:
             response = make_response(redirect('/admin'))
             response.set_cookie('admin_logged', 'True')

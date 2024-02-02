@@ -122,13 +122,7 @@
                         {% if file[1]["type"] == "dir" %}
                             <a href="/site/{{ site }}?d={{ pwd }}/{{ file[0] }}">{{ file[0] }}</a>
                         {% else %}
-                            {% if file[1]["ext"] in ["txt", "msg", "siteconf", "ini", "sh"]  %}
-                                <a href="#" onclick="openWithTextEditor('{{ pwd }}', '{{ file[0] }}')">{{ file[0] }}</a>
-                            {% elif file[1]["ext"] == "lll" or file[1]["ext"] == "lnk" %}
-                                <a onclick="openLink('{{ pwd }}/{{ file[0] }}')">{{ file[0] }}</a>
-                            {% else %}
-                                <a href="/open/{{ site }}?path={{ pwd }}/{{ file[0] }}&open=1" target="_blank">{{ file[0] }}</a>
-                            {% endif %}
+                            <a href="/open/{{ site }}?path={{ pwd }}&filename={{ file[0] }}" target="_blank">{{ file[0] }}</a>
                         {% endif %}
 
                         <select path="{{ pwd }}/{{ file[0] }}"
@@ -136,13 +130,13 @@
                                 let path = this.getAttribute('path')
                                 switch(this.value){
                                     case 'open':
-                                        window.open(`/open/{{ site }}?path=${path}&open=1`, '_blank')
+                                        window.open(`/open/{{ site }}?path={{ pwd }}&filename={{ file[0] }}`, '_blank')
                                         break;
                                     case 'edit':
-                                        openWithTextEditor('{{ pwd }}', '{{ file[0] }}')
+                                        window.open(`/edit/{{ site }}?path={{ pwd }}&filename={{ file[0] }}`, '_blank')
                                         break;
                                     case 'download':
-                                        window.open(`/open/{{ site }}?path=${path}&download=1`, '_blank')
+                                        window.open(`/download/{{ site }}?path={{ pwd }}&filename={{ file[0] }}`, '_blank')
                                         break;
                                     case 'rename':
                                         let filename = filenamePrompt('Enter new name:', '{{ file[0] }}')
@@ -199,24 +193,4 @@
 {% for addon in addons["site"] %}
 <script src="{{ addon }}" type="module"></script>
 {% endfor %}
-<script>
-    async function openLink(link){
-        window.open(`${await readFile("{{ site }}", link)}`, "_blank");
-    }
-</script>
-{% if legacy_mode == 'active' %}
-    <script>
-    function openWithTextEditor(folder, filename){
-        window.open(`/edit/{{ site }}?d=${folder}&fname=${filename}`, "_blank")
-    }  
-    </script>
-{% else %}
-    <script>
-    function openWithTextEditor(folder, filename){
-        text_editor = document.getElementById("text_editor")
-        text_editor.querySelector('iframe').src = `/edit/{{ site }}?d=${folder}&fname=${filename}`
-        text_editor.showModal()
-    }  
-    </script>
-{% endif %}
 {% endblock %}

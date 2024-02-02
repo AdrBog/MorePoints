@@ -1,5 +1,20 @@
 {
     "Admin":{
         "Password": "admin"
+    },
+    "OpenWith": [
+        {
+            "extensions": ["lnk", "link", "lll", "oal"],
+            "tool": "link"
+        }
+    ],
+    "EditWith": {
+        "CustomTools": [
+            {
+                "extensions": ["foo", "bar"],
+                "tool": "test_tool"
+            }
+        ],
+        "DefaultTool": "text_editor"
     }
 }

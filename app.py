@@ -1,6 +1,4 @@
 from flask import Flask, Blueprint, request, render_template, make_response, redirect, send_file, jsonify, session
-from admin import *
-from utils import *
 from io import BytesIO, StringIO
 from datetime import datetime
 import ftplib
@@ -9,14 +7,21 @@ import json
 import secrets
 import socket
 
+from utils.ftp import *
+from utils.config import *
+from utils.ftp import *
+from utils.misc import *
+from utils.tools import tools
+from utils.admin import admin
+
 app = Flask(__name__)
+# TODO: Avoid overwrite files when creating or renaming files
+# TODO: Change "sites" to "connections" because this is no longer a SharePoint clone
 
 #app.secret_key = secrets.token_hex()
 app.secret_key = b'SECRET'  # FOR DEV ONLY
 app.register_blueprint(admin)
-
-
-VERSION = "0.1.1"
+app.register_blueprint(tools)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -56,6 +61,7 @@ def site(id):
     search = request.args.get('search', default="")
     if d == '/': 
         d = ""
+
     ftp = connect(id)
     ftp.cwd(f'{d}')
     files = []
@@ -68,22 +74,23 @@ def site(id):
         else:
             raise
 
-    files = [f for f in files if not f[0] in [".", ".."]]
-
     for file in files:
         file[1]["ext"] = file[0].split(".")[-1].lower()
-        file[1]["modtime"] = datetime.strptime(file[1]["modify"], '%Y%m%d%H%M%S')
+        file[1]["modtime"] = datetime.strptime(file[1]["modify"], '%Y%m%d%H%M%S').strftime("%m/%d/%Y, %H:%M:%S")
         try:
             file[1]["h_size"] = human_readable_size(int(file[1]["size"]))
         except:
             pass
+
+    ftp.quit()
+    
+    files = [f for f in files if not f[0] in [".", ".."]]
 
     if search:
         regex = re.compile(r".*" + re.escape(search) + r".*")
         filter_search = [f for f in files if regex.match(f[0])]
         files = filter_search
     
-    ftp.quit()
     return render_template('site.html', pwd=f'{d}', site=id, files=files, search=search, ver=VERSION, addons=updateAddons(), config=read_site_config(id)["Site"])
 
 @app.route('/open/<id>', methods=['GET'])
@@ -91,29 +98,42 @@ def openF(id):
     if id not in session:
         return redirect(f'/enter_site?site={id}')
     path = request.args.get('path', default="")
-    filename = path.split("/")[-1]
-    download = request.args.get('download', default="0")
-    open = request.args.get('open', default="0")
-    if download == "1":
-        return send_file(BytesIO(read_file(id, path)), download_name=filename, as_attachment=True)
-    elif open == "1":
-        return send_file(BytesIO(read_file(id, path)), download_name=filename)
-    else:
-        response = make_response(read_file(id, path), 200)
-        response.mimetype = "text/plain"
-        return response
+    filename = request.args.get('filename', default="")
+    extension = filename.split(".")[-1]
+    for key in readJSON(f"{CONFIG_DIR}/{CONFIG_FILE}").get("OpenWith", []):
+        if extension in key["extensions"]:
+            return redirect(f"/tools/{key['tool']}/{id}?path={path}&filename={filename}")
+    return send_file(BytesIO(read_file(id, f"{path}/{filename}")), download_name=filename)
+
+
+@app.route('/read/<id>', methods=['GET'])
+def readF(id):
+    path = request.args.get('path', default="")
+    filename = request.args.get('filename', default="")
+    response = make_response(read_file(id, f"{path}/{filename}"), 200)
+    response.mimetype = "text/plain"
+    return response
 
 @app.route('/edit/<id>', methods=['GET'])
-def edit(id):
+def editF(id):
     if id not in session:
         return redirect(f'/enter_site?site={id}')
-    filename = request.args.get('fname', default="")
-    folder = request.args.get('d', default="")
-    path = f"{folder}/{filename}"
-    try: 
-        return render_template("text_editor.html", site=id, path=path, folder=folder, filename=filename, text=read_file(id, path).decode(), ver=VERSION, addons=updateAddons(), config=read_site_config(id)["Site"])
-    except:
-        return "Can't edit binary file"
+    path = request.args.get('path', default="")
+    filename = request.args.get('filename', default="")
+    extension = filename.split(".")[-1]
+    edit_with_list = readJSON(f"{CONFIG_DIR}/{CONFIG_FILE}").get("EditWith", {})
+    for key in edit_with_list.get('CustomTools', []):
+        if extension in key["extensions"]:
+            return redirect(f"/tools/{key['tool']}/{id}?path={path}&filename={filename}")
+    return redirect(f"/tools/{edit_with_list.get('DefaultTool', 'text_editor')}/{id}?path={path}&filename={filename}")
+
+@app.route('/download/<id>', methods=['GET'])
+def downloadF(id):
+    if id not in session:
+        return redirect(f'/enter_site?site={id}')
+    path = request.args.get('path', default="")
+    filename = request.args.get('filename', default="")
+    return send_file(BytesIO(read_file(id, f"{path}/{filename}")), download_name=filename, as_attachment=True)
 
 @app.route('/create_folder/<id>', methods=['POST'])
 def createFolder(id):
@@ -159,6 +179,7 @@ def createFile(id):
 def deletef(id):
     if id not in session:
         return jsonify(status="Error", output=MSG_ERROR_LOGIN)
+    # TODO: Replace path, with filename and path
     path = request.json.get('path', [])
     ftp = connect(id)
     try:

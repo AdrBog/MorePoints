@@ -7,10 +7,11 @@
  * Returns the contents of a site file
  * @param {string} site 
  * @param {string} path 
+ * @param {string} filename 
  * @returns 
  */
 async function readFile(site, path){
-    const data = await fetch(`/open/${site}?path=${path}`)
+    const data = await fetch(`/open/${site}?path=${path}&filename=${filename}`)
     return await data.text() 
 }
 

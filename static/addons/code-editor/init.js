@@ -38,6 +38,8 @@ function generateToolbar(toolbar){
     case "css":
       SELECT.value = "css"
       break;
+    case "svg":
+    case "xml":
     case "html":
       SELECT.value = "html"
       break;

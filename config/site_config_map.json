@@ -57,17 +57,23 @@
             "comment": "Host where FTP server is stored (Leave empty for localhost)",
             "display": "Host"
         },
-        "Root":{
+        "User":{
             "default": "",
             "type": "text",
-            "comment": "Path of server folder where files are stores",
-            "display": "Root (Need restart)"
+            "comment": "User name of the FTP server",
+            "display": "User"
         },
         "Password":{
             "default": "1234",
             "type": "password",
             "comment": "Site's password",
             "display": "Password (Need restart)"
+        },
+        "Root":{
+            "default": "",
+            "type": "text",
+            "comment": "Path of server folder where files are stores",
+            "display": "Root (Need restart)"
         }
     }
 }

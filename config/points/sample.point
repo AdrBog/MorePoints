@@ -3,7 +3,7 @@
     "DisplayName": "Sample Point",
     "Description": "This is a description for the point",
     "Icon": "computer",
-    "Theme": "dark",
+    "Theme": "light",
     "Legacy": "disabled"
   },
   "FTP": {

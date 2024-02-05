@@ -78,14 +78,17 @@
     <select onchange="
         switch(this.value){
             case 'delete':
-                if (confirm(`Are you sure you want to delete '${selectedFiles.join(', ')}'?`))
-                    deleteSelected()
+                deleteSelected()
+                break;
+            case 'download':
+                downloadSelected()
                 break;
         }
         this.value = 0;
     ">
     	<option value="0">- File actions -</option>
     	<option value="delete">Delete selected</option>
+    	<option value="download">Download selected</option>
     </select>
     <input id="searchBox" type="text" placeholder="Search in {{ folder_name }}" value="{{ search }}">
     <button onclick="window.location.href = `/point/{{ point }}?d={{pwd}}&search=${searchBox.value}`">Search</button>
@@ -203,17 +206,33 @@
 <script>
     let selectedFiles = []
     let path = "{{ pwd }}"
-    function updateSelected(){
+    
+    function updateSelected()
+    {
         let checked = document.querySelectorAll("[file]:checked")
         selectedFiles = Array.from(checked).map((x) => {return x.getAttribute('file')})
     }
 
-    async function deleteSelected(){
+    async function deleteSelected()
+    {
+        if (selectedFiles.length != 0){
+            if (confirm(`Are you sure you want to delete '${selectedFiles.join(', ')}'?`)){
+                for (const file of selectedFiles){
+                    await deleteFileNoReview("{{ point }}" ,`${path}/${file}`)
+                }
+                location.reload()
+            }
+        } else {
+            popMessage("Error", "No files selected", "error")
+        }
+    }
+
+    async function downloadSelected()
+    {
         if (selectedFiles.length != 0){
             for (const file of selectedFiles){
-                await deleteFileNoReview("{{ point }}" ,`${path}/${file}`)
+                window.open(`/download/{{ point }}?path={{ pwd }}&filename=${file}`, '_blank')
             }
-            location.reload()
         } else {
             popMessage("Error", "No files selected", "error")
         }

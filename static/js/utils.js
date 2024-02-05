@@ -8,7 +8,8 @@ const VALID_FILENAME = /^(?!\s)[a-zA-Z0-9_\. ]{1,50}(?<!\s)$/g
  * Executes a function depending on the status of the response returned by the flask application.
  * @param {Object} json 
  */
-function reviewResponse(json){
+function reviewResponse(json)
+{
     switch (json['status']) {
         case "Error":
             popMessage("Error", json['output'], "error")
@@ -28,7 +29,8 @@ function reviewResponse(json){
  * @param {string} string 
  * @returns 
  */
-function match(regex, string){
+function match(regex, string)
+{
     regex.lastIndex = 0;
     return regex.test(string);
 }
@@ -39,13 +41,14 @@ function match(regex, string){
  * @param {string} _default 
  * @returns 
  */
-function filenamePrompt(message, _default){
+function filenamePrompt(message, _default)
+{
     const filename = prompt(message, _default);
     if (filename === null) {
         return
-    } else if (match(VALID_FILENAME, filename)){
+    } else if (match(VALID_FILENAME, filename)) {
         return filename
-    } else{
+    } else {
         alert("Invalid filename")
         return filenamePrompt(message, filename)
     }

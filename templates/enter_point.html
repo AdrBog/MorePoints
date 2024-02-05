@@ -7,7 +7,9 @@
         <p>Enter point name and password to access the point</p>
 
         {% if errormsg %}
-                <div class="error">{{ errormsg }}</div>
+                <div class="error">
+                        <pre>{{ errormsg }}</pre>
+                </div>
         {% endif %}
         
         <input type="hidden" name="hostname" value="{{ hostname }}">

@@ -11,22 +11,21 @@ from utils.ftp import *
 from utils.config import *
 from utils.ftp import *
 from utils.misc import *
+from utils.msg import *
 from utils.tools import tools
-from utils.admin import admin
 
 app = Flask(__name__)
 # TODO: Avoid overwrite files when creating or renaming files
 
 #app.secret_key = secrets.token_hex()
 app.secret_key = b'SECRET'  # FOR DEV ONLY
-app.register_blueprint(admin)
 app.register_blueprint(tools)
 
 setup_MorePoints()
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html', ver=VERSION)
+    return render_template('index.html', ver=VERSION, points=list_points())
 
 @app.route('/enter_point', methods=['GET', 'POST'])
 def enterPoint():
@@ -37,12 +36,12 @@ def enterPoint():
         password = request.form.get('password')
         
         if not os.path.exists(f"{POINTS_CONFIG_DIR}/{point}.point"):
-            return render_template('enter_point.html', point=point, hostname=socket.gethostname(), errormsg=MSG_ERROR_POINT_NOT_FOUND)
+            return render_template('enter_point.html', point=point, hostname=socket.gethostname(), errormsg=Error.POINT_NOT_FOUND)
         
         readfile = readJSON(f"{POINTS_CONFIG_DIR}/{point}.point")
         
         if password != readfile["FTP"]['Password']:
-            return render_template('enter_point.html', point=point, hostname=socket.gethostname(), errormsg=MSG_ERROR_WRONG_PASSWORD)
+            return render_template('enter_point.html', point=point, hostname=socket.gethostname(), errormsg=Error.WRONG_PASSWORD)
         
         session[point] = point
         return redirect(f"/point/{point}")
@@ -139,7 +138,7 @@ def downloadF(id):
 @app.route('/create_folder/<id>', methods=['POST'])
 def createFolder(id):
     if id not in session:
-        return jsonify(status="Error", output=MSG_ERROR_LOGIN)
+        return jsonify(status="Error", output=Error.LOGIN_REQUIRED)
     path = request.json.get('path')
     filename = request.json.get('filename')
     ftp = connect(id)
@@ -154,7 +153,7 @@ def createFolder(id):
 @app.route('/create_file/<id>', methods=['POST'])
 def createFile(id):
     if id not in session:
-        return jsonify(status="Error", output=MSG_ERROR_LOGIN)
+        return jsonify(status="Error", output=Error.LOGIN_REQUIRED)
     path = request.json.get('path')
     filename = request.json.get('filename')
     content = request.json.get('content', "")
@@ -164,11 +163,11 @@ def createFile(id):
         for file in ftp.nlst(path):
             if file == filename and edit != "1":
                 ftp.close()
-                return jsonify(status="Error", output=MSG_ERROR_FILE_EXISTS)
+                return jsonify(status="Error", output=Error.FILE_EXISTS)
         output = ftp.storbinary(f'STOR {path}/{filename}', BytesIO(content.encode()))
         ftp.close()
         if edit == "1":
-            return jsonify(status="Info", output=MSG_INFO_FILE_SAVED)
+            return jsonify(status="Info", output=Info.FILE_SAVED)
         else:
             return jsonify(status="Ok", output=output)
     except ftplib.all_errors as error:
@@ -179,7 +178,7 @@ def createFile(id):
 @app.route('/delete/<id>', methods=['POST'])
 def deletef(id):
     if id not in session:
-        return jsonify(status="Error", output=MSG_ERROR_LOGIN)
+        return jsonify(status="Error", output=Error.LOGIN_REQUIRED)
     # TODO: Replace path, with filename and path
     path = request.json.get('path', [])
     ftp = connect(id)
@@ -197,7 +196,7 @@ def deletef(id):
 @app.route('/rename/<id>', methods=['POST'])
 def rename(id):
     if id not in session:
-        return jsonify(status="Error", output=MSG_ERROR_LOGIN)
+        return jsonify(status="Error", output=Error.LOGIN_REQUIRED)
     path = request.json.get('path')
     filename = request.json.get('filename')
     new_name = request.json.get('new_name')
@@ -205,7 +204,7 @@ def rename(id):
     for file in ftp.nlst(path):
         if file == new_name:
             ftp.close()
-            return jsonify(status="Error", output=MSG_ERROR_FILE_EXISTS)
+            return jsonify(status="Error", output=Error.FILE_EXISTS)
     try:
         output = ftp.rename(f"{path}/{filename}", f"{path}/{new_name}")
         ftp.close()
@@ -231,7 +230,7 @@ def upload(id):
 @app.route('/exec/<id>', methods=['POST'])
 def execute(id):
     if id not in session:
-        return jsonify(status="Error", output=MSG_ERROR_LOGIN)
+        return jsonify(status="Error", output=Error.LOGIN_REQUIRED)
     commands = request.json.get('commands', [])
     ftp = connect(id)
     try:

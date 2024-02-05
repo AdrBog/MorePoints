@@ -13,6 +13,7 @@
 ::after {
 	box-sizing: border-box;
     font-family: var(--font);
+    text-overflow: ellipsis;
 }
 
 @media (max-width: 800px) {
@@ -21,10 +22,6 @@
     }
     .toolbar *:not(.icon):not(input[type="checkbox"]) {
         width: 100%;
-    }
-    .height0 {
-        height: auto !important;
-        margin-bottom: 8px;
     }
     .login form{
         width: 100% !important;
@@ -74,11 +71,7 @@ a{
     visibility: hidden;
 }
 
-.list-view{
-    width: 100%;
-}
-
-.list-view table {
+table {
     width: 100%;
 }
 
@@ -91,45 +84,37 @@ a{
     padding: 8px;
     font-size: 16px;
     text-align: left;
-    border-bottom: 1px solid var(--black-02);
 }
 
 .list-view tr:nth-child(even){
     background-color: var(--black-005);
 }
 
-.list-view tr:hover{
+.item:hover{
     box-shadow: inset 0 0 1000px 1000px var(--black-01);
 }
 
 .file {
-    width: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.file a{
-    width: 1px;
-    display: block;
-    white-space: nowrap;
+    max-width: 1px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.file select{
+.hidden-select{
     font-size: 0;
     height: 24px;
 }
 
-.file select:hover{
+.hidden-select:hover{
     box-shadow: inset 0 0 1000px 1000px var(--black-02);
 }
 
-.file option{
+.hidden-select option{
     font-size: 16px;
 }
 
-.file optgroup{
+.hidden-select optgroup{
     font-size: 8px;
 }
 
@@ -138,12 +123,11 @@ a{
 }
 
 .toolbar{
-    border-bottom: 1px solid var(--fg);
     padding-bottom: 8px;
     margin-bottom: 8px;
 }
 
-.main-header, .toolbar{
+.main-header, .toolbar, header{
     display: flex;
     gap: 12px;
     align-items: center;
@@ -169,6 +153,7 @@ button, .button, input[type="submit"]{
     color: var(--fg);
     padding: 4px 16px 4px 16px;
     font-size: 16px;
+    text-align: center;
 }
 
 button:hover, .button:hover, input[type="submit"]:hover, select:hover{
@@ -205,22 +190,8 @@ input, select, textarea{
     resize: none;
 }
 
-.height0{
-    height: 0;
-}
-
-#text_editor, #text_editor > div{
+fieldset input, fieldset select, fieldset textarea{
     width: 100%;
-    height: 100%;
-}
-
-#text_editor > div{
-    display: flex;
-    flex-direction: column;
-}
-
-#text_editor iframe{
-    flex: 1;
 }
 
 .login {
@@ -261,4 +232,14 @@ dialog.error{
     border-bottom: 0;
     margin: 0;
     padding: 10px;
+}
+
+.short{
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 12px;
+}
+
+fieldset{
+    padding: 12px;
 }

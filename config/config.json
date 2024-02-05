@@ -13,6 +13,10 @@
             {
                 "extensions": ["foo", "bar"],
                 "tool": "test_tool"
+            },
+            {
+                "extensions": ["point"],
+                "tool": "point_editor"
             }
         ],
         "DefaultTool": "text_editor"

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="login">
+<main class="login">
     <form action="/enter_point" method="post">
         <h1>Access point</h1>
         <p>Enter point name and password to access the point</p>
@@ -15,5 +15,5 @@
         <input type="password" placeholder="Point password" name="password" {{ "autofocus" if point }}>
         <input type="submit" class="primary" value="Enter">
     </form>
-</div>
+</main>
 {% endblock %}

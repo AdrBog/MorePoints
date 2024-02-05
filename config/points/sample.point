@@ -1,15 +1,14 @@
 {
-    "Permissions": {
-        "/": "elradfmwMT"
-    },
-    "Point": {
-        "DisplayName": "Sample Point",
-        "Description": "This is a description for the point",
-        "Icon": "computer",
-        "Theme": "light"
-    },
-    "FTP": {
-        "Root": "points/sample",
-        "Password": "1234"
-    }
+  "Point": {
+    "DisplayName": "Sample Point",
+    "Description": "This is a description for the point",
+    "Icon": "computer",
+    "Theme": "dark",
+    "Legacy": "disabled"
+  },
+  "FTP": {
+    "Host": "localhost",
+    "User": "sample",
+    "Password": "1234"
+  }
 }

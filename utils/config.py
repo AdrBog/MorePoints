@@ -1,7 +1,10 @@
 from .misc import *
 
 def read_point_config(id):
-    return readJSON(f"{POINTS_CONFIG_DIR}/{id}.point")
+    if (id.endswith('.point')):
+        return readJSON(f"{POINTS_CONFIG_DIR}/{id}")
+    else:
+        return readJSON(f"{POINTS_CONFIG_DIR}/{id}.point")
 
 def generate_point_config():
     config = {}

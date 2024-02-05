@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %} Edit {{ point }} - More Points {% endblock %}
+
+{% block content %}
+<header class="short">
+    <img src="/static/icons/point_icons/{{ point_icon }}.svg" alt="{{ point }}" width="64px" height="64px">
+    <p><b>{{ display_name }}</b> ({{ point }})</p>
+    <a href="/point/{{ point }}" class="clickable icon-cont" target="_blank"><span class="icon"></span></a>
+</header>
+
+<main class="short">
+	{% for section_key, section in settings_info.items() %}
+    <form section="{{ section_key }}">
+        <fieldset>
+            <legend>{{section_key}}</legend>
+            <table>
+                {% for key, setting in section.items() %}
+                    <tr>
+                        <td>
+                            <label for="setting_{{ key }}"> {{ setting["display"] }} </label>
+                        </td>
+                        <td>
+                            {% if 'options' is in(setting) %}
+                                    <select name="{{ key }}" id="setting_{{ key }}" title="{{ setting['comment'] }}">
+                                        {% for option in setting['options'] %}
+                                            <option value="{{option[0]}}" {{ "selected" if option[0] == point_details.get(section_key, {}).get(key, setting['default']) else "" }}>{{option[1]}}</option>
+                                        {% endfor %}
+                                    </select>
+                            {% elif setting['type'] == 'textarea' %}
+                                <textarea name="{{ key }}" id="setting_{{ key }}" cols="30" rows="10">{{ point_details.get(section_key, {}).get(key, setting['default']) }}</textarea>
+                            {% else %}
+                                <input name="{{ key }}" id="setting_{{ key }}" type="{{ setting['type'] }}" title="{{ setting['comment'] }}" value="{{ point_details.get(section_key, {}).get(key, setting['default']) }}">
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </fieldset>
+    </form>
+    {% endfor %}
+</main>
+
+<footer class="toolbar short">
+    <button onclick="saveConfig()" class="primary">Save</button>
+    <a href="/admin" class="button">Cancel changes</a>
+</footer>
+
+{% for addon in addons["point_editor"] %}
+<script src="{{ addon }}" type="module"></script>
+{% endfor %}
+
+<script>
+
+    async function saveConfig(){
+        const forms = document.querySelectorAll("form")
+        const config = {}
+
+        for (const form of forms) {
+            const formData = new FormData(form)
+            const section = form.getAttribute("section")
+            config[section] = {}
+            for (const data of formData) {
+                config[section][data[0]] = data[1]
+            }
+        }
+
+        const data = await editFile('{{ point_admin }}', '{{ path }}', '{{ filename }}', JSON.stringify(config, null, 2))
+    }
+</script>
+{% endblock %}

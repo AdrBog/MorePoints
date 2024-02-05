@@ -1,0 +1,14 @@
+[
+    {
+        "name": "sample",
+        "password": "1234",
+        "root": "points/sample",
+        "perm": "elradfmwMT"
+    },
+    {
+        "name": "admin",
+        "password": "admin",
+        "root": "config/points",
+        "perm": "elradfmwMT"
+    }
+]

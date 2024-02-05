@@ -78,14 +78,23 @@ async function createFolder(point, path, foldername){
  * @param {string} path 
  */
 async function deleteFile(point, path){
-    const data = await fetch(`/delete/${point}`, {
+    data = await deleteFileNoReview(point, path)
+    reviewResponse(await data.json())
+}
+
+/**
+ * Removes a file or directory from the point without review
+ * @param {string} point 
+ * @param {string} path 
+ */
+async function deleteFileNoReview(point, path){
+    return await fetch(`/delete/${point}`, {
         method: 'POST',
         body: JSON.stringify({
             "path": path
         }),
         headers: {"Content-type": "application/json; charset=UTF-8"}
     })
-    reviewResponse(await data.json())
 }
 
 /**

@@ -15,15 +15,6 @@
 </dialog>
 {% endif %}
 
-<dialog id="text_editor">
-    <div>
-        <div class="height0" style="position: relative;">
-            <button style="position: absolute; right: 0;" onclick="text_editor.close()">X</button><br>
-        </div>
-        <iframe src="" frameborder="0"></iframe>
-    </div>
-</dialog>
-
 <dialog id="upload_file">
     <form action="/upload/{{ point }}" method="post" enctype="multipart/form-data">
         Upload:
@@ -53,7 +44,7 @@
     <div style="flex: 1;"></div>
     <a href="/exit/{{ point }}" class="button">Exit</a>
 </header>
-<div id="toolbar" class="toolbar">
+<div id="toolbar" class="toolbar border-bottom">
     <select class="primary" name="toolbar-new" id="toolbar-new"
         onchange="
             switch(this.value){
@@ -84,9 +75,22 @@
         <option value="file">New empty file</option>
         <option value="upload">Upload file</option>
     </select>
+    <select onchange="
+        switch(this.value){
+            case 'delete':
+                if (confirm(`Are you sure you want to delete '${selectedFiles.join(', ')}'?`))
+                    deleteSelected()
+                break;
+        }
+        this.value = 0;
+    ">
+    	<option value="0">- File actions -</option>
+    	<option value="delete">Delete selected</option>
+    </select>
     <input id="searchBox" type="text" placeholder="Search in {{ folder_name }}" value="{{ search }}">
     <button onclick="window.location.href = `/point/{{ point }}?d={{pwd}}&search=${searchBox.value}`">Search</button>
 </div>
+<hr>
 
 <div class="path">
     <a href="/point/{{ point }}">Home</a>
@@ -104,28 +108,33 @@
     <table cellspacing="0">
         <tr>
             <th style="width: 2%;"></th>
-            <th style="width: 68%;">Name</th>
+            <th style="width: 2%;"></th>
+            <th style="width: auto;">Name</th>
+            <th style="width: 2%;"></th>
             <th style="width: 20%;">Last modified</th>
             <th style="width: 10%;">Size</th>
         </tr>
         {% for file in files %}
-            <tr>
-                <td class="flex-center">
+            <tr class="item">
+                <td>
+                    <input type="checkbox" name="{{ file[0] }}" file="{{ file[0] }}" onclick="updateSelected()"></input>
+                </td>
+                <td>
                     {% if file[1]["type"] == "dir" %}
                         <span class="folder">
                     {% else %}
                         <span class="icon-{{ file[1]['ext'] }}">
                     {% endif %}
                 </td>
+                <td class="file">
+                    {% if file[1]["type"] == "dir" %}
+                        <a href="/point/{{ point }}?d={{ pwd }}/{{ file[0] }}">{{ file[0] }}</a>
+                    {% else %}
+                        <a href="/open/{{ point }}?path={{ pwd }}&filename={{ file[0] }}" target="_blank">{{ file[0] }}</a>
+                    {% endif %}
+                </td>
                 <td>
-                    <div class="file">
-                        {% if file[1]["type"] == "dir" %}
-                            <a href="/point/{{ point }}?d={{ pwd }}/{{ file[0] }}">{{ file[0] }}</a>
-                        {% else %}
-                            <a href="/open/{{ point }}?path={{ pwd }}&filename={{ file[0] }}" target="_blank">{{ file[0] }}</a>
-                        {% endif %}
-
-                        <select path="{{ pwd }}/{{ file[0] }}"
+                    <select class="hidden-select" path="{{ pwd }}/{{ file[0] }}"
                             onchange="
                                 let path = this.getAttribute('path')
                                 switch(this.value){
@@ -174,8 +183,6 @@
 
 
                         </select>
-
-                    </div>
                 </td>
                 <td>
                     {{ file[1]["modtime"] }}
@@ -193,4 +200,25 @@
 {% for addon in addons["point"] %}
 <script src="{{ addon }}" type="module"></script>
 {% endfor %}
+<script>
+    let selectedFiles = []
+    let path = "{{ pwd }}"
+    function updateSelected(){
+        let checked = document.querySelectorAll("[file]:checked")
+        selectedFiles = Array.from(checked).map((x) => {return x.getAttribute('file')})
+    }
+
+    async function deleteSelected(){
+        if (selectedFiles.length != 0){
+            for (const file of selectedFiles){
+                await deleteFileNoReview("{{ point }}" ,`${path}/${file}`)
+            }
+            location.reload()
+        } else {
+            popMessage("Error", "No files selected", "error")
+        }
+    }
+
+    updateSelected()
+</script>
 {% endblock %}

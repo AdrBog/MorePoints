@@ -1,7 +1,7 @@
 import json
 import os
 
-VERSION = "0.1.1"
+VERSION = "0.2.0"
 
 # Paths
 CONFIG_DIR = "config"
@@ -11,25 +11,33 @@ POINT_CONFIG_MAP = CONFIG_DIR + "/point_config_map.json"
 POINTS_DIR = "points"
 ADDONS_FILE = "addons.json"
 SERVER_FILE = "server.py"
-CACHE_DIR = os.path.expanduser('~') + "/.cache/MorePoints"
 
-# Messages
-MSG_ERROR_LOGIN = "You have to login"
-MSG_ERROR_FILE_EXISTS = "File already exists"
-MSG_ERROR_POINT_NOT_FOUND = "Point not found"
-MSG_ERROR_WRONG_PASSWORD = "Wrong password"
-MSG_INFO_FILE_SAVED = "File saved"
+
 
 def setup_MorePoints():
     if not os.path.exists(POINTS_DIR):
         os.makedirs(POINTS_DIR)
+
+def list_points():
+    points = []
+    for file in os.listdir(POINTS_CONFIG_DIR):
+        if file.endswith(".point"):
+            data = readJSON(f"{POINTS_CONFIG_DIR}/{file}")
+            points.append({
+                "name": file[0:-6],
+                "data": data.get("Point", {})
+            })
+    return points
 
 def updateAddons():
     return readJSON(f"{CONFIG_DIR}/{ADDONS_FILE}")
 
 def readJSON(src):
     with open(src,"r") as file:
-        return json.load(file)
+        try:
+            return json.load(file)
+        except:
+            return {}
 
 def writeJSON(src, data):
     with open(src,"w") as file:

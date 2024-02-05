@@ -15,7 +15,7 @@
     <input type="hidden" name="edit" value="1">
     <textarea autofocus name="content">{{ text }}</textarea>
 </form>
-{% for addon in addons["edit"] %}
+{% for addon in addons["text_editor"] %}
 <script src="{{ addon }}" type="module"></script>
 {% endfor %}
 <script>

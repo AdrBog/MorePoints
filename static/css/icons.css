@@ -119,3 +119,8 @@ span.icon-gitignore::after{
     color: var(--git-file);
     content: "";
 }
+
+span.icon-point::after{
+    color: var(--point-file);
+    content: "󰀃";
+}

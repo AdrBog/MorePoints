@@ -4,38 +4,41 @@
 
 
 {% block content %}
-<center>
-    <h1>Welcome to</h1>
-    <img src="/static/logo.svg" alt="logo">
-    <p>If you see this page, you have (probably) successfully setup More Points</p>
-    <hr>
-    <noscript><div class="error">You should start thinking in activate javascript</div></noscript>
-</center>
+<header class="short">
+	<h1>Welcome to More Points</h1>
+	<hr>
+	<noscript><div class="error">You should start thinking in activate javascript</div></noscript>
+</header>
 
-<details>
-    <summary>How to access a point</summary>
-    <p>To access a point, enter the address /point/POINT_NAME in the URL bar</p>
-    <p>If you have not configured any point yet, you can access the point that comes by default with the More Points installation:</p>
-    <ul>
-        <li>URL: <b><a href="/point/sample" target="_blank">/point/sample</a></b></li>
-        <li>Password: 1234</li>
-    </ul>
-</details>
-
-<details>
-    <summary>How to create a point</summary>
-    <p>Access the <b><a href="/admin" target="_blank">admin page</a></b>, the default password is <b>admin</b>, if you want to change it, edit the config.json file stored in the config folder</p>
-    <p>Remember that the changes will not be applied until you restart the FTP server (server.py).</p>
-</details>
-
-<details>
-    <summary>About</summary>
-    <p>
-        <b>More Points Version: {{ ver }} </b> <br>
-        Copyright (C) 2024 Adrian Bogdan <br>
-        This software is released under the GNU General Public License v3.0 <br>
-        Read LICENSE for more information
-    </p>
-</details>
+<main class="short">
+	<p>List of points:</p>
+	<table cellspacing="0" class="list-view">
+		<tr>
+            <th style="width: 2%;"></th>
+            <th style="width: 98%;"></th>
+        </tr>
+		{% for point in points %}
+			<tr class="item">
+				<td>
+					<a href="/point/{{ point['name'] }}">
+						<img src="/static/icons/point_icons/{{ point['data'].get('Icon', 'no_icon') }}.svg" height="64px" alt="icon">
+					</a>
+				</td>
+				<td class="file">
+					<div>
+						<a href="/point/{{ point['name'] }}">
+							<span class="site-name">
+								<b>
+									{{ point['data'].get('DisplayName') if point['data'].get('DisplayName', '') else point['name']  }}
+								</b>
+							</span>
+						</a>
+						<pre>{{ point['data'].get('Description', '') }}</pre>
+					</div>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+</main>
 
 {% endblock %}

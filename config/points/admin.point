@@ -1,0 +1,14 @@
+{
+  "Point": {
+    "DisplayName": "Admin",
+    "Description": "The administrator's point:\nFrom here you can edit and create points",
+    "Icon": "computer",
+    "Theme": "light",
+    "Legacy": "active"
+  },
+  "FTP": {
+    "Host": "127.0.0.1",
+    "User": "admin",
+    "Password": "admin"
+  }
+}

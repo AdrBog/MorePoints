@@ -32,7 +32,7 @@
             "default": "light",
             "type": "text",
             "comment": "Color theme for your point",
-            "display": "Point theme",
+            "display": "Color theme",
             "options": [
                 ["light", "Light"],
                 ["dark", "Dark"],
@@ -64,16 +64,10 @@
             "display": "User"
         },
         "Password":{
-            "default": "1234",
+            "default": "",
             "type": "password",
             "comment": "Point's password",
-            "display": "Password (Need restart)"
-        },
-        "Root":{
-            "default": "",
-            "type": "text",
-            "comment": "Path of server folder where files are stores",
-            "display": "Root (Need restart)"
+            "display": "Password"
         }
     }
 }

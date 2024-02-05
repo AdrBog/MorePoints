@@ -1,8 +1,6 @@
 # Connecting to an external FTP server
 
-You do not need to run **server.py** to use More Points.
-
-More Points can connect to other FTP servers, in this article you will learn how to do that.
+In this article you will learn how to create and configure a "point" to connect to an FTP server.
 
 > [!IMPORTANT]
 > You will obviously need to know the user credentials of the FTP server you want to connect to first.
@@ -17,9 +15,9 @@ User:           john
 Password:       password123
 ```
 
-- Go to the More Points control panel ( /admin ) and create a new point.
+- Go to the Admin point ( /point/admin ) and create a new point file.
 
-- Enter the point configuration ( /admin/edit_point/POINT_NAME )
+- Edit the point file.
 
 - Go to **FTP** Section
 
@@ -31,9 +29,7 @@ Password:       password123
 > [!IMPORTANT]
 > More Points will never share your password with any person or agency.
 
-> [!NOTE]
-> Configuring **Root** and **Permissions** does not make sense in this case because we are talking about an FTP server that has not been created with **server.py**.
 - Save changes
 
-If everything has been done correctly, you should be able to connect to the external FTP server using More Points
+If everything has been done correctly, you should be able to connect to the external FTP server using More Points.
 

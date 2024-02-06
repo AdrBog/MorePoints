@@ -11,7 +11,7 @@
 *,
 ::before,
 ::after {
-	box-sizing: border-box;
+    box-sizing: border-box;
     font-family: var(--font);
     text-overflow: ellipsis;
 }
@@ -147,7 +147,6 @@ table {
 }
 
 button, .button, input[type="submit"]{
-    border-radius: 0;
     border: 1px solid var(--black-02);
     background-color: var(--black-02);
     color: var(--fg);
@@ -172,11 +171,11 @@ dialog form{
 }
 
 input, select, textarea{
-  padding: 6px;
-  border-radius: 0;
-  border: 1px solid var(--black-02);
-  background-color: var(--bg);
-  color: var(--fg);
+    padding: 6px;
+    border-radius: 0;
+    border: 1px solid var(--black-02);
+    background-color: var(--bg);
+    color: var(--fg);
 }
 
 .text-editor{
@@ -242,6 +241,10 @@ dialog.error{
     max-width: 1000px;
     margin: 0 auto;
     padding: 12px;
+}
+
+.point-title{
+    word-wrap: anywhere;
 }
 
 fieldset{

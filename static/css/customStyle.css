@@ -1,0 +1,32 @@
+@media (max-width: 800px) {
+    .files-list td:nth-last-child(-n + 2),
+    .files-list th:nth-last-child(-n + 2){
+        overflow: hidden;
+        width: 0 !important;
+        font-size: 0;
+        padding: 0;
+    }
+}
+
+body{
+    background-image: linear-gradient(180deg, var(--black-005) 0%, transparent 25%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+img{
+    border-radius: 4px;
+}
+
+button, .button, input, select, dialog{
+    border-radius: 4px;
+}
+
+.points-list tr:hover{
+    transform: scale(1.01);
+    transition: 0.1s;
+}
+
+*:hover{
+    transition: 0.2s;
+}

@@ -37,7 +37,7 @@
 {% block content %}
 <header id="main_header" class="main-header">
     <img src="/static/icons/point_icons/{{ point_icon }}.svg" alt="{{ point }}" width="64px" height="64px">
-    <h1 >{{ display_name }}</h1>
+    <h1 class="point-title">{{ display_name }}</h1>
     {% if point_desc %}
         <a class="clickable icon-cont" onclick="alert(`{{ point_desc }}`)"><span class="icon">󰋽</span></a>
     {% endif %}
@@ -107,7 +107,7 @@
     {% endfor %}
 </div>
 
-<div class="list-view">
+<div class="list-view files-list">
     <table cellspacing="0">
         <tr>
             <th style="width: 2%;"></th>
@@ -159,6 +159,11 @@
                                         if (confirm(`Are you sure you want to delete '{{ file[0] }}'?`))
                                             deleteFile('{{ point }}', '{{ pwd }}/{{ file[0] }}')
                                         break;
+                                    case 'details':
+                                        alert(`File name: {{ file[0] }}
+                                        \rFile size: {{ file[1]['h_size'] }}
+                                        \rLast modified: {{ file[1]['modtime'] }}`)
+                                        break;
                                 }
                                 this.value = 0;
                             "
@@ -167,25 +172,25 @@
                         
                         <option value="0"> - Actions - </option>
 
-                            {% if file[1]["type"] == "dir" %}
+                        {% if file[1]["type"] == "dir" %}
 
-                            {% else %}
-
-                                <optgroup label="{{ '-'*50 }}">
-                                    <option value="open">Open</option>
-                                    <option value="edit">Edit</option>
-                                    <option value="download">Download</option>
-                                </optgroup>
-
-                            {% endif %}
+                        {% else %}
 
                             <optgroup label="{{ '-'*50 }}">
-                                <option value="rename">Rename</option>
-                                <option value="delete">Delete</option>
+                                <option value="open">Open</option>
+                                <option value="edit">Edit</option>
+                                <option value="download">Download</option>
                             </optgroup>
 
+                        {% endif %}
 
-                        </select>
+                        <optgroup label="{{ '-'*50 }}">
+                        <option value="rename">Rename</option>
+                        <option value="delete">Delete</option>
+                        <option value="details">Details</option>
+
+
+                    </select>
                 </td>
                 <td>
                     {{ file[1]["modtime"] }}

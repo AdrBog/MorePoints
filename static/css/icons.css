@@ -105,7 +105,7 @@ span.icon-md::after{
     content: "";
 }
 
-span.icon-db::after{
+span.icon-db::after, span.icon-sql::after{
     color: var(--db-file);
     content: "";
 }

@@ -208,6 +208,10 @@ fieldset input, fieldset select, fieldset textarea{
     gap: 8px;
 }
 
+.info p{
+    white-space: pre-line;
+}
+
 div.error, button.error{
     background-color: var(--red-02);
     border: 1px solid var(--red-02);

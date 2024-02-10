@@ -40,10 +40,8 @@
                 dialog.classList.add(_class)
                 dialog.style.width = "400px"
                 dialog.innerHTML = `
-                <p>
-                    <h1>${title}</h1>
-                    ${message}
-                </p>
+                <h1>${title}</h1>
+                <p>${message}</p>
                 <button onclick="this.parentElement.remove()">Ok</button>
                 `
                 document.body.append(dialog)

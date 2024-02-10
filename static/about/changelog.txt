@@ -1,4 +1,6 @@
 CHANGELOG
+v 0.2.0
+	Added TLS/SSL support
 v 0.1.1
 	Added Legacy Mode, basically support for Pale Moon browser
 	Added cache management to improve the application speed

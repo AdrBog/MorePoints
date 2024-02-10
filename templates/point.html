@@ -150,6 +150,12 @@
                                     case 'download':
                                         window.open(`/download/{{ point }}?path={{ pwd }}&filename={{ file[0] }}`, '_blank')
                                         break;
+                                    case 'move':
+                                        let newPath = routePrompt('Enter new route:', '{{ pwd }}')
+                                        console.log(newPath)
+                                        if (newPath)
+                                            moveFile('{{ point }}', '{{ pwd }}', '{{ file[0] }}', newPath)
+                                        break;
                                     case 'rename':
                                         let filename = filenamePrompt('Enter new name:', '{{ file[0] }}')
                                         if (filename)
@@ -160,9 +166,9 @@
                                             deleteFile('{{ point }}', '{{ pwd }}/{{ file[0] }}')
                                         break;
                                     case 'details':
-                                        alert(`File name: {{ file[0] }}
-                                        \rFile size: {{ file[1]['h_size'] }}
-                                        \rLast modified: {{ file[1]['modtime'] }}`)
+                                        popMessage('',`File name: {{ file[0] }}
+                                        \nFile size: {{ file[1]['h_size'] }}
+                                        \nLast modified: {{ file[1]['modtime'] }}`, 'info')
                                         break;
                                 }
                                 this.value = 0;
@@ -184,6 +190,8 @@
 
                         {% endif %}
 
+                        <optgroup label="{{ '-'*50 }}">
+                        <option value="move">Move</option>
                         <optgroup label="{{ '-'*50 }}">
                         <option value="rename">Rename</option>
                         <option value="delete">Delete</option>

@@ -8,7 +8,9 @@
   },
   "FTP": {
     "Host": "localhost",
+    "Port": "21",
     "User": "sample",
-    "Password": "1234"
+    "Password": "1234",
+    "TLS": "disabled"
   }
 }

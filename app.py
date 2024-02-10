@@ -76,7 +76,11 @@ def point(id):
 
     for file in files:
         file[1]["ext"] = file[0].split(".")[-1].lower()
-        file[1]["modtime"] = datetime.strptime(file[1]["modify"], '%Y%m%d%H%M%S').strftime("%m/%d/%Y, %H:%M:%S")
+        try:
+            file[1]["modify"] = file[1]["modify"].split('.')[0]
+            file[1]["modtime"] = datetime.strptime(file[1]["modify"], '%Y%m%d%H%M%S').strftime("%m/%d/%Y, %H:%M:%S")
+        except:
+            file[1]["modtime"] = file[1]["modify"]
         try:
             file[1]["h_size"] = human_readable_size(int(file[1]["size"]))
         except:
@@ -198,20 +202,22 @@ def rename(id):
     if id not in session:
         return jsonify(status="Error", output=Error.LOGIN_REQUIRED)
     path = request.json.get('path')
+    new_path = request.json.get('new_path', path)
     filename = request.json.get('filename')
-    new_name = request.json.get('new_name')
-    ftp = connect(id)
-    for file in ftp.nlst(path):
-        if file == new_name:
-            ftp.close()
-            return jsonify(status="Error", output=Error.FILE_EXISTS)
+    new_name = request.json.get('new_name', filename)
+    
     try:
-        output = ftp.rename(f"{path}/{filename}", f"{path}/{new_name}")
+        ftp = connect(id)
+        for file in ftp.nlst(new_path):
+            if file == new_name:
+                ftp.close()
+                return jsonify(status="Error", output=Error.FILE_EXISTS)
+        output = ftp.rename(f"{path}/{filename}", f"{new_path}/{new_name}")
         ftp.close()
         return jsonify(status="Ok", output=output)
     except ftplib.all_errors as error:
         ftp.close()
-        return jsonify(status="Error", output=str(error)) 
+        return jsonify(status="Error", output=str(error))
     
 
 @app.route('/upload/<id>', methods=['POST'])

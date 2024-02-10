@@ -43,7 +43,7 @@ function match(regex, string)
  */
 function filenamePrompt(message, _default)
 {
-    const filename = prompt(message, _default);
+    const filename = prompt(message, _default)
     if (filename === null) {
         return
     } else if (match(VALID_FILENAME, filename)) {
@@ -52,4 +52,10 @@ function filenamePrompt(message, _default)
         alert("Invalid filename")
         return filenamePrompt(message, filename)
     }
+}
+
+function routePrompt(message, _default)
+{
+    const route = prompt(message, _default)
+    return route
 }

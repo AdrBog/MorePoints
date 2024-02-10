@@ -53,17 +53,19 @@ In your web browser, go to <a href="localhost:5002">localhost:5002</a> and the a
 </details>
 
 ## Features
-### FTP server
-**server.py** is your own FTP server in case you don't have any created
+<dl>
+    <dt>FTP server</dt>
+    <dd><b>server.py</b> is your own FTP server in case you don't have any created. <br><b>server_ssl.py</b> is the same server but with SSL support</dd>
+    <dt>FTP client</dt>
+    <dd>More Points can also connect to external FTP servers.</dd>
+    <dt>Built-in code editor</dt>
+    <dd>More Points comes integrated with my own <a href="https://github.com/AdrBog/MiniCodeEditor">code editor</a> </dd>
+    <dt>Legacy mode</dt>
+    <dd>Configure a point in legacy mode too support "old" browsers, like Pale Moon.</dd>
+    <dt>TLS/SLL support</dt>
+    <dd>Use FTP over explicit TLS/SSL. Most of the time it fails but for <b>server_ftp.py</b> it works.</dd>
+</dl>
 
-### FTP client
-More Points can also connect to external FTP servers.
-
-### Built-in code editor
-More Points comes integrated with my own [code editor](https://github.com/AdrBog/MiniCodeEditor). (UNDER DEVELOPMENT)
-
-### Legacy mode
-Configure a point in legacy mode too support "old" browsers, like Pale Moon. (UNDER DEVELOPMENT)
 
 ## License
 

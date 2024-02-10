@@ -169,3 +169,38 @@ async function renameFileNoReview(point, path, filename, newName)
         headers: {"Content-type": "application/json; charset=UTF-8"}
     })
 }
+
+
+/**
+ * Move a file or directory
+ * @param {string} point 
+ * @param {string} path 
+ * @param {string} filename 
+ * @param {string} newPath
+ */
+async function moveFile(point, path, filename, newPath)
+{
+    const data = await moveFileNoReview(point, path, filename, newPath)
+    reviewResponse(await data.json())
+}
+
+
+/**
+ * Move a file or directory without response
+ * @param {string} point 
+ * @param {string} path 
+ * @param {string} filename 
+ * @param {string} newPath
+ */
+async function moveFileNoReview(point, path, filename, newPath)
+{
+    return await fetch(`/rename/${point}`, {
+        method: 'POST',
+        body: JSON.stringify({
+            "path": path,
+            "filename": filename,
+            "new_path": newPath
+        }),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+    })
+}

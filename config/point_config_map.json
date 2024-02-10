@@ -54,8 +54,14 @@
         "Host":{
             "default": "127.0.0.1",
             "type": "text",
-            "comment": "Host where FTP server is stored (Leave empty for localhost)",
+            "comment": "Host where FTP server is stored",
             "display": "Host"
+        },
+        "Port":{
+            "default": "21",
+            "type": "number",
+            "comment": "Port number where FTP server is stored",
+            "display": "Port"
         },
         "User":{
             "default": "",
@@ -68,6 +74,16 @@
             "type": "password",
             "comment": "Point's password",
             "display": "Password"
+        },
+        "TLS":{
+            "default": "disabled",
+            "type": "text",
+            "comment": "Use explicit FTP over TLS/SSL, may not work",
+            "display": "FTP over TSL/SSL",
+            "options": [
+                ["disabled", "Disabled"],
+                ["active", "Active"]
+            ]
         }
     }
 }

@@ -37,6 +37,7 @@
     --git-file: #f05133;
     --db-file: #6f7c91;
     --point-file: #1f78dd;
+    --c-file: #1f78dd;
 }
 
 .dark{
@@ -78,6 +79,7 @@
     --git-file: #f05133;
     --db-file: #6f7c91;
     --point-file: #1f78dd;
+    --c-file: #1f78dd;
 }
 
 .gruvbox{
@@ -119,4 +121,5 @@
     --git-file: #a9b665;
     --db-file: #a9b665;
     --point-file: #a9b665;
+    --c-file: #a9b665;
 }

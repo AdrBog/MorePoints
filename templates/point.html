@@ -49,9 +49,7 @@
         onchange="
             switch(this.value){
                 case 'folder':
-                    let foldername = filenamePrompt('Enter folder name')
-                    if (foldername)
-                        createFolder('{{ point }}', '{{ pwd }}', foldername)
+                    createFolderDialog()
                     break;
                 case 'file':
                     let filename = filenamePrompt('Enter file name')
@@ -80,6 +78,9 @@
             case 'delete':
                 deleteSelected()
                 break;
+            case 'move':
+                moveSelected()
+                break;
             case 'download':
                 downloadSelected()
                 break;
@@ -88,6 +89,7 @@
     ">
     	<option value="0">- File actions -</option>
     	<option value="delete">Delete selected</option>
+    	<option value="move">Move selected</option>
     	<option value="download">Download selected</option>
     </select>
     <input id="searchBox" type="text" placeholder="Search in {{ folder_name }}" value="{{ search }}">
@@ -152,7 +154,6 @@
                                         break;
                                     case 'move':
                                         let newPath = routePrompt('Enter new route:', '{{ pwd }}')
-                                        console.log(newPath)
                                         if (newPath)
                                             moveFile('{{ point }}', '{{ pwd }}', '{{ file[0] }}', newPath)
                                         break;
@@ -219,6 +220,13 @@
 <script>
     let selectedFiles = []
     let path = "{{ pwd }}"
+
+    function createFolderDialog()
+    {
+        let foldername = filenamePrompt('Enter folder name')
+        if (foldername)
+            createFolder('{{ point }}', '{{ pwd }}', foldername)
+    }
     
     function updateSelected()
     {
@@ -230,11 +238,23 @@
     {
         if (selectedFiles.length != 0){
             if (confirm(`Are you sure you want to delete '${selectedFiles.join(', ')}'?`)){
-                for (const file of selectedFiles){
+                for (const file of selectedFiles)
                     await deleteFileNoReview("{{ point }}" ,`${path}/${file}`)
-                }
                 location.reload()
             }
+        } else {
+            popMessage("Error", "No files selected", "error")
+        }
+    }
+
+    async function moveSelected()
+    {
+        if (selectedFiles.length != 0){
+            let newPath = routePrompt('Enter new route:', '{{ pwd }}')
+            if (newPath)
+                for (const file of selectedFiles)
+                    await moveFileNoReview("{{ point }}" , "{{ pwd }}", file, newPath)
+            location.reload()
         } else {
             popMessage("Error", "No files selected", "error")
         }
@@ -243,9 +263,8 @@
     async function downloadSelected()
     {
         if (selectedFiles.length != 0){
-            for (const file of selectedFiles){
+            for (const file of selectedFiles)
                 window.open(`/download/{{ point }}?path={{ pwd }}&filename=${file}`, '_blank')
-            }
         } else {
             popMessage("Error", "No files selected", "error")
         }

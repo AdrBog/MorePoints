@@ -23,7 +23,7 @@ git clone https://github.com/AdrBog/MorePoints.git
 cd MorePoints
 python -m venv venv
 source venv/bin/activate
-pip install flask flask-cors pyftpdlib
+pip install flask flask-cors pyftpdlib pyopenssl
 ```
 
 ## Setup
@@ -63,7 +63,7 @@ In your web browser, go to <a href="localhost:5002">localhost:5002</a> and the a
     <dt>Legacy mode</dt>
     <dd>Configure a point in legacy mode too support "old" browsers, like Pale Moon.</dd>
     <dt>TLS/SLL support</dt>
-    <dd>Use FTP over explicit TLS/SSL. Most of the time it fails but for <b>server_ftp.py</b> it works.</dd>
+    <dd>Use FTP over explicit TLS/SSL. Most of the time it fails but for <b>server_ssl.py</b> it works.</dd>
 </dl>
 
 

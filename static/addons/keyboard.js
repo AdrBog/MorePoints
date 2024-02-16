@@ -3,11 +3,11 @@
 **/
 
 document.addEventListener("keydown", e => {
-    switch (e.target.tagName.toLowerCase()) {
-        case 'input':
-            break;
-        case 'textarea':
-            break;
-        default:
+    if (e.key == "Delete"){
+        e.preventDefault()
+        deleteSelected()
+    } else if (e.ctrlKey && e.shiftKey && e.key == "N"){
+        e.preventDefault()
+        createFolderDialog()
     }
 })

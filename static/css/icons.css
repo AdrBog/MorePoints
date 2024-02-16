@@ -124,3 +124,13 @@ span.icon-point::after{
     color: var(--point-file);
     content: "󰀃";
 }
+
+span.icon-c::after{
+    color: var(--c-file);
+    content: "";
+}
+
+span.icon-cpp::after{
+    color: var(--c-file);
+    content: "";
+}

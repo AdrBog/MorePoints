@@ -35,6 +35,10 @@ function generateToolbar(toolbar){
   `
   const SELECT = document.querySelector("#text-editor-rule")
   switch(document.querySelector("[name='filename']").value.split(".").slice(-1)[0]){
+    case "c":
+    case "cpp":
+      SELECT.value = "c"
+      break;
     case "css":
       SELECT.value = "css"
       break;

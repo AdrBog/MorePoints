@@ -3,6 +3,7 @@ from io import BytesIO, StringIO
 import ftplib
 from .misc import *
 from .config import *
+import ssl
 
 def connect(id):
     ftp_data = read_point_config(id)
@@ -11,6 +12,7 @@ def connect(id):
     USE_TLS = ftp_data["FTP"].get("TLS", 'disabled') == 'active'
     if (USE_TLS):
         ftp = ftplib.FTP_TLS()
+        ftp.ssl_version = ssl.PROTOCOL_SSLv23
         ftp.connect(HOST, PORT)
         ftp.login(ftp_data["FTP"].get("User", id), ftp_data["FTP"]["Password"])
         ftp.prot_p()

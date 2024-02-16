@@ -1,8 +1,9 @@
 {
-    "point": [],
+    "point": [
+        "/static/addons/keyboard.js"
+    ],
     "point_editor": [],
     "text_editor": [
-        "/static/addons/keyboard.js",
         "/static/addons/code-editor/init.js"
     ]
 }

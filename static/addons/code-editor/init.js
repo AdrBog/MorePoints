@@ -13,7 +13,7 @@ window.addEventListener("load", () => {
   const oldTextarea = document.querySelector("textarea")
   const value = oldTextarea.value
   oldTextarea.remove()
-  document.querySelector(".text-editor").insertAdjacentHTML("beforeend", "<div id='text-editor'></div><div id='text-editor-toolbar' class='toolbar'></div>")
+  document.querySelector(".text-editor").insertAdjacentHTML("beforeend", "<div id='text-editor'></div><div id='text-editor-toolbar'></div>")
   window.CODE_EDITOR = new MiniCodeEditor("#text-editor", "content")
   window.CODE_EDITOR.setFontSize(24)
   window.CODE_EDITOR.setValue(value)
@@ -22,6 +22,7 @@ window.addEventListener("load", () => {
 
 function generateToolbar(toolbar){
   const RULES_OPTIONS = Object.keys(RULES).map((x) => {return `<option value='${x}'>${x}</option>`}).join("")
+  toolbar.classList.add("flex", "wrap", "gap12", "acenter", "pad8")
   toolbar.innerHTML = `
     <div>
       <label for="word-wrap">Word Wrap:</label>

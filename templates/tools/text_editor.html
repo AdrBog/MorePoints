@@ -4,7 +4,7 @@
 
 {% block content %}
 <form class="text-editor" action="javascript:save()" method="post">
-    <div class="toolbar">
+    <div class="flex wrap padb8 gap12 acenter">
         <input type="submit" class="primary" value="Save">
         <button type="button" onclick="window.open(`/download/{{ point }}?path={{ path }}&filename={{ filename }}`, '_blank')">Download</button>
         <button type="button" onclick="window.open(`/open/{{ point }}?path={{ path }}&filename={{ filename }}&open=1`, '_blank')">Open</button>

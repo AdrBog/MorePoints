@@ -16,7 +16,7 @@
 {% endif %}
 
 <dialog id="upload_file">
-    <form action="/upload/{{ point }}" method="post" enctype="multipart/form-data">
+    <form action="/upload/{{ point }}" method="post" enctype="multipart/form-data" class="flex column gap12">
         Upload:
         <input type="hidden" name="d" value="{{ pwd }}">
         <input type="file" name="file" multiple>
@@ -35,17 +35,19 @@
 {% endblock %}
 
 {% block content %}
-<header id="main_header" class="main-header">
-    <img src="/static/icons/point_icons/{{ point_icon }}.svg" alt="{{ point }}" width="64px" height="64px">
-    <h1 class="point-title">{{ display_name }}</h1>
-    {% if point_desc %}
-        <a class="clickable icon-cont" onclick="alert(`{{ point_desc }}`)"><span class="icon">󰋽</span></a>
-    {% endif %}
-    <div style="flex: 1;"></div>
+<header id="main_header" class="grid gtca1a acenter gap12">
+    <div class="grid gtca1a acenter gap12">
+        <img src="/static/icons/point_icons/{{ point_icon }}.svg" alt="{{ point }}" width="64px" height="64px">
+        <h1 class="wwany">{{ display_name }}</h1>
+        {% if point_desc %}
+            <a class="clickable" onclick="alert(`{{ point_desc }}`)"><span class="icon">󰋽</span></a>
+        {% endif %}
+    </div>
+    <div></div>
     <a href="/exit/{{ point }}" class="button">Exit</a>
 </header>
-<div id="toolbar" class="toolbar border-bottom">
-    <select class="primary" name="toolbar-new" id="toolbar-new"
+<div id="toolbar" class="flex wrap gap12 border-bottom">
+    <select class="primary"
         onchange="
             switch(this.value){
                 case 'folder':
@@ -92,8 +94,10 @@
     	<option value="move">Move selected</option>
     	<option value="download">Download selected</option>
     </select>
-    <input id="searchBox" type="text" placeholder="Search in {{ folder_name }}" value="{{ search }}">
-    <button onclick="window.location.href = `/point/{{ point }}?d={{pwd}}&search=${searchBox.value}`">Search</button>
+    <form action="/point/{{ point }}?d={{pwd}}" method="get" class="flex gap12">
+    	<input type="text" placeholder="Search in {{ folder_name }}" name="search" value="{{ search }}">
+        <button type="submit">Search</button>
+    </form>
 </div>
 <hr>
 

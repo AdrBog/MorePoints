@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<main class="login">
-    <form action="/enter_point" method="post">
+<main class="w1000px mar0auto maw400px">
+    <form action="/enter_point" method="post" class="center flex column gap12">
         <h1>Access point</h1>
         <p>Enter point name and password to access the point</p>
 
         {% if errormsg %}
-                <div class="error">
+                <div class="error pad8 tal">
                         <pre>{{ errormsg }}</pre>
                 </div>
         {% endif %}

@@ -3,18 +3,20 @@
 {% block title %} Edit {{ point }} - More Points {% endblock %}
 
 {% block content %}
-<header class="short">
-    <img src="/static/icons/point_icons/{{ point_icon }}.svg" alt="{{ point }}" width="64px" height="64px">
-    <p><b>{{ display_name }}</b> ({{ point }})</p>
-    <a href="/point/{{ point }}" class="clickable icon-cont" target="_blank"><span class="icon"></span></a>
+<header class="maw1000px mar0auto">
+    <span class="grid gtca1a acenter gap12 pad8">
+        <img src="/static/icons/point_icons/{{ point_icon }}.svg" alt="{{ point }}" width="64px" height="64px">
+        <p class="wwany"><b>{{ display_name }}</b> ({{ point }})</p>
+        <a href="/point/{{ point }}" class="clickable icon-cont" target="_blank"><span class="icon"></span></a>
+    </span>
 </header>
 
-<main class="short">
+<main class="maw1000px mar0auto flex column gap12">
 	{% for section_key, section in settings_info.items() %}
     <form section="{{ section_key }}">
         <fieldset>
             <legend>{{section_key}}</legend>
-            <table>
+            <table class="w100">
                 {% for key, setting in section.items() %}
                     <tr>
                         <td>
@@ -41,7 +43,7 @@
     {% endfor %}
 </main>
 
-<footer class="toolbar short">
+<footer class="maw1000px mar0auto pad8">
     <button onclick="saveConfig()" class="primary">Save</button>
     <a href="/admin" class="button">Cancel changes</a>
 </footer>

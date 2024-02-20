@@ -1,6 +1,7 @@
 {
     "point": [
-        "/static/addons/keyboard.js"
+        "/static/addons/keyboard.js",
+        "/static/addons/fancySel.js"
     ],
     "point_editor": [],
     "text_editor": [

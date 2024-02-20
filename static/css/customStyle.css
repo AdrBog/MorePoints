@@ -68,3 +68,9 @@ input, select, textarea{
     background-color: var(--bg);
     color: var(--fg);
 }
+
+.files-list td{
+    outline: none;
+    box-shadow: none;
+    user-select: none;
+}

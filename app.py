@@ -59,20 +59,16 @@ def point(id):
 
     d = request.args.get('d', default="")
     search = request.args.get('search', default="")
+    onlydir = request.args.get('onlydir', default="")
     if d == '/': 
         d = ""
 
-    ftp = connect(id)
-    ftp.cwd(f'{d}')
-    files = []
-    try:
-        data = ftp.mlsd(path="", facts=["type", "size", "perm", "modify"])
-        files = [f for f in data]
-    except ftplib.error_perm as resp:
-        if str(resp) == "550 No files found":
-            print("No files in this directory")
-        else:
-            raise
+    if search:
+        files = list_dir_filter(id, d, r".*" + re.escape(search) + r".*")
+    else:
+        files = list_dir(id, d)
+
+    files = [f for f in files if not f[0] in [".", ".."]]
 
     for file in files:
         file[1]["ext"] = file[0].split(".")[-1].lower()
@@ -86,15 +82,6 @@ def point(id):
         except:
             pass
 
-    ftp.quit()
-    
-    files = [f for f in files if not f[0] in [".", ".."]]
-
-    if search:
-        regex = re.compile(r".*" + re.escape(search) + r".*")
-        filter_search = [f for f in files if regex.match(f[0])]
-        files = filter_search
-    
     return render_template('point.html', pwd=f'{d}', point=id, files=files, search=search, ver=VERSION, addons=updateAddons(), config=read_point_config(id)["Point"])
 
 @app.route('/open/<id>', methods=['GET'])

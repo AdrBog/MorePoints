@@ -94,7 +94,8 @@
     	<option value="move">Move selected</option>
     	<option value="download">Download selected</option>
     </select>
-    <form action="/point/{{ point }}?d={{pwd}}" method="get" class="flex gap12">
+    <form action="/point/{{ point }}" method="get" class="flex gap12">
+    	<input type="hidden" name="d" value="{{pwd}}">
     	<input type="text" placeholder="Search in {{ folder_name }}" name="search" value="{{ search }}">
         <button type="submit">Search</button>
     </form>
@@ -102,13 +103,17 @@
 <hr>
 
 <div class="path">
-    <a href="/point/{{ point }}">Home</a>
+    <a href="/point/{{ point }}" path="/" ondrop="drop(event)" ondragover="allowDrop(event)">Home</a>
     {% for dir in pwd.split("/")[1:] %}
         <span class="black-05">></span>
         {% if loop.index == pwd.split("/")|length - 1 %}
             <b>{{ dir }}</b>
         {% else %}
-            <a href="/point/{{point}}?d={{ pwd.split('/')[0:loop.index + 1]|join('/') }}">{{ dir }}</a>
+            <a href="/point/{{point}}?d={{ pwd.split('/')[0:loop.index + 1]|join('/') }}"
+            path="{{ pwd.split('/')[0:loop.index + 1]|join('/') }}"
+            ondrop="drop(event)"
+            ondragover="allowDrop(event)"
+            >{{ dir }}</a>
         {% endif %}
     {% endfor %}
 </div>
@@ -137,9 +142,18 @@
                 </td>
                 <td class="file">
                     {% if file[1]["type"] == "dir" %}
-                        <a href="/point/{{ point }}?d={{ pwd }}/{{ file[0] }}">{{ file[0] }}</a>
+                        <a href="/point/{{ point }}?d={{ pwd }}/{{ file[0] }}"
+                        ondrop="drop(event)"
+                        draggable="true"
+                        ondragover="allowDrop(event)"
+                        ondragstart="drag(event)"
+                        path="{{ pwd }}/{{ file[0] }}"
+                        >{{ file[0] }}</a>
                     {% else %}
-                        <a href="/open/{{ point }}?path={{ pwd }}&filename={{ file[0] }}" target="_blank">{{ file[0] }}</a>
+                        <a href="/open/{{ point }}?path={{ pwd }}&filename={{ file[0] }}" target="_blank"
+                        draggable="true"
+                        ondragstart="drag(event)"
+                        >{{ file[0] }}</a>
                     {% endif %}
                 </td>
                 <td>
@@ -225,6 +239,26 @@
     let selectedFiles = []
     let path = "{{ pwd }}"
 
+    function allowDrop(ev) {
+        ev.preventDefault()
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.innerText)
+    }
+
+    async function drop(ev) {
+        ev.preventDefault()
+        let file = ev.dataTransfer.getData("text")
+        let to = `${ev.target.getAttribute('path')}`
+        if (selectedFiles.length == 0){
+            await moveFile("{{ point }}", "{{ pwd }}", file, to)
+        } else {
+            moveSelected(to)
+        }
+            
+    }
+
     function createFolderDialog()
     {
         let foldername = filenamePrompt('Enter folder name')
@@ -251,10 +285,10 @@
         }
     }
 
-    async function moveSelected()
+    async function moveSelected(path = "")
     {
         if (selectedFiles.length != 0){
-            let newPath = routePrompt('Enter new route:', '{{ pwd }}')
+            let newPath = (path) ? path : routePrompt('Enter new route:', '{{ pwd }}')
             if (newPath)
                 for (const file of selectedFiles)
                     await moveFileNoReview("{{ point }}" , "{{ pwd }}", file, newPath)

@@ -19,7 +19,8 @@ span.folder::after {
     content: "";
 }
 
-span.icon-msg::after, span.icon-txt::after, span.icon-tex::after, span.icon-rtf::after, span.icon-ini::after{
+span.icon-msg::after, span.icon-txt::after, span.icon-tex::after, span.icon-rtf::after, 
+span.icon-ini::after, span.icon-odt::after{
     color: var(--text-file);
     content: "";
 }
@@ -67,11 +68,6 @@ span.icon-lll{
 span.icon-lnk::after{
     color: var(--lnk-file);
     content: ""
-}
-
-span.icon-pointconf::after{
-    color: #1f78dd;
-    content: "";
 }
 
 span.icon-pdf::after{

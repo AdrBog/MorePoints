@@ -1,7 +1,7 @@
 import json
 import os
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 
 # Paths
 CONFIG_DIR = "config"
@@ -11,8 +11,6 @@ POINT_CONFIG_MAP = CONFIG_DIR + "/point_config_map.json"
 POINTS_DIR = "points"
 ADDONS_FILE = "addons.json"
 SERVER_FILE = "server.py"
-
-
 
 def setup_MorePoints():
     if not os.path.exists(POINTS_DIR):

@@ -30,6 +30,7 @@
     })
     function save(){
         const form = new FormData(document.querySelector("form"))
+        console.log(form.get('content'))
         editFile('{{ point }}', form.get('path'), form.get('filename'), form.get('content'))
     }
 </script>

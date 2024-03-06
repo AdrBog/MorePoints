@@ -1,3 +1,6 @@
+"""
+This module stores error or information messages.
+"""
 from enum import Enum
 
 class Error(str, Enum):

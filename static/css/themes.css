@@ -1,5 +1,5 @@
 .light{
-    --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --font: 'Jetbrains Mono', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     --bg: #fff;
     --fg: #000;
     --bg-2: #f3f2f1;
@@ -8,7 +8,7 @@
     --black-01: rgba(0,0,0,0.1);
     --black-02: rgba(0,0,0,0.2);
     --black-05: rgba(0,0,0,0.5);
-    --white-005: rgba(255,255,255,0.05);
+    --white-005: rgba(255, 255, 255, 0.05);
     --white-01: rgba(255,255,255,0.1);
     --white-02: rgba(255,255,255,0.2);
     --white-05: rgba(255,255,255,0.5);
@@ -18,6 +18,11 @@
     --toolbar-bg:#333333;
     --toolbar-fg:#fff;
 
+    /* Mini Code Editor */
+    --mce-editor-font: var(--font), monospace;
+    --mce-editor-line-height: 1.32;
+
+    /* Explorer icons */
     --bin-file: #999;
     --folder: #999;
     --text-file: #1f78dd;
@@ -41,11 +46,11 @@
 }
 
 .dark{
-    --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    --bg: #1a1a1a;
-    --fg: #ffffff;
-    --bg-2: #1a1a1a;
-    --fg-2: #ffffff;
+    --font: 'Jetbrains Mono', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --bg: #0d1117;
+    --fg: #ecf2f8;
+    --bg-2: #0d1117;
+    --fg-2: #ecf2f8;
     --white-005: rgba(0,0,0,0.05);
     --white-01: rgba(0,0,0,0.1);
     --white-02: rgba(0,0,0,0.2);
@@ -55,35 +60,54 @@
     --black-02: rgba(255,255,255,0.2);
     --black-05: rgba(255,255,255,0.5);
     --red-02: rgba(255,0,0,0.2);
-    --primary-bg: #1f78dd;
-    --primary-fg: #fff;
-    --toolbar-bg:#333333;
-    --toolbar-fg:#fff;
+    --primary-bg: #77bdfb;
+    --primary-fg: #0d1117;
+    --toolbar-bg:#0d1117;
+    --toolbar-fg:#ecf2f8;
 
-    --bin-file: #999;
-    --folder: #999;
-    --text-file: #1f78dd;
-    --img-file: #c83737;
-    --video-file: #0a8;
-    --xml-file: #6f7c91;
-    --shell-file: #6f7c91;
-    --audio-file: #7137c8;
-    --zip-file: #a0892c;
-    --lnk-file: #0a8;
-    --pdf-file: #d40000;
-    --js-file: #d4aa00;
-    --json-file: #d4aa00;
-    --css-file: #1f78dd;
-    --py-file: #1f78dd;
-    --md-file: #1f78dd;
-    --git-file: #f05133;
-    --db-file: #6f7c91;
-    --point-file: #1f78dd;
-    --c-file: #1f78dd;
+    /* Mini Code Editor */
+    --mce-color-blue: #77bdfb;
+    --mce-color-red: #fa7970;
+    --mce-color-green: #7ce38b;
+    --mce-color-orange: #faa367;
+    --mce-color-purple: #cea5fb;
+    --mce-color-brown: #faa367;
+    --mce-color-black: #0d1117;
+    --mce-color-white: #ecf2f8;
+    --mce-color-bg: #0d1117;
+    --mce-color-fg: #ecf2f8;
+    --mce-color-caret: #ecf2f8;
+    --mce-color-select: rgba(236, 242, 248, 0.2);
+    --mce-editor-font: var(--font), monospace;
+    --mce-editor-line-height: 1.32;
+    --mce-editor-border: 2px groove #ecf2f8;
+    --mce-editor-border-focus:  #ecf2f8 0px 1px 4px, #ecf2f8 0px 0px 0px 3px;
+
+    /* Explorer icons */
+    --bin-file: #ecf2f8;
+    --folder: #ecf2f8;
+    --text-file: #77bdfb;
+    --img-file: #fa7970;
+    --video-file: #7ce38b;
+    --xml-file: #ecf2f8;
+    --shell-file: #ecf2f8;
+    --audio-file: #cea5fb;
+    --zip-file: #faa367;
+    --lnk-file: #7ce38b;
+    --pdf-file: #fa7970;
+    --js-file: #faa367;
+    --json-file: #faa367;
+    --css-file: #77bdfb;
+    --py-file: #77bdfb;
+    --md-file: #77bdfb;
+    --git-file: #fa7970;
+    --db-file: #ecf2f8;
+    --point-file: #77bdfb;
+    --c-file: #77bdfb;
 }
 
 .gruvbox{
-    --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --font: 'Jetbrains Mono', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     --bg: #282828;
     --fg: #ebdbb2;
     --bg-2: #32302f;
@@ -102,6 +126,25 @@
     --primary-bg: #a9b665;
     --primary-fg: #32312b;
 
+    /* Mini Code Editor */
+    --mce-color-blue: #83a598;
+    --mce-color-red: #fb4934;
+    --mce-color-green: #b8bb26;
+    --mce-color-orange: #fabd2f;
+    --mce-color-purple: #d3869b;
+    --mce-color-brown: #fe8019;
+    --mce-color-black: #282828;
+    --mce-color-white: #ebdbb2;
+    --mce-color-bg: #282828;
+    --mce-color-fg: #ebdbb2;
+    --mce-color-caret: #ebdbb2;
+    --mce-color-select: rgba(92, 85, 70, 0.5);
+    --mce-editor-font: var(--font), monospace;
+    --mce-editor-line-height: 1.32;
+    --mce-editor-border: 2px groove #ebdbb2;
+    --mce-editor-border-focus:  #ebdbb2 0px 1px 4px, #ebdbb2 0px 0px 0px 3px;
+
+    /* Explorer icons */
     --bin-file: #a9b665;
     --folder: #a9b665;
     --text-file: #a9b665;

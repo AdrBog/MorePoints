@@ -4,7 +4,11 @@
     "Description": "This is a description for the point",
     "Icon": "computer",
     "Theme": "light",
-    "Legacy": "disabled"
+    "Legacy": "disabled",
+    "Password": ""
+  },
+  "Connection": {
+    "Protocol": "FTP"
   },
   "FTP": {
     "Host": "localhost",
@@ -12,5 +16,8 @@
     "User": "sample",
     "Password": "1234",
     "TLS": "disabled"
+  },
+  "Local": {
+    "Path": ""
   }
 }

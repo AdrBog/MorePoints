@@ -12,6 +12,13 @@ body{
     background-image: linear-gradient(180deg, var(--black-005) 0%, transparent 25%);
     background-repeat: no-repeat;
     background-attachment: fixed;
+    font-family: Montserrat,'Source Sans Pro',Arial,sans;
+    font-size: 14px;
+}
+
+a{
+    color: var(--fg);
+    text-decoration: none;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -73,4 +80,19 @@ input, select, textarea{
     outline: none;
     box-shadow: none;
     user-select: none;
+}
+
+main{
+    border: 1px solid var(--black-05);
+    padding: 12px;
+    background-color: var(--bg);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.item td, .item th{
+    padding: 8px;
+}
+
+.path{
+    padding:8px;
 }

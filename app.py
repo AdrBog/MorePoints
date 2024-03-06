@@ -9,13 +9,12 @@ import socket
 
 from utils.ftp import *
 from utils.config import *
-from utils.ftp import *
+from utils.conn import *
 from utils.misc import *
 from utils.msg import *
 from utils.tools import tools
 
 app = Flask(__name__)
-# TODO: Avoid overwrite files when creating or renaming files
 
 #app.secret_key = secrets.token_hex()
 app.secret_key = b'SECRET'  # FOR DEV ONLY
@@ -73,14 +72,11 @@ def point(id):
     for file in files:
         file[1]["ext"] = file[0].split(".")[-1].lower()
         try:
-            file[1]["modify"] = file[1]["modify"].split('.')[0]
+            file[1]["modify"] = file[1].get("modify", "0.0").split('.')[0]
             file[1]["modtime"] = datetime.strptime(file[1]["modify"], '%Y%m%d%H%M%S').strftime("%m/%d/%Y, %H:%M:%S")
         except:
             file[1]["modtime"] = file[1]["modify"]
-        try:
-            file[1]["h_size"] = human_readable_size(int(file[1]["size"]))
-        except:
-            pass
+        file[1]["h_size"] = human_readable_size(int(file[1].get("size", 0)))
 
     return render_template('point.html', pwd=f'{d}', point=id, files=files, search=search, ver=VERSION, addons=updateAddons(), config=read_point_config(id)["Point"])
 
@@ -132,14 +128,7 @@ def createFolder(id):
         return jsonify(status="Error", output=Error.LOGIN_REQUIRED)
     path = request.json.get('path')
     filename = request.json.get('filename')
-    ftp = connect(id)
-    try:
-        output = ftp.mkd(f"{path}/{filename}")
-        ftp.close()
-        return jsonify(status="Ok", output=output)
-    except ftplib.all_errors as error:
-        ftp.close()
-        return jsonify(status="Error", output=str(error))
+    return create_folder(id, path, filename)
 
 @app.route('/create_file/<id>', methods=['POST'])
 def createFile(id):
@@ -149,40 +138,19 @@ def createFile(id):
     filename = request.json.get('filename')
     content = request.json.get('content', "")
     edit = request.json.get('edit', "0")
-    ftp = connect(id)
-    try:
-        for file in ftp.nlst(path):
-            if file == filename and edit != "1":
-                ftp.close()
-                return jsonify(status="Error", output=Error.FILE_EXISTS)
-        output = ftp.storbinary(f'STOR {path}/{filename}', BytesIO(content.encode()))
-        ftp.close()
-        if edit == "1":
-            return jsonify(status="Info", output=Info.FILE_SAVED)
-        else:
-            return jsonify(status="Ok", output=output)
-    except ftplib.all_errors as error:
-        ftp.close()
-        return jsonify(status="Error", output=str(error))
-
+    output = create_file(id, path, filename, content)
+    if edit == "1":
+        return jsonify(status="Info", output=Info.FILE_SAVED)
+    else:
+        return output
 
 @app.route('/delete/<id>', methods=['POST'])
 def deletef(id):
     if id not in session:
         return jsonify(status="Error", output=Error.LOGIN_REQUIRED)
-    # TODO: Replace path, with filename and path
-    path = request.json.get('path', [])
-    ftp = connect(id)
-    try:
-        try:
-            output = ftp.delete(path)
-        except Exception:
-            output = remove_dir(ftp, path)
-        ftp.close()
-        return jsonify(status="Ok", output=output)
-    except ftplib.all_errors as error:
-        ftp.close()
-        return jsonify(status="Error", output=str(error))
+    path = request.json.get('path')
+    filename = request.json.get('filename')
+    return delete_file(id, path, filename)
 
 @app.route('/rename/<id>', methods=['POST'])
 def rename(id):
@@ -192,33 +160,16 @@ def rename(id):
     new_path = request.json.get('new_path', path)
     filename = request.json.get('filename')
     new_name = request.json.get('new_name', filename)
-    
-    try:
-        ftp = connect(id)
-        for file in ftp.nlst(new_path):
-            if file == new_name:
-                ftp.close()
-                return jsonify(status="Error", output=Error.FILE_EXISTS)
-        output = ftp.rename(f"{path}/{filename}", f"{new_path}/{new_name}")
-        ftp.close()
-        return jsonify(status="Ok", output=output)
-    except ftplib.all_errors as error:
-        ftp.close()
-        return jsonify(status="Error", output=str(error))
-    
+    return rename_file(id, path, new_path, filename, new_name)
 
 @app.route('/upload/<id>', methods=['POST'])
 def upload(id):
     if id not in session:
         return redirect(f'/enter_point?point={id}')
-    folder = request.form['d']
+    path = request.form.get('path', '/')
     files = request.files.getlist("file")
-    ftp = connect(id)
-    ftp.cwd(folder)
-    for f in files:
-        ftp.storbinary('STOR ' + f.filename, f)
-    ftp.close()
-    return redirect(f"/point/{id}?d={folder}", code=302)
+    upload_file(id, path, files)
+    return redirect(f"/point/{id}?d={path}", code=302)
 
 @app.route('/exec/<id>', methods=['POST'])
 def execute(id):

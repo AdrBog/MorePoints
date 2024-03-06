@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
   oldTextarea.remove()
   document.querySelector(".text-editor").insertAdjacentHTML("beforeend", "<div id='text-editor'></div><div id='text-editor-toolbar'></div>")
   window.CODE_EDITOR = new MiniCodeEditor("#text-editor", "content")
-  window.CODE_EDITOR.setFontSize(24)
+  window.CODE_EDITOR.setFontSize(20)
   window.CODE_EDITOR.setValue(value)
   generateToolbar(document.querySelector("#text-editor-toolbar"))
 })
@@ -35,7 +35,7 @@ function generateToolbar(toolbar){
     </select>
   `
   const SELECT = document.querySelector("#text-editor-rule")
-  switch(document.querySelector("[name='filename']").value.split(".").slice(-1)[0]){
+  switch(document.querySelector("[name='filename']").value.split(".").slice(-1)[0].toLowerCase()){
     case "c":
     case "cpp":
       SELECT.value = "c"
@@ -43,6 +43,7 @@ function generateToolbar(toolbar){
     case "css":
       SELECT.value = "css"
       break;
+    case "sla":
     case "svg":
     case "xml":
     case "html":
@@ -53,6 +54,9 @@ function generateToolbar(toolbar){
       break;
     case "py":
       SELECT.value = "python"
+      break;
+    case "sh":
+      SELECT.value = "shell"
       break;
     case "sql":
       SELECT.value = "sqlite"

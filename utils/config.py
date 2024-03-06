@@ -1,3 +1,6 @@
+"""
+This module contains methods related to the configuration of the points.
+"""
 from .misc import *
 
 def read_point_config(id):

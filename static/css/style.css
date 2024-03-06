@@ -36,11 +36,6 @@ summary{
     font-weight: bold;
 }
 
-a{
-    color: var(--fg);
-    text-decoration: none;
-}
-
 .icon{
     font-family: 'symbols-mono';
 }
@@ -54,6 +49,8 @@ a{
     width: 0;
     overflow: hidden;
     visibility: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .list-view a{
@@ -62,8 +59,6 @@ a{
 }
 
 .list-view td, .list-view th{
-    padding: 8px;
-    font-size: 16px;
     text-align: left;
 }
 
@@ -143,6 +138,10 @@ a{
     flex-wrap: wrap;
 }
 
+.flexg0{
+    flex-grow: 0;
+}
+
 .flex.column{
     flex-direction: column;
 }
@@ -214,11 +213,6 @@ dialog.error{
 .mini-code-editor, #text-editor{
     width: 100% !important;
     height: 100% !important;
-}
-
-.mini-code-editor-text, .mini-code-editor-text *{
-    font-family: monospace;
-    color: black;
 }
 
 .wwany{

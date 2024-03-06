@@ -48,6 +48,25 @@
                 ["disabled", "Disabled"],
                 ["active", "Active"]
             ]
+        },
+        "Password":{
+            "default": "",
+            "type": "password",
+            "comment": "Password to enter the Point (Leave blank to enter directly)",
+            "display": "Point Password"
+        }
+    },
+    "Connection":{
+        "Protocol":{
+            "default": "disabled",
+            "type": "text",
+            "hideSections": "true",
+            "comment": "What protocol use to make the connection",
+            "display": "Protocol",
+            "options": [
+                ["FTP", "FTP"],
+                ["Local", "None (local storage)"]
+            ]
         }
     },
     "FTP": {
@@ -72,7 +91,7 @@
         "Password":{
             "default": "",
             "type": "password",
-            "comment": "Point's password",
+            "comment": "User's password",
             "display": "Password"
         },
         "TLS":{
@@ -84,6 +103,14 @@
                 ["disabled", "Disabled"],
                 ["active", "Active"]
             ]
+        }
+    },
+    "Local": {
+        "Path":{
+            "default": "",
+            "type": "text",
+            "comment": "Local path",
+            "display": "Path"
         }
     }
 }

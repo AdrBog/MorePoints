@@ -18,7 +18,7 @@
 <dialog id="upload_file">
     <form action="/upload/{{ point }}" method="post" enctype="multipart/form-data" class="flex column gap12">
         Upload:
-        <input type="hidden" name="d" value="{{ pwd }}">
+        <input type="hidden" name="path" value="{{ pwd }}">
         <input type="file" name="file" multiple>
         <div>
             <input type="submit" class="primary" value="Upload">
@@ -27,7 +27,6 @@
             {% else %}
                 <button type="button" onclick="upload_file.close()">Cancel</button>
             {% endif %}
-            
         </div>
     </form>
 </dialog>
@@ -46,6 +45,7 @@
     <div></div>
     <a href="/exit/{{ point }}" class="button">Exit</a>
 </header>
+<nav>
 <div id="toolbar" class="flex wrap gap12 border-bottom">
     <select class="primary"
         onchange="
@@ -97,11 +97,13 @@
     <form action="/point/{{ point }}" method="get" class="flex gap12">
     	<input type="hidden" name="d" value="{{pwd}}">
     	<input type="text" placeholder="Search in {{ folder_name }}" name="search" value="{{ search }}">
-        <button type="submit">Search</button>
+        <button class="flexg0" type="submit">Search</button>
     </form>
 </div>
 <hr>
-
+</nav>
+</hr>
+<main>
 <div class="path">
     <a href="/point/{{ point }}" path="/" ondrop="drop(event)" ondragover="allowDrop(event)">Home</a>
     {% for dir in pwd.split("/")[1:] %}
@@ -165,7 +167,7 @@
                                         window.open(`/open/{{ point }}?path={{ pwd }}&filename={{ file[0] }}`, '_blank')
                                         break;
                                     case 'edit':
-                                        window.open(`/edit/{{ point }}?path={{ pwd }}&filename={{ file[0] }}`, '_blank')
+                                        window.open(`/edit/{{ point }}?path={{ pwd }}&filename={{ file[0] }}`)
                                         break;
                                     case 'download':
                                         window.open(`/download/{{ point }}?path={{ pwd }}&filename={{ file[0] }}`, '_blank')
@@ -182,7 +184,7 @@
                                         break;
                                     case 'delete':
                                         if (confirm(`Are you sure you want to delete '{{ file[0] }}'?`))
-                                            deleteFile('{{ point }}', '{{ pwd }}/{{ file[0] }}')
+                                            deleteFile('{{ point }}', '{{ pwd }}', '{{ file[0] }}')
                                         break;
                                     case 'details':
                                         popMessage('',`File name: {{ file[0] }}
@@ -232,6 +234,7 @@
         <h1 class="center unselectable">This folder is empty</h1>
     {% endif %}
 </div>
+</main>
 {% for addon in addons["point"] %}
 <script src="{{ addon }}" type="module"></script>
 {% endfor %}
@@ -277,7 +280,7 @@
         if (selectedFiles.length != 0){
             if (confirm(`Are you sure you want to delete '${selectedFiles.join(', ')}'?`)){
                 for (const file of selectedFiles)
-                    await deleteFileNoReview("{{ point }}" ,`${path}/${file}`)
+                    await deleteFileNoReview("{{ point }}" , path, file)
                 location.reload()
             }
         } else {

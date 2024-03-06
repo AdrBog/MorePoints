@@ -26,7 +26,7 @@ export class MiniCodeEditor{
     #codeEditorHighlight;
     #codeEditorTextarea;
 
-    constructor(selector, name = ""){
+    constructor(selector){
         this.#codeEditor = document.querySelector(selector)
         this.#DEFAULT_TEXT = this.#codeEditor.innerHTML
 
@@ -37,7 +37,6 @@ export class MiniCodeEditor{
         this.#addEventsListeners()
         this.setFontSize(this.fontSize)
         this.setValue(this.#DEFAULT_TEXT)
-        this.#codeEditorTextarea.setAttribute("name", name)
     }
 
     #generateCodeEditor(){
@@ -46,7 +45,7 @@ export class MiniCodeEditor{
                 <div class="mini-code-editor-backdrop">
                     <div class="mini-code-editor-highlights mini-code-editor-text"></div>
                 </div>
-                <textarea wrap="off" class="mini-code-editor-textarea mini-code-editor-text" spellcheck="false"></textarea>
+                <textarea wrap="off" class="mini-code-editor-textarea mini-code-editor-text" spellcheck="false" name="content"></textarea>
             </div>
         `
         this.#codeEditorBackdrop = this.#codeEditor.querySelector(".mini-code-editor-backdrop")
@@ -57,21 +56,40 @@ export class MiniCodeEditor{
     #styleCodeEditor(){
         const STYLE = document.createElement("style")
         STYLE.innerText = `
-        .mini-code-editor-blue{color: blue;}
-        .mini-code-editor-red{color: red;}
-        .mini-code-editor-green{color: green;}
-        .mini-code-editor-orange{color: orange;}
-        .mini-code-editor-purple{color: purple;}
-        .mini-code-editor-brown{color: brown;}
-        .mini-code-editor-black{color: black;}
+        :root{
+            --mce-color-blue: blue;
+            --mce-color-red: red;
+            --mce-color-green: green;
+            --mce-color-orange: orange;
+            --mce-color-purple: purple;
+            --mce-color-brown: brown;
+            --mce-color-black: black;
+            --mce-color-white: white;
+            --mce-color-bg: white;
+            --mce-color-fg: black;
+            --mce-color-caret: black;
+            --mce-color-select: rgba(153, 153, 255, 0.5);
+            --mce-editor-font: monospace;
+            --mce-editor-line-height: 1;
+            --mce-editor-border: 2px groove black;
+            --mce-editor-border-focus:  black 0px 1px 4px, black 0px 0px 0px 3px;
+        }
+        
+        .mini-code-editor-blue{color: var(--mce-color-blue);}
+        .mini-code-editor-red{color: var(--mce-color-red);}
+        .mini-code-editor-green{color: var(--mce-color-green);}
+        .mini-code-editor-orange{color: var(--mce-color-orange);}
+        .mini-code-editor-purple{color: var(--mce-color-purple);}
+        .mini-code-editor-brown{color: var(--mce-color-brown);}
+        .mini-code-editor-black{color: var(--mce-color-black);}
 
-        .mini-code-editor-blue-imp, .mini-code-editor-blue-imp *{color: blue;}
-        .mini-code-editor-red-imp, .mini-code-editor-red-imp *{color: red;}
-        .mini-code-editor-green-imp, .mini-code-editor-green-imp *{color: green;}
-        .mini-code-editor-orange-imp, .mini-code-editor-orange-imp *{color: orange;}
-        .mini-code-editor-purple-imp, .mini-code-editor-purple-imp *{color: purple;}
-        .mini-code-editor-brown-imp, .mini-code-editor-brown-imp *{color: brown;}
-        .mini-code-editor-black-imp, .mini-code-editor-black-imp *{color: black;}
+        .mini-code-editor-blue-imp, .mini-code-editor-blue-imp *{color: var(--mce-color-blue);}
+        .mini-code-editor-red-imp, .mini-code-editor-red-imp *{color: var(--mce-color-red);}
+        .mini-code-editor-green-imp, .mini-code-editor-green-imp *{color: var(--mce-color-green);}
+        .mini-code-editor-orange-imp, .mini-code-editor-orange-imp *{color: var(--mce-color-orange);}
+        .mini-code-editor-purple-imp, .mini-code-editor-purple-imp *{color: var(--mce-color-purple);}
+        .mini-code-editor-brown-imp, .mini-code-editor-brown-imp *{color: var(--mce-color-brown);}
+        .mini-code-editor-black-imp, .mini-code-editor-black-imp *{color: var(--mce-color-black);}
 
         *{
             box-sizing: border-box;
@@ -81,10 +99,10 @@ export class MiniCodeEditor{
             position: relative;
             width: 196px;
             height: 138px;
-            border: 2px groove black;
+            border: var(--mce-editor-border);
             border-radius: 2px;
-            background-color: white;
-            color: black;
+            background-color: var(--mce-color-bg);
+            color: var(--mce-color-fg);
         }
 
         .mini-code-editor-backdrop, .mini-code-editor-highlights, .mini-code-editor-textarea{
@@ -94,8 +112,8 @@ export class MiniCodeEditor{
         }
 
         .mini-code-editor-text{
-            font-family: monospace;
-            line-height: 1;
+            font-family: var(--mce-editor-font);
+            line-height: var(--mce-editor-line-height);
         }
 
         .mini-code-editor-highlights, .mini-code-editor-line-number, .mini-code-editor-textarea{
@@ -124,14 +142,19 @@ export class MiniCodeEditor{
             width: 100%;
             display: block;
             color: transparent;
-            caret-color: black;
+            caret-color: var(--mce-color-caret);
             resize: none;
             overflow: auto;
         }
 
+        .mini-code-editor-textarea:focus{
+            box-shadow: var(--mce-editor-border-focus);
+            outline: none;
+        }
+
         .mini-code-editor-textarea::selection{
             color: transparent;
-            background-color: rgba(153, 153, 255, 0.5) !important;
+            background-color: var(--mce-color-select) !important;
         }
         `
         document.head.append(STYLE)

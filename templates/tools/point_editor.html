@@ -11,20 +11,26 @@
     </span>
 </header>
 
-<main class="maw1000px mar0auto flex column gap12">
+<main class="maw1000px mar0auto flex column">
 	{% for section_key, section in settings_info.items() %}
-    <form section="{{ section_key }}">
+    <form section="{{ section_key }}" class="padb8">
         <fieldset>
             <legend>{{section_key}}</legend>
             <table class="w100">
                 {% for key, setting in section.items() %}
                     <tr>
                         <td>
-                            <label for="setting_{{ key }}"> {{ setting["display"] }} </label>
+                            <label for="setting_{{ key }}"> {{ setting["display"] }} 
+                                <span title="{{ setting['comment'] }}" style="color: var(--black-05);">?</span>
+                            </label>
                         </td>
                         <td>
                             {% if 'options' is in(setting) %}
-                                    <select name="{{ key }}" id="setting_{{ key }}" title="{{ setting['comment'] }}">
+                                    <select name="{{ key }}" id="setting_{{ key }}" title="{{ setting['comment'] }}"
+                                    {% if 'hideSections' in(setting) %}
+                                        oninput="showSelectedForm(this.value, this.querySelectorAll('option'))"
+                                    {% endif %}
+                                    >
                                         {% for option in setting['options'] %}
                                             <option value="{{option[0]}}" {{ "selected" if option[0] == point_details.get(section_key, {}).get(key, setting['default']) else "" }}>{{option[1]}}</option>
                                         {% endfor %}
@@ -44,7 +50,7 @@
 </main>
 
 <footer class="maw1000px mar0auto pad8">
-    <button onclick="saveConfig()" class="primary">Save</button>
+    <button onclick="saveConfig()" class="button primary">Save</button>
     <a href="/admin" class="button">Cancel changes</a>
 </footer>
 
@@ -53,6 +59,13 @@
 {% endfor %}
 
 <script>
+
+    function showSelectedForm(form, options){
+        form = document.querySelector(`form[section="${form}"]`)
+        for(const option of options)
+            document.querySelector(`form[section="${option.value}"]`).classList.add('hidden')
+        form.classList.remove('hidden')
+    }
 
     async function saveConfig(){
         const forms = document.querySelectorAll("form")
@@ -67,7 +80,15 @@
             }
         }
 
-        const data = await editFile('{{ point_admin }}', '{{ path }}', '{{ filename }}', JSON.stringify(config, null, 2))
+        try {
+            const data = await editFile('{{ point_admin }}', '{{ path }}', '{{ filename }}', JSON.stringify(config, null, 2))
+        } catch (error) {
+            popMessage("Error", error, "error")
+        }
+    }
+
+    for(const e of document.querySelectorAll(`select[oninput*="showSelectedForm"]`)){
+        showSelectedForm(e.value, e.querySelectorAll("option"))
     }
 </script>
 {% endblock %}

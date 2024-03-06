@@ -6,9 +6,18 @@
     "Theme": "light",
     "Legacy": "active"
   },
+  "Connection": {
+    "Protocol": "Local"
+  },
   "FTP": {
     "Host": "127.0.0.1",
+    "Port": "21",
     "User": "admin",
-    "Password": "admin"
+    "Password": "admin",
+    "TLS": "disabled"
+  },
+  "Local": {
+    "Path": "./config/points/",
+    "Password": ""
   }
 }

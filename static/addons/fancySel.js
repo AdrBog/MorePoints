@@ -9,7 +9,9 @@ table.addEventListener("click", (e) => {
 	if (Array.from(e.target.classList).includes("file")){
 		let checkbox = e.target.parentElement.querySelector("[type='checkbox']");
 		if (!e.ctrlKey) {
-			Array.from(table.querySelectorAll("[type='checkbox']")).map((x) => {x.checked = false})
+			Array.from(table.querySelectorAll("[type='checkbox']")).map((x) => {
+				x.checked = false
+			})
 		}
 		checkbox.checked = ! checkbox.checked;
 		updateSelected()

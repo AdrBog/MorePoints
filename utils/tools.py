@@ -1,5 +1,8 @@
+"""
+This is the module where custom tools are stored. For example, the text editor
+"""
 from flask import Blueprint, redirect, request, render_template, session
-from .ftp import *
+from .conn import *
 from .misc import *
 import json
 

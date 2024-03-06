@@ -13,7 +13,7 @@
 async function readFile(point, path)
 {
     const data = await fetch(`/open/${point}?path=${path}&filename=${filename}`)
-    return await data.text() 
+    return await data.text()
 }
 
 /**
@@ -115,9 +115,9 @@ async function createFolderNoReview(point, path, foldername)
  * @param {string} point 
  * @param {string} path 
  */
-async function deleteFile(point, path)
+async function deleteFile(point, path, filename)
 {
-    data = await deleteFileNoReview(point, path)
+    data = await deleteFileNoReview(point, path, filename)
     reviewResponse(await data.json())
 }
 
@@ -126,12 +126,13 @@ async function deleteFile(point, path)
  * @param {string} point 
  * @param {string} path 
  */
-async function deleteFileNoReview(point, path)
+async function deleteFileNoReview(point, path, filename)
 {
     return await fetch(`/delete/${point}`, {
         method: 'POST',
         body: JSON.stringify({
-            "path": path
+            "path": path,
+            "filename": filename
         }),
         headers: {"Content-type": "application/json; charset=UTF-8"}
     })

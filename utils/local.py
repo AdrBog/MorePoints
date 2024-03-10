@@ -10,8 +10,6 @@ import shutil
 from .config import *
 from .msg import *
 
-
-
 def local_create_folder(id, path, filename):
 	local_data = read_point_config(id).get("Local", {})
 	dir = local_data.get("Path", "/")

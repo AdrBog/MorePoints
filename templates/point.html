@@ -36,7 +36,9 @@
 {% block content %}
 <header id="main_header" class="grid gtca1a acenter gap12">
     <div class="grid gtca1a acenter gap12">
-        <img src="/static/icons/point_icons/{{ point_icon }}.svg" alt="{{ point }}" width="64px" height="64px">
+        <a href="/">
+            <img src="/static/icons/point_icons/{{ point_icon }}.svg" alt="{{ point }}" width="64px" height="64px">
+        </a>
         <h1 class="wwany">{{ display_name }}</h1>
         {% if point_desc %}
             <a class="clickable" onclick="alert(`{{ point_desc }}`)"><span class="icon">󰋽</span></a>

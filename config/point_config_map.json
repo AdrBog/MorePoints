@@ -52,7 +52,7 @@
         "Password":{
             "default": "",
             "type": "password",
-            "comment": "Password to enter the Point (Leave blank to enter directly)",
+            "comment": "Password to enter the Point (Leave blank for no password)",
             "display": "Point Password"
         }
     },

@@ -11,6 +11,7 @@ class Error(str, Enum):
     FILE_EXISTS = "File already exists"
     POINT_NOT_FOUND = "Point not found\nMake sure:\n1. You entered the correct data\n2. server.py is running if you are trying to access to your local host"
     WRONG_PASSWORD = "Wrong password\nMake sure:\n1. You entered the correct data\n2. server.py is running if you are trying to access to your local host"
+    EDIT_BINARY_FILE = "Binary files cannot be edited using the text editor."
 
 
 class Info(str, Enum):

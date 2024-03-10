@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Error - MorePoints{% endblock %}
+
+{% block content %}
+<header class="maw1000px mar0auto">
+	<h1>
+		An error ocurred
+	</h1>
+</header>
+
+<main class="maw1000px mar0auto">
+	<h2>{{ errname }}</h2>
+	<div class="pad8">
+		{{ error }}
+	</div>
+	<input name="action" onclick="closeTab()" type="submit" value="Go Back"/>
+</main>
+
+{% endblock %}

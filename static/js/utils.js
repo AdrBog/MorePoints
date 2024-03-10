@@ -59,3 +59,12 @@ function routePrompt(message, _default)
     const route = prompt(message, _default)
     return route
 }
+
+function closeTab()
+{
+    if (history.length > 1){ 
+        history.back();
+    } else {
+        window.close()
+    }
+}

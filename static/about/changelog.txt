@@ -1,4 +1,6 @@
 CHANGELOG
+v 0.3.0
+	Added custom error page
 v 0.2.0
 	Added TLS/SSL support
 	Added drag and drop

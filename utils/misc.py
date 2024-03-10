@@ -1,5 +1,6 @@
 import json
 import os
+from flask import render_template
 
 VERSION = "0.3.0"
 
@@ -15,6 +16,9 @@ SERVER_FILE = "server.py"
 def setup_MorePoints():
     if not os.path.exists(POINTS_DIR):
         os.makedirs(POINTS_DIR)
+
+def display_error_page(error):
+    return render_template("error.html", error=error, errname=type(error).__name__)
 
 def list_points():
     points = []

@@ -37,9 +37,9 @@ def enterPoint():
         if not os.path.exists(f"{POINTS_CONFIG_DIR}/{point}.point"):
             return render_template('enter_point.html', point=point, hostname=socket.gethostname(), errormsg=Error.POINT_NOT_FOUND)
         
-        readfile = readJSON(f"{POINTS_CONFIG_DIR}/{point}.point")
+        pointfile = readJSON(f"{POINTS_CONFIG_DIR}/{point}.point")
         
-        if password != readfile["FTP"]['Password']:
+        if password != pointfile["Point"]['Password']:
             return render_template('enter_point.html', point=point, hostname=socket.gethostname(), errormsg=Error.WRONG_PASSWORD)
         
         session[point] = point
@@ -62,10 +62,13 @@ def point(id):
     if d == '/': 
         d = ""
 
-    if search:
-        files = list_dir_filter(id, d, r".*" + re.escape(search) + r".*")
-    else:
-        files = list_dir(id, d)
+    try:
+        if search:
+            files = list_dir_filter(id, d, r".*" + re.escape(search) + r".*")
+        else:
+            files = list_dir(id, d)
+    except Exception as error:
+        return display_error_page(error)
 
     files = [f for f in files if not f[0] in [".", ".."]]
 
@@ -90,7 +93,10 @@ def openF(id):
     for key in readJSON(f"{CONFIG_DIR}/{CONFIG_FILE}").get("OpenWith", []):
         if extension in key["extensions"]:
             return redirect(f"/tools/{key['tool']}/{id}?path={path}&filename={filename}")
-    return send_file(BytesIO(read_file(id, f"{path}/{filename}")), download_name=filename)
+    try:
+        return send_file(BytesIO(read_file(id, f"{path}/{filename}")), download_name=filename)
+    except Exception as error:
+        return display_error_page(error)
 
 
 @app.route('/read/<id>', methods=['GET'])

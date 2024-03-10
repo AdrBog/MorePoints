@@ -3,6 +3,7 @@ This module manages the connection to a point regardless of the protocol used.
 """
 from .ftp import *
 from .local import *
+from flask import redirect
 
 def get_protocol(id):
 	point_data = read_point_config(id)

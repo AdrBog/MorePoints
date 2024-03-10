@@ -4,6 +4,9 @@
 
 {% block content %}
 <header class="maw1000px mar0auto">
+    <div>
+    	<input name="action" onclick="closeTab()" type="submit" value="Go Back"/>
+    </div>
     <span class="grid gtca1a acenter gap12 pad8">
         <img src="/static/icons/point_icons/{{ point_icon }}.svg" alt="{{ point }}" width="64px" height="64px">
         <p class="wwany"><b>{{ display_name }}</b> ({{ point }})</p>
@@ -51,7 +54,6 @@
 
 <footer class="maw1000px mar0auto pad8">
     <button onclick="saveConfig()" class="button primary">Save</button>
-    <a href="/admin" class="button">Cancel changes</a>
 </footer>
 
 {% for addon in addons["point_editor"] %}

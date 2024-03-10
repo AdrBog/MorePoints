@@ -10,6 +10,9 @@ tools = Blueprint('tools', __name__)
 
 @tools.route('/tools/text_editor/<id>', methods=['GET'])
 def text_editor(id):
+    """
+    Use this tool to edit text files.
+    """
     if id not in session:
         return redirect(f'/enter_point?point={id}')
     path = request.args.get('path', default="")
@@ -17,15 +20,18 @@ def text_editor(id):
     full_path = f"{path}/{filename}"
     try:
         return render_template("tools/text_editor.html", point=id, path=path, filename=filename, text=read_file(id, full_path).decode(), ver=VERSION, addons=updateAddons(), config=read_point_config(id)["Point"])
+    except UnicodeDecodeError:
+        return display_error_page(Exception(Error.EDIT_BINARY_FILE))
     except Exception as error:
-        print(error)
-        return "Can't edit binary file"
+        return display_error_page(error)
 
 @tools.route('/tools/point_editor/<id>', methods=['GET'])
 def point_editor(id):
+    """
+    Use this tool to edit point files (*.point)
+    """
     if id not in session:
-        return redirect(f'/enter_point?point={id}')
-        
+        return redirect(f'/enter_point?point={id}') 
     path = request.args.get('path', default="")
     filename = request.args.get('filename', default="")
     point = request.args.get('filename', default="")
@@ -48,6 +54,9 @@ def point_editor(id):
 
 @tools.route('/tools/test_tool/<id>', methods=['GET'])
 def test_tool(id):
+    """
+    This tool does nothing, it's only for test purposes
+    """
     if id not in session:
         return redirect(f'/enter_point?point={id}')
     path = request.args.get('path', default="")
@@ -57,6 +66,9 @@ def test_tool(id):
 
 @tools.route('/tools/link/<id>', methods=['GET'])
 def link(id):
+    """
+    This tool opens link files (*.lnk, *.link)
+    """
     if id not in session:
         return redirect(f'/enter_point?point={id}')
     path = request.args.get('path', default="")

@@ -1,13 +1,3 @@
-@media (max-width: 800px) {
-    .files-list td:nth-last-child(-n + 2),
-    .files-list th:nth-last-child(-n + 2){
-        overflow: hidden;
-        width: 0 !important;
-        font-size: 0;
-        padding: 0;
-    }
-}
-
 body{
     background-image: linear-gradient(180deg, var(--black-005) 0%, transparent 25%);
     background-repeat: no-repeat;
@@ -95,4 +85,14 @@ main{
 
 .path{
     padding:8px;
+}
+
+@media (max-width: 800px) {
+    .files-list td:nth-last-child(-n + 2),
+    .files-list th:nth-last-child(-n + 2){
+        overflow: hidden;
+        width: 0 !important;
+        font-size: 0;
+        padding: 0;
+    }
 }

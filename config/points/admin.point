@@ -4,7 +4,8 @@
     "Description": "The administrator's point:\nFrom here you can edit and create points",
     "Icon": "computer",
     "Theme": "light",
-    "Legacy": "active"
+    "Legacy": "active",
+    "Password": "admin"
   },
   "Connection": {
     "Protocol": "Local"
@@ -12,12 +13,11 @@
   "FTP": {
     "Host": "127.0.0.1",
     "Port": "21",
-    "User": "admin",
-    "Password": "admin",
+    "User": "",
+    "Password": "",
     "TLS": "disabled"
   },
   "Local": {
-    "Path": "./config/points/",
-    "Password": ""
+    "Path": "./config/points/"
   }
 }

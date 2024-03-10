@@ -4,8 +4,16 @@
     },
     "OpenWith": [
         {
-            "extensions": ["lnk", "link", "lll", "oal"],
+            "extensions": ["lnk", "link"],
             "tool": "link"
+        },
+        {
+            "extensions": ["txt", "msg", "ini", "js", "css", "py", "sh"],
+            "tool": "text_editor"
+        },
+        {
+            "extensions": ["point"],
+            "tool": "point_editor"
         }
     ],
     "EditWith": {

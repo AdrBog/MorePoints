@@ -16,12 +16,6 @@
     text-overflow: ellipsis;
 }
 
-@media (max-width: 800px) {
-    .flex *{
-        flex-grow: 1;
-    }
-}
-
 html,
 body{
     height: 100%;
@@ -130,6 +124,10 @@ summary{
     grid-template-columns: auto 1fr auto;
 }
 
+.gtc1a{
+    grid-template-columns: 1fr auto;
+}
+
 .flex{
     display: flex;
 }
@@ -221,4 +219,14 @@ dialog.error{
 
 pre, .pre{
     white-space: pre-wrap;
+}
+
+@media (max-width: 800px) {
+    .flex *{
+        flex-grow: 1;
+    }
+
+    .gtc1a{
+        grid-template-columns: 1fr;
+    }
 }

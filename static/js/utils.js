@@ -63,7 +63,7 @@ function routePrompt(message, _default)
 function closeTab()
 {
     if (history.length > 1){ 
-        history.back();
+        history.back()
     } else {
         window.close()
     }

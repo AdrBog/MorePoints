@@ -1,3 +1,6 @@
+"""
+This module contains general methods and variables that I did not know how to categorize.
+"""
 import json
 import os
 from flask import render_template
@@ -9,13 +12,7 @@ CONFIG_DIR = "config"
 CONFIG_FILE = "config.json"
 POINTS_CONFIG_DIR = CONFIG_DIR + "/points"
 POINT_CONFIG_MAP = CONFIG_DIR + "/point_config_map.json"
-POINTS_DIR = "points"
 ADDONS_FILE = "addons.json"
-SERVER_FILE = "server.py"
-
-def setup_MorePoints():
-    if not os.path.exists(POINTS_DIR):
-        os.makedirs(POINTS_DIR)
 
 def display_error_page(error):
     return render_template("error.html", error=error, errname=type(error).__name__)
@@ -46,6 +43,11 @@ def writeJSON(src, data):
         json.dump(data, file, indent=4)
 
 def human_readable_size(num, suffix="B"):
+    if num is None:
+        num = 0
+    elif type(num) is str:
+        num = int(num)
+    
     for unit in ("", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"):
         if abs(num) < 1024.0:
             return f"{num:3.1f}{unit}{suffix}"

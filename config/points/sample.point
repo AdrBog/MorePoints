@@ -8,7 +8,7 @@
     "Password": ""
   },
   "Connection": {
-    "Protocol": "FTP"
+    "Protocol": "Local"
   },
   "FTP": {
     "Host": "localhost",
@@ -17,7 +17,18 @@
     "Password": "1234",
     "TLS": "disabled"
   },
+  "WebDav": {
+    "Host": "127.0.0.1",
+    "User": "",
+    "Password": ""
+  },
+  "SSH": {
+    "Host": "127.0.0.1",
+    "Port": "22",
+    "User": "",
+    "Password": ""
+  },
   "Local": {
-    "Path": ""
+    "Path": "./points/sample/"
   }
 }

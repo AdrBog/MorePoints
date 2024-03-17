@@ -25,7 +25,10 @@
                 ["computer", "Computer"],
                 ["document", "Document"],
                 ["filebox", "Filebox"],
-                ["flag", "Flag"]
+                ["flag", "Flag"],
+                ["folder", "Folder"],
+                ["vultr", "Vultr"],
+                ["linux", "Linux"]
             ]
         },
         "Theme":{
@@ -65,6 +68,8 @@
             "display": "Protocol",
             "options": [
                 ["FTP", "FTP"],
+                ["SSH", "SSH"],
+                ["WebDav", "WebDav"],
                 ["Local", "None (local storage)"]
             ]
         }
@@ -103,6 +108,52 @@
                 ["disabled", "Disabled"],
                 ["active", "Active"]
             ]
+        }
+    },
+    "WebDav": {
+        "Host":{
+            "default": "127.0.0.1",
+            "type": "text",
+            "comment": "Host where WebDav server is located",
+            "display": "Host"
+        },
+        "User":{
+            "default": "",
+            "type": "text",
+            "comment": "User name of the WebDav server",
+            "display": "User"
+        },
+        "Password":{
+            "default": "",
+            "type": "password",
+            "comment": "User's password",
+            "display": "Password"
+        }
+    },
+    "SSH": {
+        "Host":{
+            "default": "127.0.0.1",
+            "type": "text",
+            "comment": "Host where SSH server is located",
+            "display": "Host"
+        },
+        "Port":{
+            "default": "22",
+            "type": "number",
+            "comment": "Port number where SSH server is stored",
+            "display": "Port"
+        },
+        "User":{
+            "default": "",
+            "type": "text",
+            "comment": "User name of the SSH server",
+            "display": "User"
+        },
+        "Password":{
+            "default": "",
+            "type": "password",
+            "comment": "User's password",
+            "display": "Password"
         }
     },
     "Local": {

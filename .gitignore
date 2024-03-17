@@ -4,3 +4,4 @@ points/*
 !points/sample
 config/points/*
 !config/points/admin.point
+!config/points/sample.point

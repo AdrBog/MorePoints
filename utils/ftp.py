@@ -94,12 +94,6 @@ def ftp_list_dir(id, dir = "/"):
                 print("No files in this directory")
             return []
 
-def ftp_list_dir_filter(id, dir = "/", search = ""):
-    files = ftp_list_dir(id, dir)
-    regex = re.compile(search)
-    filter_search = [f for f in files if regex.match(f[0])]
-    return filter_search
-
 def ftp_remove_dir(ftp, path):
     for (name, properties) in ftp.mlsd(path=path):
         if name in ['.', '..']:

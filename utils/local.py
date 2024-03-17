@@ -79,9 +79,3 @@ def local_list_dir(id, path = "/"):
 			"type": "dir" if os.path.isdir(f"{dir}/{path}/{f}") else "file"
 		}])
 	return files
-
-def local_list_dir_filter(id, dir = "/", search = ""):
-	files = local_list_dir(id, dir)
-	regex = re.compile(search)
-	filter_search = [f for f in files if regex.match(f[0])]
-	return filter_search

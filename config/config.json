@@ -1,7 +1,4 @@
 {
-    "Admin":{
-        "Password": "admin"
-    },
     "OpenWith": [
         {
             "extensions": ["lnk", "link"],
@@ -16,17 +13,15 @@
             "tool": "point_editor"
         }
     ],
-    "EditWith": {
-        "CustomTools": [
-            {
-                "extensions": ["foo", "bar"],
-                "tool": "test_tool"
-            },
-            {
-                "extensions": ["point"],
-                "tool": "point_editor"
-            }
-        ],
-        "DefaultTool": "text_editor"
-    }
+    "EditWith": [
+        {
+            "extensions": ["foo", "bar"],
+            "tool": "test_tool"
+        },
+        {
+            "extensions": ["point"],
+            "tool": "point_editor"
+        }
+    ],
+    "DefaultTool": "text_editor"
 }

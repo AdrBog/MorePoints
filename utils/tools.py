@@ -1,17 +1,61 @@
 """
 This is the module where custom tools are stored. For example, the text editor
+
+Tools can be set up on <code>config/config.json</code>
+
+Here's an example:
+
+```json
+"OpenWith": [
+    {
+        "extensions": ["lnk", "link"],
+        "tool": "link"
+    },
+    {
+        "extensions": ["txt", "msg", "ini", "js", "css", "py", "sh"],
+        "tool": "text_editor"
+    },
+    {
+        "extensions": ["point"],
+        "tool": "point_editor"
+    }
+],
+"EditWith": [
+    {
+        "extensions": ["foo", "bar"],
+        "tool": "test_tool"
+    },
+    {
+        "extensions": ["point"],
+        "tool": "point_editor"
+    }
+],
+"DefaultTool": "text_editor"
+```
+
+By default, when you try to edit a file with MorePoints, the text editor will be used by default (Look at key DefaultTool)
+
+But you can specify your own tools (Look at key EditWith)
+
+To access a tool, go to the path: <code>http://{HOST}/tools/{TOOL NAME}/{POINT ID}?path={RESOURCE PATH}&filename={RESOURCE NAME}</code>
+
 """
 from flask import Blueprint, redirect, request, render_template, session
 from .conn import *
 from .misc import *
 import json
 
+# TODO: The module utils.tools can be refactorized
+
 tools = Blueprint('tools', __name__)
 
 @tools.route('/tools/text_editor/<id>', methods=['GET'])
 def text_editor(id):
     """
-    Use this tool to edit text files.
+    This tool edits text files
+    :param: path: Absolute path of folder where resource is stored
+    :param: filename:
+    :return: render_template "templates/tools/text_editor.html"
     """
     if id not in session:
         return redirect(f'/enter_point?point={id}')
@@ -28,7 +72,10 @@ def text_editor(id):
 @tools.route('/tools/point_editor/<id>', methods=['GET'])
 def point_editor(id):
     """
-    Use this tool to edit point files (*.point)
+    This tool edits points files (*.point)
+    :param: path: Absolute path of folder where resource is stored
+    :param: filename:
+    :return: render_template "templates/tools/point_editor.html"
     """
     if id not in session:
         return redirect(f'/enter_point?point={id}') 
@@ -56,6 +103,9 @@ def point_editor(id):
 def test_tool(id):
     """
     This tool does nothing, it's only for test purposes
+    :param: path: Absolute path of folder where resource is stored
+    :param: filename:
+    :return: render_template "templates/tools/test_tool.html"
     """
     if id not in session:
         return redirect(f'/enter_point?point={id}')
@@ -68,6 +118,9 @@ def test_tool(id):
 def link(id):
     """
     This tool opens link files (*.lnk, *.link)
+    :param: path: Absolute path of folder where resource is stored
+    :param: filename:
+    :return: Redirection to the link inside the link file
     """
     if id not in session:
         return redirect(f'/enter_point?point={id}')

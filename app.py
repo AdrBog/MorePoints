@@ -1,3 +1,7 @@
+"""
+The main flask app
+"""
+
 from flask import Flask, Blueprint, request, render_template, make_response, redirect, send_file, jsonify, session
 from io import BytesIO, StringIO
 from datetime import datetime
@@ -15,19 +19,18 @@ from utils.msg import *
 from utils.tools import tools
 
 app = Flask(__name__)
+config = readJSON(f"{CONFIG_DIR}/{CONFIG_FILE}")
 
 #app.secret_key = secrets.token_hex()
 app.secret_key = b'SECRET'  # FOR DEV ONLY
 app.register_blueprint(tools)
-
-setup_MorePoints()
 
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html', ver=VERSION, points=list_points())
 
 @app.route('/enter_point', methods=['GET', 'POST'])
-def enterPoint():
+def enter_point():
     point = request.args.get('point', default="")
     if request.method == 'POST':
         hostname = request.form.get('hostname')
@@ -47,7 +50,7 @@ def enterPoint():
     return render_template('enter_point.html', point=point, hostname=socket.gethostname())
 
 @app.route('/exit/<id>')
-def exitPoint(id):
+def exit_point(id):
     session.pop(id, None)
     return redirect(f'/enter_point?point={id}')
 
@@ -59,6 +62,7 @@ def point(id):
     d = request.args.get('d', default="")
     search = request.args.get('search', default="")
     onlydir = request.args.get('onlydir', default="")
+    
     if d == '/': 
         d = ""
 
@@ -73,13 +77,14 @@ def point(id):
     files = [f for f in files if not f[0] in [".", ".."]]
 
     for file in files:
+        #file[0] = file[0].strip("/")
         file[1]["ext"] = file[0].split(".")[-1].lower()
         try:
             file[1]["modify"] = file[1].get("modify", "0.0").split('.')[0]
             file[1]["modtime"] = datetime.strptime(file[1]["modify"], '%Y%m%d%H%M%S').strftime("%m/%d/%Y, %H:%M:%S")
         except:
             file[1]["modtime"] = file[1]["modify"]
-        file[1]["h_size"] = human_readable_size(int(file[1].get("size", 0)))
+        file[1]["h_size"] = human_readable_size(file[1].get("size", 0))
 
     return render_template('point.html', pwd=f'{d}', point=id, files=files, search=search, ver=VERSION, addons=updateAddons(), config=read_point_config(id)["Point"])
 
@@ -90,7 +95,7 @@ def openF(id):
     path = request.args.get('path', default="")
     filename = request.args.get('filename', default="")
     extension = filename.split(".")[-1]
-    for key in readJSON(f"{CONFIG_DIR}/{CONFIG_FILE}").get("OpenWith", []):
+    for key in config.get("OpenWith", []):
         if extension in key["extensions"]:
             return redirect(f"/tools/{key['tool']}/{id}?path={path}&filename={filename}")
     try:
@@ -101,6 +106,8 @@ def openF(id):
 
 @app.route('/read/<id>', methods=['GET'])
 def readF(id):
+    if id not in session:
+        return redirect(f'/enter_point?point={id}')
     path = request.args.get('path', default="")
     filename = request.args.get('filename', default="")
     response = make_response(read_file(id, f"{path}/{filename}"), 200)
@@ -114,11 +121,10 @@ def editF(id):
     path = request.args.get('path', default="")
     filename = request.args.get('filename', default="")
     extension = filename.split(".")[-1]
-    edit_with_list = readJSON(f"{CONFIG_DIR}/{CONFIG_FILE}").get("EditWith", {})
-    for key in edit_with_list.get('CustomTools', []):
+    for key in config.get("EditWith", []):
         if extension in key["extensions"]:
             return redirect(f"/tools/{key['tool']}/{id}?path={path}&filename={filename}")
-    return redirect(f"/tools/{edit_with_list.get('DefaultTool', 'text_editor')}/{id}?path={path}&filename={filename}")
+    return redirect(f"/tools/{config.get('DefaultTool', 'text_editor')}/{id}?path={path}&filename={filename}")
 
 @app.route('/download/<id>', methods=['GET'])
 def downloadF(id):
@@ -137,7 +143,7 @@ def createFolder(id):
     return create_folder(id, path, filename)
 
 @app.route('/create_file/<id>', methods=['POST'])
-def createFile(id):
+def createF(id):
     if id not in session:
         return jsonify(status="Error", output=Error.LOGIN_REQUIRED)
     path = request.json.get('path')
@@ -151,7 +157,7 @@ def createFile(id):
         return output
 
 @app.route('/delete/<id>', methods=['POST'])
-def deletef(id):
+def deleteF(id):
     if id not in session:
         return jsonify(status="Error", output=Error.LOGIN_REQUIRED)
     path = request.json.get('path')
@@ -159,7 +165,7 @@ def deletef(id):
     return delete_file(id, path, filename)
 
 @app.route('/rename/<id>', methods=['POST'])
-def rename(id):
+def renameF(id):
     if id not in session:
         return jsonify(status="Error", output=Error.LOGIN_REQUIRED)
     path = request.json.get('path')
@@ -169,7 +175,7 @@ def rename(id):
     return rename_file(id, path, new_path, filename, new_name)
 
 @app.route('/upload/<id>', methods=['POST'])
-def upload(id):
+def uploadF(id):
     if id not in session:
         return redirect(f'/enter_point?point={id}')
     path = request.form.get('path', '/')
@@ -191,3 +197,5 @@ def execute(id):
     except ftplib.all_errors as error:
         ftp.close()
         return jsonify(status="Error", output=str(error))
+
+
